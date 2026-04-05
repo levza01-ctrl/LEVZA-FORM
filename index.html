@@ -156,7 +156,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    // --- LOCATION DATA (Smart System) ---
     const locationData = {
         "Pakistan": { "Punjab": ["Lahore", "Faisalabad", "Rawalpindi", "Multan", "Gujranwala"], "Sindh": ["Karachi", "Hyderabad", "Sukkur", "Larkana"], "KPK": ["Peshawar", "Abbottabad", "Mardan", "Swat"], "Balochistan": ["Quetta", "Gwadar", "Khuzdar"], "Islamabad": ["Islamabad City"] },
         "United Kingdom": { "England": ["London", "Manchester", "Birmingham", "Leeds", "Liverpool"], "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"], "Wales": ["Cardiff", "Swansea", "Newport"], "Northern Ireland": ["Belfast", "Derry"] },
@@ -204,11 +203,9 @@
     });
 
     // ==========================================
-    // EMAIL VERIFICATION & FORM SUBMISSION LOGIC
+    // YAHAN AAPKA NAYA WEB APP URL ADD HO GAYA HAI
     // ==========================================
-    
-    // Yahan aapka diya hua naya link laga diya gaya hai:
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwI9BjipbvNnN1hDPWpLZ4dh8rpNI0z9RwuhzHX_uXkUKTLRbl5uiSaXD1VI5jKvAf_/exec'; 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwh_NS5k8IPHRs_oVtwW4DbfHPbWMx01ZnMi6OzanET5TxFUx4_PSbA05DlGL07bh5J/exec'; 
 
     const emailInput = document.getElementById('email');
     const sendCodeBtn = document.getElementById('sendCodeBtn');
@@ -244,7 +241,7 @@
                 } else { throw new Error(data.error); }
             })
             .catch(error => {
-                alert("Error sending OTP. Please try again.");
+                alert("Error sending OTP: " + error.message);
                 sendCodeBtn.textContent = 'Send Code';
                 sendCodeBtn.disabled = false;
             });
@@ -294,7 +291,6 @@
     form.addEventListener("submit", function(e) {
       e.preventDefault();
       
-      // Checking if Email is actually verified before submitting
       if(!isEmailVerified) {
           alert("Please verify your email address using the Send Code button before submitting.");
           return;
@@ -306,7 +302,7 @@
       submitBtn.disabled = true;
 
       let formData = new FormData(form);
-      formData.append("action", "submitForm"); // Important for script to know it's a form submission
+      formData.append("action", "submitForm"); 
       
       if(investorSelect.value !== "Yes") { formData.set("InvestmentAmount", ""); }
 
@@ -324,7 +320,6 @@
                 investorSelect.value = "";
                 amountDiv.style.display = 'none';
                 
-                // Reset Email Verification UI
                 isEmailVerified = false;
                 emailInput.readOnly = false;
                 verificationDiv.style.display = 'none';
