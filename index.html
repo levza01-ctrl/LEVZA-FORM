@@ -27,10 +27,10 @@
     
     .form-control:disabled, .form-select:disabled, .form-control[readonly] { 
         background-color: rgba(255, 255, 255, 0.05) !important; 
-        color: rgba(255, 255, 255, 0.4) !important; 
+        color: #fff !important; 
         border-color: rgba(255, 255, 255, 0.1) !important; 
-        opacity: 1 !important;
-        -webkit-text-fill-color: rgba(255, 255, 255, 0.4) !important;
+        opacity: 1 !important; 
+        cursor: pointer !important;
     }
 
     .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
@@ -39,30 +39,33 @@
     .btn-code:hover { background-color: rgba(255, 153, 0, 0.2); border-color: #ff9900; }
     .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
     
-    .form-check-label { font-size: 0.95rem; color: #ffffff; }
     #successBox { position: fixed; top: 20px; right: 20px; background: rgba(11, 31, 58, 0.9); backdrop-filter: blur(10px); color: white; padding: 15px 25px; border-radius: 10px; opacity: 0; transition: opacity 0.4s; z-index: 9999; border: 1px solid #ff9900; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     #successBox.show { opacity: 1; }
     
-    /* === CALENDAR COLORS FIX === */
-    .flatpickr-calendar { background: rgba(11, 31, 58, 0.95) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.5) !important; border-radius: 15px !important; }
-    .flatpickr-month, .flatpickr-current-month, .cur-year, .flatpickr-monthDropdown-months { color: #ffffff !important; fill: #ffffff !important; }
-    .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #ffffff !important; }
-    .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; }
-    .flatpickr-day { color: #ffffff !important; }
-    .flatpickr-day.selected { background: linear-gradient(135deg, #ff9900, #ff7a00) !important; border: none !important; }
-    .flatpickr-day:hover { background: rgba(255, 153, 0, 0.2) !important; color: #ff9900 !important; }
+    /* ========================================= */
+    /* PREMIUM CALENDAR UI FIX (MONTH/YEAR/ARROWS) */
+    /* ========================================= */
+    .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.6) !important; border-radius: 15px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important; }
+    
+    /* Month aur Year text ko white karna */
+    .flatpickr-current-month, .flatpickr-monthDropdown-months, .cur-year { color: #ffffff !important; fill: #ffffff !important; font-weight: 600 !important; }
+    .flatpickr-monthDropdown-months { background: #0b1f3a !important; }
+    
+    /* Arrows (Previous/Next) ko white karna */
+    .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #ffffff !important; transition: all 0.2s; }
+    .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #ff9900 !important; transform: scale(1.1); }
+    
+    .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; opacity: 1 !important; }
+    .flatpickr-day { color: #ffffff !important; border-radius: 8px !important; }
+    .flatpickr-day:hover { background: rgba(255, 153, 0, 0.3) !important; color: #fff !important; }
+    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; color: #fff !important; }
+    .flatpickr-day.flatpickr-disabled { color: rgba(255,255,255,0.1) !important; }
 
-    /* === MODAL & VERIFICATION BOX FIX === */
+    /* Modal Design */
     .otp-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
     .otp-modal-overlay.active { opacity: 1; visibility: visible; }
-    .otp-modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
-    .otp-modal-overlay.active .otp-modal-card { transform: translateY(0); }
+    .otp-modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; }
     .otp-input-large { background: rgba(0, 0, 0, 0.3) !important; font-size: 1.8rem !important; letter-spacing: 12px; text-align: center; border: 2px solid rgba(255,153,0,0.5) !important; color: #fff !important; height: 65px; border-radius: 12px; }
-    .otp-input-large::placeholder { letter-spacing: normal; font-size: 1rem; color: rgba(255,255,255,0.3); }
-    
-    /* Verification Text color fix */
-    #modalEmailText { color: #ff9900 !important; font-weight: bold; }
-    #otpMessage { font-weight: 500; }
   </style>
 </head>
 <body>
@@ -83,7 +86,7 @@
         <div class="row g-3 align-items-center">
           <div class="col-md-6"><input type="text" name="FirstName" class="form-control" placeholder="First Name" required></div>
           <div class="col-md-6"><input type="text" name="LastName" class="form-control" placeholder="Last Name" required></div>
-          <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC Number (xxxxx-xxxxxxx-x)" required></div>
+          <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC Number" required></div>
           <div class="col-md-4"><input type="text" id="dob" name="DOB" class="form-control" placeholder="Date of Birth" required></div>
           <div class="col-md-4">
               <select name="Gender" class="form-select" required>
@@ -93,7 +96,7 @@
                   <option>Other</option>
               </select>
           </div>
-          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number (03xx-xxxxxxx)" required></div>
+          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number" required></div>
           <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
           <div class="col-md-2"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button></div>
         </div>
@@ -123,7 +126,7 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <select name="Position" class="form-select" required>
-                    <option value="" selected disabled>Position Applied For</option>
+                    <option value="" selected disabled>Position</option>
                     <option>Account Provider PK</option>
                     <option>Account Provider UK</option>
                     <option>Manager</option>
@@ -137,14 +140,14 @@
                     <option>Yes</option>
                 </select>
             </div>
-            <div class="col-md-6"><input type="text" id="joiningDate" name="JoiningDate" class="form-control" placeholder="Available joining date" required></div>
-            <div class="col-md-6" id="amountDiv" style="display:none"><input type="number" id="amount" name="InvestmentAmount" class="form-control" placeholder="Investment Amount"></div>
-            <div class="col-md-12"><textarea name="GreatFit" class="form-control" rows="3" placeholder="Tell us why you're a great fit..." required></textarea></div>
+            <div class="col-md-6"><input type="text" id="joiningDate" name="JoiningDate" class="form-control" placeholder="Joining date" required></div>
+            <div class="col-md-6" id="amountDiv" style="display:none"><input type="number" id="amount" name="InvestmentAmount" class="form-control" placeholder="Amount"></div>
+            <div class="col-md-12"><textarea name="GreatFit" class="form-control" rows="3" placeholder="Why are you a great fit?" required></textarea></div>
         </div>
         
-        <div class="form-check mt-4 d-flex align-items-center">
+        <div class="form-check mt-4">
           <input class="form-check-input me-2" type="checkbox" id="declaration" required>
-          <label class="form-check-label" for="declaration">I have filled all sections and verified my email.</label>
+          <label class="form-check-label" for="declaration">I verify my details and email.</label>
         </div>
         
         <button id="submitBtn" class="btn-submit w-100" type="submit"><i class="fas fa-paper-plane"></i> Submit Application</button>
@@ -155,9 +158,9 @@
   <div id="otpModalOverlay" class="otp-modal-overlay">
       <div class="otp-modal-card">
           <div style="font-size: 3rem; color: #ff9900; margin-bottom: 1rem;"><i class="fas fa-envelope-open-text"></i></div>
-          <h4 style="color: #fff; font-weight: 600;">Verify Email</h4>
-          <p style="color: #bbb; font-size: 0.9rem;">Sent to: <span id="modalEmailText"></span></p>
-          <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="Enter Code" maxlength="6">
+          <h4 style="color: #fff;">Verify Email</h4>
+          <p style="color: #bbb;">Sent to: <span id="modalEmailText" style="color:#ff9900;"></span></p>
+          <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="------" maxlength="6">
           <small id="otpMessage" class="d-block text-warning mt-2"></small>
           <button type="button" id="verifyCodeBtn" class="btn-submit w-100" style="margin-top: 1.5rem;">Verify Now</button>
           <button type="button" id="closeModalBtn" style="background: transparent; border: none; color: #aaa; text-decoration: underline; margin-top: 1rem;">Cancel</button>
@@ -169,8 +172,8 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
     const locationData = {
-        "Pakistan": { "Punjab": ["Lahore", "Faisalabad", "Rawalpindi"], "Sindh": ["Karachi", "Hyderabad"], "KPK": ["Peshawar"], "Balochistan": ["Quetta"], "Islamabad": ["Islamabad City"] },
-        "United Kingdom": { "England": ["London", "Manchester"], "Scotland": ["Edinburgh"] }
+        "Pakistan": { "Punjab": ["Lahore", "Faisalabad", "Rawalpindi"], "Sindh": ["Karachi", "Hyderabad"] },
+        "United Kingdom": { "England": ["London", "Manchester"] }
     };
     const allCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
@@ -194,7 +197,13 @@
         }
     };
 
-    flatpickr("#dob, #joiningDate", { altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d", disableMobile: true, onReady: function(s, d, i) { i.altInput.style.cursor = "pointer"; } });
+    flatpickr("#dob, #joiningDate", { 
+        altInput: true, 
+        altFormat: "F j, Y", 
+        dateFormat: "Y-m-d", 
+        disableMobile: true,
+        onReady: function(s, d, i) { i.altInput.style.cursor = "pointer"; } 
+    });
 
     document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
 
