@@ -18,8 +18,11 @@
     .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(255, 255, 255, 0.3); border-left: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); max-width: 900px; width: 100%; }
     .section-title { font-weight: 600; margin-top: 1.5rem; margin-bottom: 1.5rem; color: #fff; display: flex; align-items: center; gap: 10px; }
     .section-title i { color: #ff9900; }
+
+    /* ====================================================== */
+    /* THE ULTIMATE COLOR & GLASSY FIX (NO MORE DARK FIELDS)  */
+    /* ====================================================== */
     
-    /* === AGGRESSIVE COLOR & GLASSY ANIMATION FIX === */
     .form-control, .form-select, .flatpickr-input { 
         background-color: rgba(255, 255, 255, 0.08) !important; 
         border: 1px solid rgba(255, 255, 255, 0.2) !important; 
@@ -27,47 +30,56 @@
         border-radius: 10px; 
         height: 48px; 
         padding-left: 15px; 
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Glassy Animation Speed */
-        -webkit-text-fill-color: #ffffff !important; 
+        -webkit-text-fill-color: #ffffff !important; /* Force text white */
     }
 
-    /* Fill hone par ya Focus karne par Glassy Glow Animation */
-    .form-control:focus, .form-select:focus, .form-control:not(:placeholder-shown), .flatpickr-input:not(:placeholder-shown) { 
+    /* Is se Autofill wala dark background hamesha ke liye khatam ho jayega */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 1000px #132a4a inset !important; /* Matches your theme background */
+        -webkit-text-fill-color: white !important;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+
+    /* Fill hone par glassy glow animation (Sub sections par bhi) */
+    .form-control:focus, .form-select:focus, .form-control:not(:placeholder-shown) { 
         background-color: rgba(255, 255, 255, 0.12) !important; 
         border-color: rgba(255, 153, 0, 0.6) !important; 
-        box-shadow: 0 0 15px rgba(255, 153, 0, 0.25) !important; /* Glassy Glow */
+        box-shadow: 0 0 15px rgba(255, 153, 0, 0.2) !important;
         color: #fff !important;
     }
 
     .form-control::placeholder { color: #bbb !important; -webkit-text-fill-color: #bbb !important; }
-    
-    /* Autofill color override */
-    input:-webkit-autofill { 
-        -webkit-text-fill-color: #fff !important; 
-        -webkit-box-shadow: 0 0 0px 1000px rgba(15, 35, 60, 1) inset !important; 
-        transition: background-color 5000s ease-in-out 0s; 
-    }
-
     .form-select option { background-color: #0e2746 !important; color: #fff !important; }
-    .form-control:disabled, .form-select:disabled, .form-control[readonly] { background-color: rgba(255, 255, 255, 0.05) !important; color: #fff !important; opacity: 1 !important; cursor: pointer !important; }
-    /* ============================================== */
+    
+    /* Disabled states fix */
+    .form-control:disabled, .form-select:disabled, .form-control[readonly] { 
+        background-color: rgba(255, 255, 255, 0.05) !important; 
+        color: #fff !important; 
+        opacity: 1 !important; 
+        -webkit-text-fill-color: #fff !important;
+        cursor: pointer !important;
+    }
+    /* ====================================================== */
 
     .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
     .btn-submit:hover { box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5); transform: translateY(-2px); }
     .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s;}
     .btn-code:hover { background-color: rgba(255, 153, 0, 0.2); border-color: #ff9900; }
     .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
-    
     .form-check-label { font-size: 0.95rem; color: #ffffff !important; cursor: pointer; }
 
-    /* Calendar Styling (Professional) */
+    /* Calendar Styling */
     .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.6) !important; border-radius: 15px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important; }
+    .flatpickr-monthDropdown-months { background: #0b1f3a !important; color: #fff !important; }
     .flatpickr-current-month, .cur-year { color: #ffffff !important; fill: #ffffff !important; font-weight: 600 !important; }
     .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; }
-    .flatpickr-day { color: #ffffff !important; border-radius: 8px !important; }
+    .flatpickr-day { color: #ffffff !important; }
     .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; }
 
-    /* Modals Overlay */
+    /* Modals */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
@@ -105,7 +117,7 @@
                   <option>Other</option>
               </select>
           </div>
-          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number (03xx-xxxxxxx)" required></div>
+          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number" required></div>
           <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
           <div class="col-md-2"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button></div>
         </div>
@@ -183,7 +195,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    const locationData = { "Pakistan": { "Punjab": ["Lahore", "Faisalabad", "Rawalpindi"], "Sindh": ["Karachi", "Hyderabad"] }, "United Kingdom": { "England": ["London", "Manchester"] } };
+    const locationData = { "Pakistan": { "Punjab": ["Lahore", "Faisalabad", "Rawalpindi", "Multan", "Gujranwala"], "Sindh": ["Karachi", "Hyderabad", "Sukkur", "Larkana"], "KPK": ["Peshawar", "Abbottabad", "Mardan", "Swat"], "Balochistan": ["Quetta", "Gwadar", "Khuzdar"], "Islamabad": ["Islamabad City"] }, "United Kingdom": { "England": ["London", "Manchester", "Birmingham", "Leeds", "Liverpool"], "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"], "Wales": ["Cardiff", "Swansea", "Newport"], "Northern Ireland": ["Belfast", "Derry"] } };
     const allCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
     const countrySelect = document.getElementById('country');
@@ -203,8 +215,8 @@
     flatpickr("#dob, #joiningDate", { altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d", disableMobile: true, onReady: function(s, d, i) { i.altInput.style.cursor = "pointer"; } });
     document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
 
-    // === YAHAN APNA LINK DALEIN ===
-    const scriptURL = 'https://script.google.com/macros/s/AKfycby-sb7nNEEBhCS5OTdbJ_wQil5EgMavpeKnlx1OzqFZczieqdaY9amxQYZ4G6xoOQ5g/exec'; 
+    // === APNA SCRIPT URL YAHAN DALEIN ===
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwh_NS5k8IPHRs_oVtwW4DbfHPbWMx01ZnMi6OzanET5TxFUx4_PSbA05DlGL07bh5J/exec'; 
 
     let isEmailVerified = false;
 
@@ -213,22 +225,8 @@
         const btn = this;
         if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
-
-        let fd = new FormData();
-        fd.append("action", "sendOTP");
-        fd.append("Email", email.value);
-
-        fetch(scriptURL, { method: 'POST', body: fd })
-        .then(res => res.json())
-        .then(data => {
-            if(data.result === "success") {
-                document.getElementById('modalEmailText').innerText = email.value;
-                document.getElementById('otpModalOverlay').classList.add('active');
-                btn.textContent = 'Sent';
-                btn.disabled = false;
-            } else { alert("Error: " + data.error); btn.textContent = 'Send OTP'; btn.disabled = false; }
-        })
-        .catch(err => { alert("Check Script Permissions."); btn.textContent = 'Send OTP'; btn.disabled = false; });
+        let fd = new FormData(); fd.append("action", "sendOTP"); fd.append("Email", email.value);
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('modalEmailText').innerText = email.value; document.getElementById('otpModalOverlay').classList.add('active'); btn.textContent = 'Sent'; btn.disabled = false; } else { alert("Error: " + data.error); btn.textContent = 'Send OTP'; btn.disabled = false; } }).catch(() => { alert("Script Error! Check Permissions."); btn.textContent = 'Send OTP'; btn.disabled = false; });
     };
 
     document.getElementById('closeModalBtn').onclick = () => { document.getElementById('otpModalOverlay').classList.remove('active'); document.getElementById('sendCodeBtn').textContent = 'Send OTP'; };
@@ -238,23 +236,8 @@
         const msg = document.getElementById('otpMessage');
         if (code.length < 6) { msg.innerText = "Enter 6 digits"; return; }
         this.disabled = true;
-        let fd = new FormData();
-        fd.append("action", "verifyOTP");
-        fd.append("Email", document.getElementById('email').value);
-        fd.append("otp", code);
-
-        fetch(scriptURL, { method: 'POST', body: fd })
-        .then(res => res.json())
-        .then(data => {
-            if(data.result === "success") {
-                isEmailVerified = true;
-                document.getElementById('otpModalOverlay').classList.remove('active');
-                const btn = document.getElementById('sendCodeBtn');
-                btn.innerHTML = '<i class="fas fa-check-circle"></i> Verified';
-                btn.className = "btn btn-success-custom w-100";
-                document.getElementById('email').readOnly = true;
-            } else { msg.innerText = "Invalid OTP!"; this.disabled = false; }
-        });
+        let fd = new FormData(); fd.append("action", "verifyOTP"); fd.append("Email", document.getElementById('email').value); fd.append("otp", code);
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { isEmailVerified = true; document.getElementById('otpModalOverlay').classList.remove('active'); const btn = document.getElementById('sendCodeBtn'); btn.innerHTML = '<i class="fas fa-check-circle"></i> Verified'; btn.className = "btn btn-success-custom w-100"; document.getElementById('email').readOnly = true; } else { msg.innerText = "Invalid OTP!"; this.disabled = false; } });
     };
 
     document.getElementById('form').onsubmit = function(e) {
@@ -262,16 +245,8 @@
         if(!isEmailVerified) { alert("Verify email first!"); return; }
         const sBtn = document.getElementById('submitBtn');
         sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; sBtn.disabled = true;
-        let fd = new FormData(this);
-        fd.append("action", "submitForm");
-
-        fetch(scriptURL, { method: 'POST', body: fd })
-        .then(res => res.json())
-        .then(data => {
-            if(data.result === "success") { document.getElementById('thankYouModalOverlay').classList.add('active'); }
-            else { alert("Submission Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; }
-        })
-        .catch(() => { alert("Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; });
+        let fd = new FormData(this); fd.append("action", "submitForm");
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('thankYouModalOverlay').classList.add('active'); } else { alert("Submission Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; } }).catch(() => { alert("Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; });
     };
   </script>
 </body>
