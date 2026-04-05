@@ -22,6 +22,13 @@
     .form-control, .form-select { background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; border-radius: 10px; height: 48px; padding-left: 15px; transition: all 0.3s; }
     .form-control::placeholder { color: #bbb; opacity: 1; }
     .form-control:focus, .form-select:focus { background-color: rgba(255, 255, 255, 0.15); border-color: #ff9900; box-shadow: 0 0 10px rgba(255, 153, 0, 0.4); color: #fff; }
+
+    /* FIX: Dropdown Options Styling */
+    .form-select option {
+        background-color: #0e2746 !important; /* Dark Blue matching theme */
+        color: #fff !important;
+        padding: 10px;
+    }
     
     input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus { -webkit-text-fill-color: #fff !important; -webkit-box-shadow: 0 0 0px 1000px #0e2746 inset !important; transition: background-color 5000s ease-in-out 0s; }
     
@@ -42,24 +49,13 @@
     #successBox { position: fixed; top: 20px; right: 20px; background: rgba(11, 31, 58, 0.9); backdrop-filter: blur(10px); color: white; padding: 15px 25px; border-radius: 10px; opacity: 0; transition: opacity 0.4s; z-index: 9999; border: 1px solid #ff9900; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     #successBox.show { opacity: 1; }
     
-    /* ========================================= */
-    /* PREMIUM CALENDAR UI FIX (MONTH/YEAR/ARROWS) */
-    /* ========================================= */
-    .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.6) !important; border-radius: 15px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important; }
-    
-    /* Month aur Year text ko white karna */
-    .flatpickr-current-month, .flatpickr-monthDropdown-months, .cur-year { color: #ffffff !important; fill: #ffffff !important; font-weight: 600 !important; }
-    .flatpickr-monthDropdown-months { background: #0b1f3a !important; }
-    
-    /* Arrows (Previous/Next) ko white karna */
-    .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #ffffff !important; transition: all 0.2s; }
-    .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #ff9900 !important; transform: scale(1.1); }
-    
-    .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; opacity: 1 !important; }
-    .flatpickr-day { color: #ffffff !important; border-radius: 8px !important; }
-    .flatpickr-day:hover { background: rgba(255, 153, 0, 0.3) !important; color: #fff !important; }
-    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; color: #fff !important; }
-    .flatpickr-day.flatpickr-disabled { color: rgba(255,255,255,0.1) !important; }
+    /* Calendar Styling */
+    .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.6) !important; border-radius: 15px !important; }
+    .flatpickr-current-month, .flatpickr-monthDropdown-months, .cur-year { color: #ffffff !important; fill: #ffffff !important; }
+    .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #ffffff !important; }
+    .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; }
+    .flatpickr-day { color: #ffffff !important; }
+    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; }
 
     /* Modal Design */
     .otp-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
@@ -126,7 +122,7 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <select name="Position" class="form-select" required>
-                    <option value="" selected disabled>Position</option>
+                    <option value="" selected disabled>Position Applied For</option>
                     <option>Account Provider PK</option>
                     <option>Account Provider UK</option>
                     <option>Manager</option>
