@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <style>
+    /* Basic Setup */
     body { background-image: linear-gradient(135deg, rgba(11, 31, 58, 0.7), rgba(20, 47, 85, 0.7)), url('https://i.postimg.cc/4yfdVF95/Chat-GPT-Image-Apr-5-2026-04-46-20-PM.png'); background-size: cover; background-position: center; background-attachment: fixed; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; position: relative; }
     .logo-container { position: absolute; top: 25px; left: 30px; }
     .logo { width: 250px; }
@@ -15,53 +16,67 @@
     .form-title { font-weight: 600; color: #ffffff; font-size: 2.2rem; }
     .form-title span { color: #ff9900; }
     .form-subtitle { font-size: 0.95rem; color: #ccc; }
+    
+    /* Card Glassmorphism */
     .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(255, 255, 255, 0.3); border-left: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); max-width: 900px; width: 100%; }
     .section-title { font-weight: 600; margin-top: 1.5rem; margin-bottom: 1.5rem; color: #fff; display: flex; align-items: center; gap: 10px; }
     .section-title i { color: #ff9900; }
     
+    /* Inputs Styling */
     .form-control, .form-select { background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; border-radius: 10px; height: 48px; padding-left: 15px; transition: all 0.3s; }
     .form-control::placeholder { color: #bbb; opacity: 1; }
     .form-control:focus, .form-select:focus { background-color: rgba(255, 255, 255, 0.15); border-color: #ff9900; box-shadow: 0 0 10px rgba(255, 153, 0, 0.4); color: #fff; }
-
-    /* FIX: Dropdown Options Styling */
-    .form-select option {
-        background-color: #0e2746 !important; /* Dark Blue matching theme */
-        color: #fff !important;
-        padding: 10px;
-    }
     
+    /* FIX: General Dropdown Options */
+    .form-select option { background-color: #0e2746 !important; color: #fff !important; }
+    
+    /* Chrome Autofill Fix */
     input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus { -webkit-text-fill-color: #fff !important; -webkit-box-shadow: 0 0 0px 1000px #0e2746 inset !important; transition: background-color 5000s ease-in-out 0s; }
     
+    /* Disabled & Readonly Fix (No White background) */
     .form-control:disabled, .form-select:disabled, .form-control[readonly] { 
         background-color: rgba(255, 255, 255, 0.05) !important; 
         color: #fff !important; 
         border-color: rgba(255, 255, 255, 0.1) !important; 
         opacity: 1 !important; 
-        cursor: pointer !important;
+        cursor: pointer !important; 
+        -webkit-text-fill-color: #fff !important;
     }
 
+    /* Buttons */
     .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
     .btn-submit:hover { box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5); transform: translateY(-2px); }
     .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s;}
     .btn-code:hover { background-color: rgba(255, 153, 0, 0.2); border-color: #ff9900; }
     .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
     
-    #successBox { position: fixed; top: 20px; right: 20px; background: rgba(11, 31, 58, 0.9); backdrop-filter: blur(10px); color: white; padding: 15px 25px; border-radius: 10px; opacity: 0; transition: opacity 0.4s; z-index: 9999; border: 1px solid #ff9900; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-    #successBox.show { opacity: 1; }
+    /* FIX: Checkbox Declaration Text Color */
+    .form-check-label { font-size: 0.95rem; color: #ffffff !important; opacity: 1 !important; cursor: pointer; }
+
+    /* ========================================= */
+    /* PREMIUM CALENDAR UI FIX                   */
+    /* ========================================= */
+    .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.6) !important; border-radius: 15px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important; }
     
-    /* Calendar Styling */
-    .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.6) !important; border-radius: 15px !important; }
-    .flatpickr-current-month, .flatpickr-monthDropdown-months, .cur-year { color: #ffffff !important; fill: #ffffff !important; }
+    /* FIX: Month & Year Dropdown Inside Calendar */
+    .flatpickr-monthDropdown-months, .flatpickr-monthDropdown-month { background: #0b1f3a !important; color: #ffffff !important; }
+    .flatpickr-current-month .flatpickr-monthDropdown-months:hover { background: rgba(255, 153, 0, 0.2) !important; }
+    .flatpickr-current-month, .cur-year { color: #ffffff !important; fill: #ffffff !important; font-weight: 600 !important; }
+    
+    /* Arrows & Weekdays */
     .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #ffffff !important; }
-    .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; }
-    .flatpickr-day { color: #ffffff !important; }
-    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; }
+    .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; opacity: 1 !important; }
+    .flatpickr-day { color: #ffffff !important; border-radius: 8px !important; }
+    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; color: #fff !important; }
 
     /* Modal Design */
     .otp-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
     .otp-modal-overlay.active { opacity: 1; visibility: visible; }
     .otp-modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; }
     .otp-input-large { background: rgba(0, 0, 0, 0.3) !important; font-size: 1.8rem !important; letter-spacing: 12px; text-align: center; border: 2px solid rgba(255,153,0,0.5) !important; color: #fff !important; height: 65px; border-radius: 12px; }
+    
+    #successBox { position: fixed; top: 20px; right: 20px; background: rgba(11, 31, 58, 0.9); backdrop-filter: blur(10px); color: white; padding: 15px 25px; border-radius: 10px; opacity: 0; transition: opacity 0.4s; z-index: 9999; border: 1px solid #ff9900; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    #successBox.show { opacity: 1; }
   </style>
 </head>
 <body>
@@ -82,7 +97,7 @@
         <div class="row g-3 align-items-center">
           <div class="col-md-6"><input type="text" name="FirstName" class="form-control" placeholder="First Name" required></div>
           <div class="col-md-6"><input type="text" name="LastName" class="form-control" placeholder="Last Name" required></div>
-          <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC Number" required></div>
+          <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC Number (xxxxx-xxxxxxx-x)" required></div>
           <div class="col-md-4"><input type="text" id="dob" name="DOB" class="form-control" placeholder="Date of Birth" required></div>
           <div class="col-md-4">
               <select name="Gender" class="form-select" required>
@@ -92,7 +107,7 @@
                   <option>Other</option>
               </select>
           </div>
-          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number" required></div>
+          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number (03xx-xxxxxxx)" required></div>
           <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
           <div class="col-md-2"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button></div>
         </div>
@@ -105,14 +120,10 @@
                </select>
            </div>
           <div class="col-md-4" id="stateDiv">
-              <select id="state" name="State" class="form-select" required disabled>
-                  <option value="" selected disabled>Select State / Province</option>
-              </select>
+              <select id="state" name="State" class="form-select" required disabled><option value="" selected disabled>Select State</option></select>
           </div>
           <div class="col-md-4" id="cityDiv">
-              <select id="city" name="City" class="form-select" required disabled>
-                  <option value="" selected disabled>Select City</option>
-              </select>
+              <select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select>
           </div>
           <div class="col-md-4"><input type="text" name="Postal" class="form-control" placeholder="Postal Code" required></div>
           <div class="col-md-12"><input type="text" name="Address" class="form-control" placeholder="Street Address" required></div>
@@ -136,14 +147,16 @@
                     <option>Yes</option>
                 </select>
             </div>
-            <div class="col-md-6"><input type="text" id="joiningDate" name="JoiningDate" class="form-control" placeholder="Joining date" required></div>
+            <div class="col-md-6"><input type="text" id="joiningDate" name="JoiningDate" class="form-control" placeholder="Available joining date" required></div>
             <div class="col-md-6" id="amountDiv" style="display:none"><input type="number" id="amount" name="InvestmentAmount" class="form-control" placeholder="Amount"></div>
-            <div class="col-md-12"><textarea name="GreatFit" class="form-control" rows="3" placeholder="Why are you a great fit?" required></textarea></div>
+            <div class="col-md-12"><textarea name="GreatFit" class="form-control" rows="3" placeholder="Tell us why you're a great fit..." required></textarea></div>
         </div>
         
-        <div class="form-check mt-4">
-          <input class="form-check-input me-2" type="checkbox" id="declaration" required>
-          <label class="form-check-label" for="declaration">I verify my details and email.</label>
+        <div class="form-check mt-4 d-flex align-items-center">
+          <input class="form-check-input me-2" type="checkbox" id="declaration" required style="width: 1.2rem; height: 1.2rem; cursor: pointer;">
+          <label class="form-check-label" for="declaration">
+            I have filled all sections and verified my email.
+          </label>
         </div>
         
         <button id="submitBtn" class="btn-submit w-100" type="submit"><i class="fas fa-paper-plane"></i> Submit Application</button>
@@ -156,7 +169,7 @@
           <div style="font-size: 3rem; color: #ff9900; margin-bottom: 1rem;"><i class="fas fa-envelope-open-text"></i></div>
           <h4 style="color: #fff;">Verify Email</h4>
           <p style="color: #bbb;">Sent to: <span id="modalEmailText" style="color:#ff9900;"></span></p>
-          <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="------" maxlength="6">
+          <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="------" maxlength="6" autocomplete="off">
           <small id="otpMessage" class="d-block text-warning mt-2"></small>
           <button type="button" id="verifyCodeBtn" class="btn-submit w-100" style="margin-top: 1.5rem;">Verify Now</button>
           <button type="button" id="closeModalBtn" style="background: transparent; border: none; color: #aaa; text-decoration: underline; margin-top: 1rem;">Cancel</button>
@@ -168,13 +181,13 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
     const locationData = {
-        "Pakistan": { "Punjab": ["Lahore", "Faisalabad", "Rawalpindi"], "Sindh": ["Karachi", "Hyderabad"] },
-        "United Kingdom": { "England": ["London", "Manchester"] }
+        "Pakistan": { "Punjab": ["Lahore", "Faisalabad", "Rawalpindi", "Multan", "Gujranwala"], "Sindh": ["Karachi", "Hyderabad", "Sukkur", "Larkana"], "KPK": ["Peshawar", "Abbottabad", "Mardan", "Swat"], "Balochistan": ["Quetta", "Gwadar", "Khuzdar"], "Islamabad": ["Islamabad City"] },
+        "United Kingdom": { "England": ["London", "Manchester", "Birmingham", "Leeds", "Liverpool"], "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"], "Wales": ["Cardiff", "Swansea", "Newport"], "Northern Ireland": ["Belfast", "Derry"] }
     };
     const allCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
     const countrySelect = document.getElementById('country');
-    allCountries.forEach(c => { let opt = new Option(c, c); countrySelect.add(opt); });
+    allCountries.forEach(c => countrySelect.add(new Option(c, c)));
 
     countrySelect.onchange = function() {
         const sDiv = document.getElementById('stateDiv'), cDiv = document.getElementById('cityDiv');
@@ -194,16 +207,13 @@
     };
 
     flatpickr("#dob, #joiningDate", { 
-        altInput: true, 
-        altFormat: "F j, Y", 
-        dateFormat: "Y-m-d", 
-        disableMobile: true,
+        altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d", disableMobile: true,
         onReady: function(s, d, i) { i.altInput.style.cursor = "pointer"; } 
     });
 
     document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw60sDbFyQn-veZ-yQzqBCxsPFN4FilTTgROJp4bGMdKHC1fRzJi1thCOlr7_41kSgl/exec'; 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwh_NS5k8IPHRs_oVtwW4DbfHPbWMx01ZnMi6OzanET5TxFUx4_PSbA05DlGL07bh5J/exec'; 
     let isEmailVerified = false;
 
     document.getElementById('sendCodeBtn').onclick = function() {
