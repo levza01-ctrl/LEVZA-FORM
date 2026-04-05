@@ -23,7 +23,21 @@
     .form-control:focus, .form-select:focus { background-color: rgba(255, 255, 255, 0.15); border-color: #ff9900; box-shadow: 0 0 10px rgba(255, 153, 0, 0.4); color: #fff; }
     .form-select { cursor: pointer; }
     .form-select option { background: #0b1f3a; }
-    .form-select:disabled { background-color: rgba(255, 255, 255, 0.03); cursor: not-allowed; color: #777;}
+    
+    /* === BROWSER AUTOFILL AUR WHITE BACKGROUND FIX === */
+    input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill, select:-webkit-autofill {
+      -webkit-text-fill-color: #fff !important;
+      -webkit-box-shadow: 0 0 0px 1000px #0e2746 inset !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+    .form-control:disabled, .form-control[readonly], .form-select:disabled {
+      background-color: rgba(255, 255, 255, 0.03) !important;
+      color: #999 !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+      cursor: not-allowed;
+    }
+    /* ================================================== */
+
     .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
     .btn-submit:hover { box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5); transform: translateY(-2px); }
     .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s;}
@@ -32,13 +46,13 @@
     .confidential { text-align: center; font-size: 0.8rem; color: #ccc; margin-top: 1rem; }
     #successBox { position: fixed; top: 20px; right: 20px; background: rgba(11, 31, 58, 0.9); backdrop-filter: blur(10px); color: white; padding: 15px 25px; border-radius: 10px; opacity: 0; transition: opacity 0.4s; z-index: 9999; border: 1px solid #ff9900; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     #successBox.show { opacity: 1; }
+    
+    /* Calendar Styling */
     .flatpickr-calendar { background: #0b1f3a; border-radius: 8px; border: 1px solid #ff9900; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
     .flatpickr-months .flatpickr-month, .flatpickr-current-month .flatpickr-monthDropdown-months, .flatpickr-current-month input.cur-year, .flatpickr-weekday, .flatpickr-day { color: #fff; }
     .flatpickr-current-month input.cur-year { background: transparent; }
     .flatpickr-day:hover, .flatpickr-day:focus { background: rgba(255, 153, 0, 0.3); border-color: transparent; }
     .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange { background: #ff9900; border-color: #ff9900; }
-    .flatpickr-time { background: #0b1f3a; border-top: 1px solid #ff9900; }
-    .flatpickr-time .numInput, .flatpickr-time .numInputWrapper { color: #fff; }
     .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg { fill: #fff; }
   </style>
 </head>
@@ -58,7 +72,7 @@
       <form id="form">
         
         <h5 class="section-title" style="margin-top: 0;"><i class="fas fa-user"></i>Personal Information</h5>
-        <div class="row g-3">
+        <div class="row g-3 align-items-center">
           <div class="col-md-6"><input type="text" id="firstName" name="FirstName" class="form-control" placeholder="First Name" required></div>
           <div class="col-md-6"><input type="text" id="lastName" name="LastName" class="form-control" placeholder="Last Name" required></div>
           <div class="col-md-4"><input type="text" id="cnic" name="CNIC" class="form-control" placeholder="CNIC Number (xxxxx-xxxxxxx-x)" required></div>
@@ -71,20 +85,19 @@
                   <option>Other</option>
               </select>
           </div>
-          <div class="col-md-12"><input type="tel" id="contactNumber" name="Contact" class="form-control" placeholder="Contact Number (03xx-xxxxxxx)" required></div>
-        </div>
+          
+          <div class="col-md-5"><input type="tel" id="contactNumber" name="Contact" class="form-control" placeholder="Contact Number (03xx-xxxxxxx)" required></div>
+          <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address (Verification required)" required></div>
+          <div class="col-md-2"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button></div>
 
-        <h5 class="section-title"><i class="fas fa-envelope"></i>Email Verification</h5>
-        <div class="row g-3 align-items-center">
-            <div class="col-md-8"><input type="email" id="email" name="Email" class="form-control" placeholder="Enter your Email Address" required></div>
-            <div class="col-md-4"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send Code</button></div>
-            <div class="col-md-12" id="verificationDiv" style="display:none;">
-                <div class="d-flex gap-2 align-items-center mt-2">
-                    <input type="text" id="verificationCode" class="form-control" placeholder="Enter 6-digit OTP sent to your email" style="max-width: 300px;">
-                    <button type="button" id="verifyCodeBtn" class="btn btn-success px-4" style="height: 48px; border-radius: 10px;">Verify</button>
-                </div>
-                <small id="otpMessage" class="mt-2 d-block text-warning"></small>
-            </div>
+          <div class="col-md-12" id="verificationDiv" style="display:none;">
+              <div class="d-flex flex-column flex-md-row align-items-md-center p-3 mt-1" style="background: rgba(255,153,0,0.05); border-radius: 10px; border: 1px dashed rgba(255,153,0,0.4);">
+                  <i class="fas fa-shield-alt text-warning fs-4 d-none d-md-block ms-2 me-3"></i>
+                  <input type="text" id="verificationCode" class="form-control mb-2 mb-md-0" placeholder="Enter 6-digit OTP from email" style="max-width: 250px;">
+                  <button type="button" id="verifyCodeBtn" class="btn btn-success px-4 ms-md-2" style="height: 48px; border-radius: 10px;">Verify Code</button>
+                  <small id="otpMessage" class="mt-2 mt-md-0 ms-md-3 d-block text-warning"></small>
+              </div>
+          </div>
         </div>
 
         <h5 class="section-title"><i class="fas fa-map-marker-alt"></i>Address</h5>
@@ -140,7 +153,7 @@
         <div class="form-check mt-4 d-flex align-items-center">
           <input class="form-check-input me-2" type="checkbox" id="declaration" required style="cursor: pointer; width: 1.2rem; height: 1.2rem;">
           <label class="form-check-label" for="declaration" style="cursor: pointer;">
-            I have filled all the sections.
+            I have filled all the sections and verified my email.
           </label>
         </div>
         
@@ -203,9 +216,9 @@
     });
 
     // ==========================================
-    // YAHAN AAPKA NAYA WEB APP URL ADD HO GAYA HAI
+    // GOOGLE APPS SCRIPT URL (Same as before)
     // ==========================================
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyllL9MGfcdd1KyahZ7fMCWcDZJy14KpsbHptCW-An2JWKWJ_LSgbNvcGrs7PgR8asc/exec'; 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwh_NS5k8IPHRs_oVtwW4DbfHPbWMx01ZnMi6OzanET5TxFUx4_PSbA05DlGL07bh5J/exec'; 
 
     const emailInput = document.getElementById('email');
     const sendCodeBtn = document.getElementById('sendCodeBtn');
@@ -222,7 +235,7 @@
             alert("Please enter a valid email address first."); return;
         }
         
-        sendCodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        sendCodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         sendCodeBtn.disabled = true;
 
         let formData = new FormData();
@@ -235,14 +248,15 @@
                 if(data.result === "success") {
                     verificationDiv.style.display = 'block';
                     sendCodeBtn.textContent = 'OTP Sent!';
-                    otpMessage.innerHTML = "Check your inbox (and spam folder) for the code.";
+                    sendCodeBtn.classList.add('disabled');
+                    otpMessage.innerHTML = "Check your inbox (and spam) for the code.";
                     otpMessage.classList.remove('text-danger');
                     otpMessage.classList.add('text-success');
                 } else { throw new Error(data.error); }
             })
             .catch(error => {
                 alert("Error sending OTP: " + error.message);
-                sendCodeBtn.textContent = 'Send Code';
+                sendCodeBtn.textContent = 'Send OTP';
                 sendCodeBtn.disabled = false;
             });
     });
@@ -266,19 +280,20 @@
                     isEmailVerified = true;
                     verifyCodeBtn.innerHTML = '<i class="fas fa-check"></i> Verified';
                     verifyCodeBtn.classList.replace('btn-success', 'btn-primary');
-                    emailInput.readOnly = true;
+                    emailInput.readOnly = true; // Ab yeh white nahi hoga CSS ki wajah se
+                    verificationCodeInput.readOnly = true;
                     otpMessage.innerHTML = "Email successfully verified! ✅";
                     otpMessage.classList.remove('text-warning', 'text-danger');
                     otpMessage.classList.add('text-success');
                 } else {
-                    verifyCodeBtn.innerHTML = 'Verify';
+                    verifyCodeBtn.innerHTML = 'Verify Code';
                     verifyCodeBtn.disabled = false;
                     otpMessage.innerHTML = "Invalid or expired OTP. Try again.";
                     otpMessage.classList.add('text-danger');
                 }
             })
             .catch(error => {
-                verifyCodeBtn.innerHTML = 'Verify';
+                verifyCodeBtn.innerHTML = 'Verify Code';
                 verifyCodeBtn.disabled = false;
             });
     });
@@ -292,7 +307,7 @@
       e.preventDefault();
       
       if(!isEmailVerified) {
-          alert("Please verify your email address using the Send Code button before submitting.");
+          alert("Please verify your email address using the Send OTP button before submitting.");
           return;
       }
 
@@ -322,10 +337,12 @@
                 
                 isEmailVerified = false;
                 emailInput.readOnly = false;
+                verificationCodeInput.readOnly = false;
                 verificationDiv.style.display = 'none';
-                sendCodeBtn.textContent = 'Send Code';
+                sendCodeBtn.textContent = 'Send OTP';
                 sendCodeBtn.disabled = false;
-                verifyCodeBtn.innerHTML = 'Verify';
+                sendCodeBtn.classList.remove('disabled');
+                verifyCodeBtn.innerHTML = 'Verify Code';
                 verifyCodeBtn.disabled = false;
                 verifyCodeBtn.classList.replace('btn-primary', 'btn-success');
                 
