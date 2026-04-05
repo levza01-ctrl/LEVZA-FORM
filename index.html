@@ -399,55 +399,44 @@
     form.addEventListener("submit", function(e) {
       e.preventDefault();
       
-      // Strict Validation: Jab tak sab filled aur checked nahi hoga, submit nahi hoga
-      if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
-      }
+      if (!form.checkValidity()) { form.reportValidity(); return; }
       
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
       submitBtn.disabled = true;
 
-      // FormData banayein taake Google Sheet ko data bheja ja sakay
       let formData = new FormData(form);
-      
-      // Agar amount hide hai tou usey sheet mein bhejnay se roknay ke liye
-      if(investorSelect.value !== "Yes") {
-          formData.set("InvestmentAmount", ""); 
-      }
+      if(investorSelect.value !== "Yes") { formData.set("InvestmentAmount", ""); }
 
-      // Fetch method se data Google Sheet par post karein
+      // NAYA FETCH CODE (Jo asli error pakray ga)
       fetch(scriptURL, { method: 'POST', body: formData })
-        .then(response => {
-            // Success response milne par successbox aur form reset
-            successBox.classList.add("show");
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
-            submitBtn.disabled = false;
-            form.reset();
-            
-            // Manually clear flatpickr instances
-            document.querySelectorAll(".flatpickr-input").forEach(input => {
-                if (input._flatpickr) input._flatpickr.clear();
-            });
-            
-            // Other manual resets
-            investorSelect.value = "";
-            amountDiv.style.display = 'none';
-            document.getElementById('stateDiv').innerHTML = '<select id="state" name="State" class="form-select" required disabled><option value="" selected disabled>Select State / Province</option></select>';
-            document.getElementById('cityDiv').innerHTML = '<select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select>';
-            
-            // Successbox ko 4 second baad remove karein
-            setTimeout(() => {
-              successBox.classList.remove("show");
-            }, 4000);
+        .then(response => response.json()) // Google ka reply parhne ke liye
+        .then(data => {
+            if (data.result === "success") {
+                successBox.classList.add("show");
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+                submitBtn.disabled = false;
+                form.reset();
+                
+                document.querySelectorAll(".flatpickr-input").forEach(input => {
+                    if (input._flatpickr) input._flatpickr.clear();
+                });
+                
+                investorSelect.value = "";
+                amountDiv.style.display = 'none';
+                document.getElementById('stateDiv').innerHTML = '<select id="state" name="State" class="form-select" required disabled><option value="" selected disabled>Select State / Province</option></select>';
+                document.getElementById('cityDiv').innerHTML = '<select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select>';
+                
+                setTimeout(() => { successBox.classList.remove("show"); }, 4000);
+            } else {
+                // AGAR GOOGLE SHEET MEIN KOI MASLA HUA TOU YAHAN ALERT AAYEGA
+                alert("Google Sheet Error: " + JSON.stringify(data.error));
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+                submitBtn.disabled = false;
+            }
         })
         .catch(error => {
-            // Error handling
-            alert('Error submitting form! Please try again.');
+            alert('CORS ya Network Error! Please try again.');
             submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
             submitBtn.disabled = false;
         });
     });
-  </script>
-</body>
-</html>
