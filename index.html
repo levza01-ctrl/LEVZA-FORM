@@ -15,20 +15,41 @@
     .form-title { font-weight: 600; color: #ffffff; font-size: 2.2rem; }
     .form-title span { color: #ff9900; }
     .form-subtitle { font-size: 0.95rem; color: #ccc; }
+    
     .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(255, 255, 255, 0.3); border-left: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); max-width: 900px; width: 100%; }
     .section-title { font-weight: 600; margin-top: 1.5rem; margin-bottom: 1.5rem; color: #fff; display: flex; align-items: center; gap: 10px; }
     .section-title i { color: #ff9900; }
     
-    /* FIX: Input Text Color (Hamesha White rahega) */
-    .form-control, .form-select { background-color: rgba(255, 255, 255, 0.08) !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; color: #fff !important; border-radius: 10px; height: 48px; padding-left: 15px; transition: all 0.3s; }
-    .form-control::placeholder { color: #bbb !important; }
-    .form-control:focus { color: #fff !important; background-color: rgba(255, 255, 255, 0.15) !important; border-color: #ff9900 !important; outline: none; box-shadow: 0 0 10px rgba(255, 153, 0, 0.4); }
+    /* --- AGGRESSIVE COLOR FIX: NO MORE DARK/BLACK FIELDS --- */
+    .form-control, .form-select, 
+    .form-control:focus, 
+    .form-control:active, 
+    .form-control:valid, 
+    .form-control:not(:placeholder-shown) { 
+        background-color: rgba(255, 255, 255, 0.08) !important; 
+        border: 1px solid rgba(255, 255, 255, 0.2) !important; 
+        color: #ffffff !important; 
+        border-radius: 10px; 
+        height: 48px; 
+        padding-left: 15px; 
+        -webkit-text-fill-color: #ffffff !important; /* Force text color for Chrome */
+        box-shadow: none !important;
+        transition: none !important;
+    }
+
+    .form-control::placeholder { color: #bbb !important; -webkit-text-fill-color: #bbb !important; }
+    
+    /* Autofill Transparent Fix */
+    input:-webkit-autofill, 
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus { 
+        -webkit-text-fill-color: #fff !important; 
+        -webkit-box-shadow: 0 0 0px 1000px rgba(20, 47, 85, 0.1) inset !important; 
+        transition: background-color 5000s ease-in-out 0s; 
+    }
+
     .form-select option { background-color: #0e2746 !important; color: #fff !important; }
-    
-    /* Chrome Autofill Text Color Fix */
-    input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus { -webkit-text-fill-color: #fff !important; -webkit-box-shadow: 0 0 0px 1000px #0e2746 inset !important; transition: background-color 5000s ease-in-out 0s; }
-    
-    .form-control:disabled, .form-select:disabled, .form-control[readonly] { background-color: rgba(255, 255, 255, 0.05) !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.1) !important; opacity: 1 !important; cursor: pointer !important; -webkit-text-fill-color: #fff !important; }
+    /* ------------------------------------------------------ */
 
     .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
     .btn-submit:hover { box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5); transform: translateY(-2px); }
@@ -36,7 +57,7 @@
     .btn-code:hover { background-color: rgba(255, 153, 0, 0.2); border-color: #ff9900; }
     .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
     
-    .form-check-label { font-size: 0.95rem; color: #ffffff !important; opacity: 1 !important; cursor: pointer; }
+    .form-check-label { font-size: 0.95rem; color: #ffffff !important; cursor: pointer; }
     .confidential { text-align: center; font-size: 0.8rem; color: #ccc; margin-top: 1rem; }
 
     /* Calendar Styling */
@@ -184,16 +205,14 @@
     flatpickr("#dob, #joiningDate", { altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d", disableMobile: true, onReady: function(s, d, i) { i.altInput.style.cursor = "pointer"; } });
     document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
 
-    // === YAHAN APNA LINK DALEIN ===
+    // === APNA SCRIPT URL YAHAN DALEIN ===
     const scriptURL = 'https://script.google.com/macros/s/AKfycby-sb7nNEEBhCS5OTdbJ_wQil5EgMavpeKnlx1OzqFZczieqdaY9amxQYZ4G6xoOQ5g/exec'; 
 
     let isEmailVerified = false;
 
-    // Send OTP Fix
     document.getElementById('sendCodeBtn').onclick = function() {
         const email = document.getElementById('email');
         if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
-        
         const btn = this;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
         btn.disabled = true;
@@ -210,14 +229,10 @@
                 document.getElementById('otpModalOverlay').classList.add('active');
                 btn.textContent = 'Sent';
                 btn.disabled = false;
-            } else {
-                alert("Error: " + data.error);
-                btn.textContent = 'Send OTP';
-                btn.disabled = false;
-            }
+            } else { alert("Error: " + data.error); btn.textContent = 'Send OTP'; btn.disabled = false; }
         })
         .catch(err => {
-            alert("Script Permission Error! Please Go to Google Apps Script and click RUN to authorize.");
+            alert("Script Error! Please Check Google Script Permissions.");
             btn.textContent = 'Send OTP';
             btn.disabled = false;
         });
@@ -249,10 +264,7 @@
                 btn.innerHTML = '<i class="fas fa-check-circle"></i> Verified';
                 btn.className = "btn btn-success-custom w-100";
                 document.getElementById('email').readOnly = true;
-            } else {
-                msg.innerText = "Invalid OTP!";
-                this.disabled = false;
-            }
+            } else { msg.innerText = "Invalid OTP!"; this.disabled = false; }
         });
     };
 
@@ -269,13 +281,8 @@
         fetch(scriptURL, { method: 'POST', body: fd })
         .then(res => res.json())
         .then(data => {
-            if(data.result === "success") {
-                document.getElementById('thankYouModalOverlay').classList.add('active');
-            } else {
-                alert("Submission Error!");
-                sBtn.innerHTML = 'Submit Application';
-                sBtn.disabled = false;
-            }
+            if(data.result === "success") { document.getElementById('thankYouModalOverlay').classList.add('active'); }
+            else { alert("Submission Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; }
         })
         .catch(() => {
             alert("Internet or Script Error!");
