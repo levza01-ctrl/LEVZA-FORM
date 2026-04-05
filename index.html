@@ -18,23 +18,18 @@
     .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(255, 255, 255, 0.3); border-left: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); max-width: 900px; width: 100%; }
     .section-title { font-weight: 600; margin-top: 1.5rem; margin-bottom: 1.5rem; color: #fff; display: flex; align-items: center; gap: 10px; }
     .section-title i { color: #ff9900; }
-    
     .form-control, .form-select { background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; border-radius: 10px; height: 48px; padding-left: 15px; transition: all 0.3s; }
     .form-control::placeholder { color: #bbb; opacity: 1; }
     .form-control:focus, .form-select:focus { background-color: rgba(255, 255, 255, 0.15); border-color: #ff9900; box-shadow: 0 0 10px rgba(255, 153, 0, 0.4); color: #fff; }
     .form-select option { background-color: #0e2746 !important; color: #fff !important; }
-    
     input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus { -webkit-text-fill-color: #fff !important; -webkit-box-shadow: 0 0 0px 1000px #0e2746 inset !important; transition: background-color 5000s ease-in-out 0s; }
     .form-control:disabled, .form-select:disabled, .form-control[readonly] { background-color: rgba(255, 255, 255, 0.05) !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.1) !important; opacity: 1 !important; cursor: pointer !important; -webkit-text-fill-color: #fff !important; }
-
     .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
     .btn-submit:hover { box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5); transform: translateY(-2px); }
     .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s;}
     .btn-code:hover { background-color: rgba(255, 153, 0, 0.2); border-color: #ff9900; }
     .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
-    
     .form-check-label { font-size: 0.95rem; color: #ffffff !important; opacity: 1 !important; cursor: pointer; }
-    .confidential { text-align: center; font-size: 0.8rem; color: #ccc; margin-top: 1rem; }
 
     /* Calendar Styling */
     .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.6) !important; border-radius: 15px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important; }
@@ -45,16 +40,11 @@
     .flatpickr-day { color: #ffffff !important; border-radius: 8px !important; }
     .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; color: #fff !important; }
 
-    /* ========================================= */
-    /* VIP MODAL OVERLAYS (OTP & THANK YOU)      */
-    /* ========================================= */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
     .modal-overlay.active .modal-card { transform: translateY(0); }
     .otp-input-large { background: rgba(0, 0, 0, 0.3) !important; font-size: 1.8rem !important; letter-spacing: 12px; text-align: center; border: 2px solid rgba(255,153,0,0.5) !important; color: #fff !important; height: 65px; border-radius: 12px; font-weight: bold; }
-    
-    /* Thank You Popup Specifics */
     .success-icon { font-size: 4rem; color: #198754; margin-bottom: 1rem; animation: bounce 1s ease; }
     @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
   </style>
@@ -185,16 +175,40 @@
     flatpickr("#dob, #joiningDate", { altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d", disableMobile: true, onReady: function(s, d, i) { i.altInput.style.cursor = "pointer"; } });
     document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
 
-    // YAHAN APNA NAYA SCRIPT URL DALEIN
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbx_Y_LINK_UPDATED_HERE/exec'; 
-    let isEmailVerified = false;
+    // === YAHAN APNA ASLI LINK DALEIN ===
+    const scriptURL = 'YAHAN_APNA_GOOGLE_SCRIPT_LINK_DALEIN'; 
 
     document.getElementById('sendCodeBtn').onclick = function() {
         const email = document.getElementById('email');
         if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
-        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; this.disabled = true;
-        let fd = new FormData(); fd.append("action", "sendOTP"); fd.append("Email", email.value);
-        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('modalEmailText').innerText = email.value; document.getElementById('otpModalOverlay').classList.add('active'); this.textContent = 'Sent'; this.disabled = false; } });
+        
+        const btn = this;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+        btn.disabled = true;
+
+        let fd = new FormData();
+        fd.append("action", "sendOTP");
+        fd.append("Email", email.value);
+
+        fetch(scriptURL, { method: 'POST', body: fd })
+        .then(res => res.json())
+        .then(data => {
+            if(data.result === "success") {
+                document.getElementById('modalEmailText').innerText = email.value;
+                document.getElementById('otpModalOverlay').classList.add('active');
+                btn.textContent = 'Sent';
+                btn.disabled = false;
+            } else {
+                alert("Error: " + data.error);
+                btn.textContent = 'Send OTP';
+                btn.disabled = false;
+            }
+        })
+        .catch(err => {
+            alert("Network Error or Script Link is wrong. Please check your scriptURL.");
+            btn.textContent = 'Send OTP';
+            btn.disabled = false;
+        });
     };
 
     document.getElementById('closeModalBtn').onclick = () => document.getElementById('otpModalOverlay').classList.remove('active');
@@ -214,10 +228,7 @@
         sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; sBtn.disabled = true;
         let fd = new FormData(this); fd.append("action", "submitForm");
         fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => {
-            if(data.result === "success") {
-                // YAHAN NAYA POPUP SHOW HOGA
-                document.getElementById('thankYouModalOverlay').classList.add('active');
-            }
+            if(data.result === "success") { document.getElementById('thankYouModalOverlay').classList.add('active'); }
         });
     };
   </script>
