@@ -7,140 +7,186 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <style>
-    body { background-image: linear-gradient(135deg, rgba(11, 31, 58, 0.75), rgba(20, 47, 85, 0.75)), url('https://i.postimg.cc/4yfdVF95/Chat-GPT-Image-Apr-5-2026-04-46-20-PM.png'); background-size: cover; background-position: center; background-attachment: fixed; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; overflow-x: hidden; }
+    body { background-image: linear-gradient(135deg, rgba(11, 31, 58, 0.7), rgba(20, 47, 85, 0.7)), url('https://i.postimg.cc/4yfdVF95/Chat-GPT-Image-Apr-5-2026-04-46-20-PM.png'); background-size: cover; background-position: center; background-attachment: fixed; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; position: relative; overflow-x: hidden; }
     .logo-container { position: absolute; top: 25px; left: 30px; }
     .logo { width: 250px; }
     .page-container { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 100vh; padding: 100px 20px 40px 20px; }
-    .form-header-text { text-align: center; margin-bottom: 25px; }
+    .form-header-text { text-align: center; margin-bottom: 25px; width: 100%; }
     .form-title { font-weight: 600; color: #ffffff; font-size: 2.2rem; }
     .form-title span { color: #ff9900; }
-    .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); max-width: 900px; width: 100%; }
-    .section-title { font-weight: 600; margin: 1.5rem 0; color: #fff; display: flex; align-items: center; gap: 10px; }
+    .form-subtitle { font-size: 0.95rem; color: #ccc; }
+    .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(255, 255, 255, 0.3); border-left: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); max-width: 900px; width: 100%; }
+    .section-title { font-weight: 600; margin-top: 1.5rem; margin-bottom: 1.5rem; color: #fff; display: flex; align-items: center; gap: 10px; }
     .section-title i { color: #ff9900; }
-    .form-control, .form-select { background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; border-radius: 10px; height: 48px; }
-    .form-control:focus, .form-select:focus { background-color: rgba(255, 255, 255, 0.15); border-color: #ff9900; color: #fff; box-shadow: none; }
-    .form-select option { background: #0b1f3a; color: #fff; }
-    .form-control:disabled, .form-control[readonly] { background-color: rgba(255, 255, 255, 0.05) !important; color: #fff !important; cursor: pointer !important; }
-    .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 55px; font-weight: 600; color: #fff; margin-top: 2rem; transition: 0.3s; }
-    .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255, 153, 0, 0.4); }
-    .btn-code { height: 48px; border-radius: 10px; background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
-    .btn-success-custom { background-color: #198754 !important; border: none; pointer-events: none; }
-    .form-check-label { color: #fff !important; cursor: pointer; }
-
-    /* THANK YOU MODAL */
-    .thank-you-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.9); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; z-index: 11000; opacity: 0; visibility: hidden; transition: 0.5s; }
-    .thank-you-overlay.active { opacity: 1; visibility: visible; }
-    .thank-you-card { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 25px; padding: 3.5rem 2rem; width: 90%; max-width: 500px; text-align: center; transform: scale(0.8); transition: 0.5s; }
-    .thank-you-overlay.active .thank-you-card { transform: scale(1); }
-    .success-icon { width: 80px; height: 80px; background: #198754; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1.5rem; box-shadow: 0 0 20px rgba(25, 135, 84, 0.5); }
     
-    /* OTP MODAL */
-    .otp-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: 0.4s; }
-    .otp-modal-overlay.active { opacity: 1; visibility: visible; }
-    .otp-modal-card { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; }
-    .otp-input-large { background: rgba(0, 0, 0, 0.3) !important; font-size: 1.8rem !important; letter-spacing: 12px; text-align: center; border: 2px solid #ff9900 !important; color: #fff !important; height: 65px; margin-bottom: 1rem; }
+    .form-control, .form-select { background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; border-radius: 10px; height: 48px; padding-left: 15px; transition: all 0.3s; }
+    .form-control::placeholder { color: #bbb; opacity: 1; }
+    .form-control:focus, .form-select:focus { background-color: rgba(255, 255, 255, 0.15); border-color: #ff9900; box-shadow: 0 0 10px rgba(255, 153, 0, 0.4); color: #fff; }
+    .form-select option { background-color: #0e2746 !important; color: #fff !important; }
+    
+    input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus { -webkit-text-fill-color: #fff !important; -webkit-box-shadow: 0 0 0px 1000px #0e2746 inset !important; transition: background-color 5000s ease-in-out 0s; }
+    .form-control:disabled, .form-select:disabled, .form-control[readonly] { background-color: rgba(255, 255, 255, 0.05) !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.1) !important; opacity: 1 !important; cursor: pointer !important; -webkit-text-fill-color: #fff !important; }
 
-    /* CALENDAR */
-    .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; border: 1px solid #ff9900 !important; color: #fff !important; }
-    .flatpickr-day, .flatpickr-current-month, .cur-year { color: #fff !important; }
-    .flatpickr-weekday { color: #ff9900 !important; }
-    .flatpickr-day.selected { background: #ff9900 !important; }
+    .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
+    .btn-submit:hover { box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5); transform: translateY(-2px); }
+    .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s;}
+    .btn-code:hover { background-color: rgba(255, 153, 0, 0.2); border-color: #ff9900; }
+    .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
+    
+    .form-check-label { font-size: 0.95rem; color: #ffffff !important; opacity: 1 !important; cursor: pointer; }
+    .confidential { text-align: center; font-size: 0.8rem; color: #ccc; margin-top: 1rem; }
+
+    /* Calendar Styling */
+    .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.6) !important; border-radius: 15px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important; }
+    .flatpickr-monthDropdown-months, .flatpickr-monthDropdown-month { background: #0b1f3a !important; color: #ffffff !important; }
+    .flatpickr-current-month, .cur-year { color: #ffffff !important; fill: #ffffff !important; font-weight: 600 !important; }
+    .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #ffffff !important; }
+    .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; opacity: 1 !important; }
+    .flatpickr-day { color: #ffffff !important; border-radius: 8px !important; }
+    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; color: #fff !important; }
+
+    /* ========================================= */
+    /* VIP MODAL OVERLAYS (OTP & THANK YOU)      */
+    /* ========================================= */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
+    .modal-overlay.active .modal-card { transform: translateY(0); }
+    .otp-input-large { background: rgba(0, 0, 0, 0.3) !important; font-size: 1.8rem !important; letter-spacing: 12px; text-align: center; border: 2px solid rgba(255,153,0,0.5) !important; color: #fff !important; height: 65px; border-radius: 12px; font-weight: bold; }
+    
+    /* Thank You Popup Specifics */
+    .success-icon { font-size: 4rem; color: #198754; margin-bottom: 1rem; animation: bounce 1s ease; }
+    @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
   </style>
 </head>
 <body>
 
-  <div class="logo-container"><img src="https://i.postimg.cc/MKh5pB49/Gemini-Generated-Image-f1z1rjf1z1rjf1z1-removebg-preview.png" class="logo"></div>
+  <div class="logo-container">
+      <img src="https://i.postimg.cc/MKh5pB49/Gemini-Generated-Image-f1z1rjf1z1rjf1z1-removebg-preview.png" class="logo" alt="LEVZA Logo">
+  </div>
 
   <div class="page-container">
     <div class="form-header-text">
         <h2 class="form-title">Employee <span>Application Form</span></h2>
-        <p style="color: #ccc;">Join the LEVZA team and build your future with us.</p>
+        <p class="form-subtitle">We're excited to learn more about you. Please fill in your details below.</p>
     </div>
 
     <div class="card">
       <form id="form">
         <h5 class="section-title" style="margin-top: 0;"><i class="fas fa-user"></i>Personal Information</h5>
-        <div class="row g-3">
+        <div class="row g-3 align-items-center">
           <div class="col-md-6"><input type="text" name="FirstName" class="form-control" placeholder="First Name" required></div>
           <div class="col-md-6"><input type="text" name="LastName" class="form-control" placeholder="Last Name" required></div>
-          <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC (xxxxx-xxxxxxx-x)" required></div>
+          <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC Number (xxxxx-xxxxxxx-x)" required></div>
           <div class="col-md-4"><input type="text" id="dob" name="DOB" class="form-control" placeholder="Date of Birth" required></div>
-          <div class="col-md-4"><select name="Gender" class="form-select" required><option value="" disabled selected>Gender</option><option>Male</option><option>Female</option></select></div>
-          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact (03xx-xxxxxxx)" required></div>
+          <div class="col-md-4">
+              <select name="Gender" class="form-select" required>
+                  <option value="" selected disabled>Select Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+              </select>
+          </div>
+          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number (03xx-xxxxxxx)" required></div>
           <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
-          <div class="col-md-2"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">Verify</button></div>
+          <div class="col-md-2"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button></div>
         </div>
 
-        <h5 class="section-title"><i class="fas fa-map-marker-alt"></i>Address Details</h5>
+        <h5 class="section-title"><i class="fas fa-map-marker-alt"></i>Address</h5>
         <div class="row g-3">
-          <div class="col-md-12"><select id="country" name="Country" class="form-select" required><option value="" disabled selected>Select Country</option></select></div>
-          <div class="col-md-4" id="stateDiv"><select id="state" name="State" class="form-select" required disabled><option disabled selected>State</option></select></div>
-          <div class="col-md-4" id="cityDiv"><select id="city" name="City" class="form-select" required disabled><option disabled selected>City</option></select></div>
+           <div class="col-md-12">
+               <select id="country" name="Country" class="form-select" required>
+                   <option value="" selected disabled>Select Country</option>
+               </select>
+           </div>
+          <div class="col-md-4" id="stateDiv">
+              <select id="state" name="State" class="form-select" required disabled><option value="" selected disabled>Select State</option></select>
+          </div>
+          <div class="col-md-4" id="cityDiv">
+              <select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select>
+          </div>
           <div class="col-md-4"><input type="text" name="Postal" class="form-control" placeholder="Postal Code" required></div>
-          <div class="col-md-12"><input type="text" name="Address" class="form-control" placeholder="Complete Street Address" required></div>
+          <div class="col-md-12"><input type="text" name="Address" class="form-control" placeholder="Street Address" required></div>
         </div>
 
-        <h5 class="section-title"><i class="fas fa-briefcase"></i>Employment</h5>
+        <h5 class="section-title"><i class="fas fa-briefcase"></i>Employee Details</h5>
         <div class="row g-3">
-          <div class="col-md-6"><select name="Position" class="form-select" required><option value="" disabled selected>Position</option><option>Account Provider PK</option><option>Account Provider UK</option><option>Manager</option><option>Developer</option></select></div>
-          <div class="col-md-6"><select id="investor" name="Investor" class="form-select" required><option value="" disabled selected>Investor?</option><option>No</option><option>Yes</option></select></div>
-          <div class="col-md-6"><input type="text" id="joiningDate" name="JoiningDate" class="form-control" placeholder="Joining Date" required></div>
-          <div class="col-md-6" id="amountDiv" style="display:none"><input type="number" name="InvestmentAmount" class="form-control" placeholder="Amount"></div>
-          <div class="col-md-12"><textarea name="GreatFit" class="form-control" rows="3" placeholder="Why are you a great fit for LEVZA?" required></textarea></div>
+            <div class="col-md-6">
+                <select name="Position" class="form-select" required>
+                    <option value="" selected disabled>Position Applied For</option>
+                    <option>Account Provider PK</option>
+                    <option>Account Provider UK</option>
+                    <option>Manager</option>
+                    <option>Developer</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <select id="investor" name="Investor" class="form-select" required>
+                    <option value="" selected disabled>Are you an investor?</option>
+                    <option>No</option>
+                    <option>Yes</option>
+                </select>
+            </div>
+            <div class="col-md-6"><input type="text" id="joiningDate" name="JoiningDate" class="form-control" placeholder="Available joining date" required></div>
+            <div class="col-md-6" id="amountDiv" style="display:none"><input type="number" id="amount" name="InvestmentAmount" class="form-control" placeholder="Amount"></div>
+            <div class="col-md-12"><textarea name="GreatFit" class="form-control" rows="3" placeholder="Tell us why you're a great fit..." required></textarea></div>
         </div>
         
-        <div class="form-check mt-4"><input class="form-check-input" type="checkbox" id="declaration" required><label class="form-check-label" for="declaration">I confirm that all provided info is correct.</label></div>
-        <button id="submitBtn" class="btn-submit w-100" type="submit">Submit Application</button>
+        <div class="form-check mt-4 d-flex align-items-center">
+          <input class="form-check-input me-2" type="checkbox" id="declaration" required style="width: 1.2rem; height: 1.2rem; cursor: pointer;">
+          <label class="form-check-label" for="declaration">I have filled all sections and verified my email.</label>
+        </div>
+        
+        <button id="submitBtn" class="btn-submit w-100" type="submit"><i class="fas fa-paper-plane"></i> Submit Application</button>
       </form>
     </div>
   </div>
 
-  <div id="otpModalOverlay" class="otp-modal-overlay">
-      <div class="otp-modal-card">
-          <i class="fas fa-shield-alt fa-3x text-warning mb-3"></i>
-          <h4 class="text-white">Verify Email</h4>
-          <p style="color: #bbb;">Enter the code sent to your email.</p>
-          <input type="text" id="verificationCode" class="form-control otp-input-large" maxlength="6">
-          <button type="button" id="verifyCodeBtn" class="btn-submit w-100" style="margin-top:0">Verify Now</button>
-          <button type="button" id="closeModalBtn" style="background:none; border:none; color:#aaa; text-decoration:underline; margin-top:1rem;">Cancel</button>
+  <div id="otpModalOverlay" class="modal-overlay">
+      <div class="modal-card">
+          <div style="font-size: 3rem; color: #ff9900; margin-bottom: 1rem;"><i class="fas fa-envelope-open-text"></i></div>
+          <h4 style="color: #fff;">Verify Email</h4>
+          <p style="color: #bbb;">Sent to: <span id="modalEmailText" style="color:#ff9900;"></span></p>
+          <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="------" maxlength="6" autocomplete="off">
+          <small id="otpMessage" class="d-block text-warning mt-2"></small>
+          <button type="button" id="verifyCodeBtn" class="btn-submit w-100" style="margin-top: 1.5rem;">Verify Now</button>
+          <button type="button" id="closeModalBtn" style="background: transparent; border: none; color: #aaa; text-decoration: underline; margin-top: 1rem;">Cancel</button>
       </div>
   </div>
 
-  <div id="thankYouOverlay" class="thank-you-overlay">
-      <div class="thank-you-card">
-          <div class="success-icon"><i class="fas fa-check"></i></div>
-          <h2 style="color: #fff; font-weight: 700;">Thank You!</h2>
-          <p style="color: #ccc; font-size: 1.1rem; margin-bottom: 2rem;">Your application has been received successfully. <br> A confirmation email has been sent to you.</p>
-          <button type="button" onclick="location.reload()" class="btn-submit px-5" style="margin:0; height:50px;">Return to Home</button>
+  <div id="thankYouModalOverlay" class="modal-overlay">
+      <div class="modal-card">
+          <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+          <h3 style="color: #fff; font-weight: 700;">Thank You!</h3>
+          <p style="color: #ccc; line-height: 1.6;">Your application has been successfully submitted to <strong>LEVZA</strong>.<br><br>We've sent a confirmation email to your inbox. We will get back to you soon!</p>
+          <button type="button" onclick="location.reload()" class="btn-submit w-100" style="margin-top: 1.5rem;">Back to Home</button>
       </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    const locationData = { "Pakistan": { "Punjab": ["Lahore", "Faisalabad"], "Sindh": ["Karachi", "Hyderabad"] }, "United Kingdom": { "England": ["London", "Manchester"] } };
-    const allCountries = ["Pakistan", "United Kingdom", "United States", "Canada", "UAE", "Australia"];
+    const locationData = { "Pakistan": { "Punjab": ["Lahore", "Faisalabad", "Rawalpindi"], "Sindh": ["Karachi", "Hyderabad"] }, "United Kingdom": { "England": ["London", "Manchester"] } };
+    const allCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+
     const countrySelect = document.getElementById('country');
     allCountries.forEach(c => countrySelect.add(new Option(c, c)));
 
     countrySelect.onchange = function() {
         const sDiv = document.getElementById('stateDiv'), cDiv = document.getElementById('cityDiv');
         if (locationData[this.value]) {
-            sDiv.innerHTML = '<select id="state" name="State" class="form-select" required><option disabled selected>State</option></select>';
-            cDiv.innerHTML = '<select id="city" name="City" class="form-select" required disabled><option disabled selected>City</option></select>';
+            sDiv.innerHTML = '<select id="state" name="State" class="form-select" required><option value="" selected disabled>Select State</option></select>';
+            cDiv.innerHTML = '<select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select>';
             const sSel = document.getElementById('state'), cSel = document.getElementById('city');
             for (let s in locationData[this.value]) sSel.add(new Option(s, s));
-            sSel.onchange = function() { cSel.innerHTML = '<option disabled selected>City</option>'; cSel.disabled = false; locationData[countrySelect.value][this.value].forEach(city => cSel.add(new Option(city, city))); };
-        } else {
-            sDiv.innerHTML = '<input type="text" name="State" class="form-control" placeholder="State" required>';
-            cDiv.innerHTML = '<input type="text" name="City" class="form-control" placeholder="City" required>';
-        }
+            sSel.onchange = function() { cSel.innerHTML = '<option value="" selected disabled>Select City</option>'; cSel.disabled = false; locationData[countrySelect.value][this.value].forEach(city => cSel.add(new Option(city, city))); };
+        } else { sDiv.innerHTML = '<input type="text" name="State" class="form-control" placeholder="State" required>'; cDiv.innerHTML = '<input type="text" name="City" class="form-control" placeholder="City" required>'; }
     };
 
-    flatpickr("#dob, #joiningDate", { altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d", onReady: (s,d,i) => i.altInput.style.cursor="pointer" });
+    flatpickr("#dob, #joiningDate", { altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d", disableMobile: true, onReady: function(s, d, i) { i.altInput.style.cursor = "pointer"; } });
     document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
 
-    // --- SUBMISSION SCRIPT ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwOLWMpGYTC2T0Tn5_B4sZIHAm9LoujOdg8j1CJwVYiTj1W3RP1wAHue69aLICusUpK/exec'; 
+    // YAHAN APNA NAYA SCRIPT URL DALEIN
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbx_Y_LINK_UPDATED_HERE/exec'; 
     let isEmailVerified = false;
 
     document.getElementById('sendCodeBtn').onclick = function() {
@@ -148,37 +194,31 @@
         if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
         this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; this.disabled = true;
         let fd = new FormData(); fd.append("action", "sendOTP"); fd.append("Email", email.value);
-        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => {
-            if(data.result === "success") { document.getElementById('otpModalOverlay').classList.add('active'); this.textContent = 'Sent'; this.disabled = false; }
-        });
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('modalEmailText').innerText = email.value; document.getElementById('otpModalOverlay').classList.add('active'); this.textContent = 'Sent'; this.disabled = false; } });
     };
 
     document.getElementById('closeModalBtn').onclick = () => document.getElementById('otpModalOverlay').classList.remove('active');
 
     document.getElementById('verifyCodeBtn').onclick = function() {
         const code = document.getElementById('verificationCode').value;
-        if (code.length < 6) return; this.disabled = true;
+        if (code.length < 6) return;
+        this.disabled = true;
         let fd = new FormData(); fd.append("action", "verifyOTP"); fd.append("Email", document.getElementById('email').value); fd.append("otp", code);
-        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => {
-            if(data.result === "success") {
-                isEmailVerified = true; document.getElementById('otpModalOverlay').classList.remove('active');
-                const btn = document.getElementById('sendCodeBtn'); btn.innerHTML = '<i class="fas fa-check-circle"></i>';
-                btn.className = "btn btn-success-custom w-100"; document.getElementById('email').readOnly = true;
-            } else { alert("Invalid OTP"); this.disabled = false; }
-        });
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { isEmailVerified = true; document.getElementById('otpModalOverlay').classList.remove('active'); const btn = document.getElementById('sendCodeBtn'); btn.innerHTML = '<i class="fas fa-check-circle"></i> Verified'; btn.className = "btn btn-success-custom w-100"; document.getElementById('email').readOnly = true; } else { document.getElementById('otpMessage').innerText = "Invalid OTP!"; this.disabled = false; } });
     };
 
     document.getElementById('form').onsubmit = function(e) {
         e.preventDefault();
-        if(!isEmailVerified) { alert("Please verify email first."); return; }
+        if(!isEmailVerified) { alert("Verify email first!"); return; }
         const sBtn = document.getElementById('submitBtn');
-        sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...'; sBtn.disabled = true;
+        sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; sBtn.disabled = true;
         let fd = new FormData(this); fd.append("action", "submitForm");
         fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => {
             if(data.result === "success") {
-                document.getElementById('thankYouOverlay').classList.add('active');
+                // YAHAN NAYA POPUP SHOW HOGA
+                document.getElementById('thankYouModalOverlay').classList.add('active');
             }
-        }).catch(() => { alert("Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; });
+        });
     };
   </script>
 </body>
