@@ -54,6 +54,9 @@
     .flatpickr-day:hover, .flatpickr-day:focus { background: rgba(255, 153, 0, 0.3); border-color: transparent; }
     .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange { background: #ff9900; border-color: #ff9900; }
     .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg { fill: #fff; }
+
+    /* Custom Sleek Input for OTP */
+    #verificationCode:focus { outline: none !important; box-shadow: none !important; }
   </style>
 </head>
 <body>
@@ -87,17 +90,20 @@
           </div>
           
           <div class="col-md-5"><input type="tel" id="contactNumber" name="Contact" class="form-control" placeholder="Contact Number (03xx-xxxxxxx)" required></div>
-          <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address (Verification required)" required></div>
+          <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
           <div class="col-md-2"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button></div>
 
-          <div class="col-md-12" id="verificationDiv" style="display:none;">
-              <div class="d-flex flex-column flex-md-row align-items-md-center p-3 mt-1" style="background: rgba(255,153,0,0.05); border-radius: 10px; border: 1px dashed rgba(255,153,0,0.4);">
-                  <i class="fas fa-shield-alt text-warning fs-4 d-none d-md-block ms-2 me-3"></i>
-                  <input type="text" id="verificationCode" class="form-control mb-2 mb-md-0" placeholder="Enter 6-digit OTP from email" style="max-width: 250px;">
-                  <button type="button" id="verifyCodeBtn" class="btn btn-success px-4 ms-md-2" style="height: 48px; border-radius: 10px;">Verify Code</button>
-                  <small id="otpMessage" class="mt-2 mt-md-0 ms-md-3 d-block text-warning"></small>
+          <div class="col-md-12 mt-2" id="verificationDiv" style="display:none; transition: all 0.3s ease;">
+              <div class="ms-auto" style="max-width: 380px;">
+                  <div class="d-flex align-items-center" style="background: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 153, 0, 0.5); border-radius: 10px; padding: 4px;">
+                      <i class="fas fa-lock text-warning ms-3 me-2"></i>
+                      <input type="text" id="verificationCode" class="form-control border-0 shadow-none text-white bg-transparent px-2" placeholder="Enter OTP code" style="box-shadow: none;">
+                      <button type="button" id="verifyCodeBtn" class="btn px-4" style="background: linear-gradient(135deg, #ff9900, #ff7a00); color: #fff; border-radius: 8px; height: 38px; font-weight: 500;">Verify</button>
+                  </div>
+                  <small id="otpMessage" class="mt-1 d-block text-warning text-end" style="font-size: 0.8rem; margin-right: 5px;"></small>
               </div>
           </div>
+
         </div>
 
         <h5 class="section-title"><i class="fas fa-map-marker-alt"></i>Address</h5>
@@ -215,9 +221,6 @@
       else { document.getElementById('amount').removeAttribute('required'); }
     });
 
-    // ==========================================
-    // GOOGLE APPS SCRIPT URL (Same as before)
-    // ==========================================
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwh_NS5k8IPHRs_oVtwW4DbfHPbWMx01ZnMi6OzanET5TxFUx4_PSbA05DlGL07bh5J/exec'; 
 
     const emailInput = document.getElementById('email');
@@ -279,21 +282,21 @@
                 if(data.result === "success") {
                     isEmailVerified = true;
                     verifyCodeBtn.innerHTML = '<i class="fas fa-check"></i> Verified';
-                    verifyCodeBtn.classList.replace('btn-success', 'btn-primary');
-                    emailInput.readOnly = true; // Ab yeh white nahi hoga CSS ki wajah se
+                    verifyCodeBtn.style.background = '#198754'; // Green when verified
+                    emailInput.readOnly = true; 
                     verificationCodeInput.readOnly = true;
                     otpMessage.innerHTML = "Email successfully verified! ✅";
                     otpMessage.classList.remove('text-warning', 'text-danger');
                     otpMessage.classList.add('text-success');
                 } else {
-                    verifyCodeBtn.innerHTML = 'Verify Code';
+                    verifyCodeBtn.innerHTML = 'Verify';
                     verifyCodeBtn.disabled = false;
                     otpMessage.innerHTML = "Invalid or expired OTP. Try again.";
                     otpMessage.classList.add('text-danger');
                 }
             })
             .catch(error => {
-                verifyCodeBtn.innerHTML = 'Verify Code';
+                verifyCodeBtn.innerHTML = 'Verify';
                 verifyCodeBtn.disabled = false;
             });
     });
@@ -342,9 +345,9 @@
                 sendCodeBtn.textContent = 'Send OTP';
                 sendCodeBtn.disabled = false;
                 sendCodeBtn.classList.remove('disabled');
-                verifyCodeBtn.innerHTML = 'Verify Code';
+                verifyCodeBtn.innerHTML = 'Verify';
                 verifyCodeBtn.disabled = false;
-                verifyCodeBtn.classList.replace('btn-primary', 'btn-success');
+                verifyCodeBtn.style.background = 'linear-gradient(135deg, #ff9900, #ff7a00)';
                 
                 setTimeout(() => { successBox.classList.remove("show"); }, 4000);
             } else {
