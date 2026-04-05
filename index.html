@@ -15,41 +15,42 @@
     .form-title { font-weight: 600; color: #ffffff; font-size: 2.2rem; }
     .form-title span { color: #ff9900; }
     .form-subtitle { font-size: 0.95rem; color: #ccc; }
-    
     .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(255, 255, 255, 0.3); border-left: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); max-width: 900px; width: 100%; }
     .section-title { font-weight: 600; margin-top: 1.5rem; margin-bottom: 1.5rem; color: #fff; display: flex; align-items: center; gap: 10px; }
     .section-title i { color: #ff9900; }
     
-    /* --- AGGRESSIVE COLOR FIX: NO MORE DARK/BLACK FIELDS --- */
-    .form-control, .form-select, 
-    .form-control:focus, 
-    .form-control:active, 
-    .form-control:valid, 
-    .form-control:not(:placeholder-shown) { 
+    /* === AGGRESSIVE COLOR & GLASSY ANIMATION FIX === */
+    .form-control, .form-select, .flatpickr-input { 
         background-color: rgba(255, 255, 255, 0.08) !important; 
         border: 1px solid rgba(255, 255, 255, 0.2) !important; 
         color: #ffffff !important; 
         border-radius: 10px; 
         height: 48px; 
         padding-left: 15px; 
-        -webkit-text-fill-color: #ffffff !important; /* Force text color for Chrome */
-        box-shadow: none !important;
-        transition: none !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Glassy Animation Speed */
+        -webkit-text-fill-color: #ffffff !important; 
+    }
+
+    /* Fill hone par ya Focus karne par Glassy Glow Animation */
+    .form-control:focus, .form-select:focus, .form-control:not(:placeholder-shown), .flatpickr-input:not(:placeholder-shown) { 
+        background-color: rgba(255, 255, 255, 0.12) !important; 
+        border-color: rgba(255, 153, 0, 0.6) !important; 
+        box-shadow: 0 0 15px rgba(255, 153, 0, 0.25) !important; /* Glassy Glow */
+        color: #fff !important;
     }
 
     .form-control::placeholder { color: #bbb !important; -webkit-text-fill-color: #bbb !important; }
     
-    /* Autofill Transparent Fix */
-    input:-webkit-autofill, 
-    input:-webkit-autofill:hover, 
-    input:-webkit-autofill:focus { 
+    /* Autofill color override */
+    input:-webkit-autofill { 
         -webkit-text-fill-color: #fff !important; 
-        -webkit-box-shadow: 0 0 0px 1000px rgba(20, 47, 85, 0.1) inset !important; 
+        -webkit-box-shadow: 0 0 0px 1000px rgba(15, 35, 60, 1) inset !important; 
         transition: background-color 5000s ease-in-out 0s; 
     }
 
     .form-select option { background-color: #0e2746 !important; color: #fff !important; }
-    /* ------------------------------------------------------ */
+    .form-control:disabled, .form-select:disabled, .form-control[readonly] { background-color: rgba(255, 255, 255, 0.05) !important; color: #fff !important; opacity: 1 !important; cursor: pointer !important; }
+    /* ============================================== */
 
     .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
     .btn-submit:hover { box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5); transform: translateY(-2px); }
@@ -58,18 +59,15 @@
     .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
     
     .form-check-label { font-size: 0.95rem; color: #ffffff !important; cursor: pointer; }
-    .confidential { text-align: center; font-size: 0.8rem; color: #ccc; margin-top: 1rem; }
 
-    /* Calendar Styling */
+    /* Calendar Styling (Professional) */
     .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.6) !important; border-radius: 15px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important; }
-    .flatpickr-monthDropdown-months, .flatpickr-monthDropdown-month { background: #0b1f3a !important; color: #ffffff !important; }
     .flatpickr-current-month, .cur-year { color: #ffffff !important; fill: #ffffff !important; font-weight: 600 !important; }
-    .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #ffffff !important; }
-    .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; opacity: 1 !important; }
+    .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; }
     .flatpickr-day { color: #ffffff !important; border-radius: 8px !important; }
-    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; color: #fff !important; }
+    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; }
 
-    /* Modals */
+    /* Modals Overlay */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
@@ -205,17 +203,16 @@
     flatpickr("#dob, #joiningDate", { altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d", disableMobile: true, onReady: function(s, d, i) { i.altInput.style.cursor = "pointer"; } });
     document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
 
-    // === APNA SCRIPT URL YAHAN DALEIN ===
+    // === YAHAN APNA LINK DALEIN ===
     const scriptURL = 'https://script.google.com/macros/s/AKfycby-sb7nNEEBhCS5OTdbJ_wQil5EgMavpeKnlx1OzqFZczieqdaY9amxQYZ4G6xoOQ5g/exec'; 
 
     let isEmailVerified = false;
 
     document.getElementById('sendCodeBtn').onclick = function() {
         const email = document.getElementById('email');
-        if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
         const btn = this;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
-        btn.disabled = true;
+        if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
 
         let fd = new FormData();
         fd.append("action", "sendOTP");
@@ -231,24 +228,16 @@
                 btn.disabled = false;
             } else { alert("Error: " + data.error); btn.textContent = 'Send OTP'; btn.disabled = false; }
         })
-        .catch(err => {
-            alert("Script Error! Please Check Google Script Permissions.");
-            btn.textContent = 'Send OTP';
-            btn.disabled = false;
-        });
+        .catch(err => { alert("Check Script Permissions."); btn.textContent = 'Send OTP'; btn.disabled = false; });
     };
 
-    document.getElementById('closeModalBtn').onclick = () => {
-        document.getElementById('otpModalOverlay').classList.remove('active');
-        document.getElementById('sendCodeBtn').textContent = 'Send OTP';
-    };
+    document.getElementById('closeModalBtn').onclick = () => { document.getElementById('otpModalOverlay').classList.remove('active'); document.getElementById('sendCodeBtn').textContent = 'Send OTP'; };
 
     document.getElementById('verifyCodeBtn').onclick = function() {
         const code = document.getElementById('verificationCode').value;
         const msg = document.getElementById('otpMessage');
         if (code.length < 6) { msg.innerText = "Enter 6 digits"; return; }
         this.disabled = true;
-
         let fd = new FormData();
         fd.append("action", "verifyOTP");
         fd.append("Email", document.getElementById('email').value);
@@ -272,9 +261,7 @@
         e.preventDefault();
         if(!isEmailVerified) { alert("Verify email first!"); return; }
         const sBtn = document.getElementById('submitBtn');
-        sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; 
-        sBtn.disabled = true;
-
+        sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; sBtn.disabled = true;
         let fd = new FormData(this);
         fd.append("action", "submitForm");
 
@@ -284,11 +271,7 @@
             if(data.result === "success") { document.getElementById('thankYouModalOverlay').classList.add('active'); }
             else { alert("Submission Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; }
         })
-        .catch(() => {
-            alert("Internet or Script Error!");
-            sBtn.innerHTML = 'Submit Application';
-            sBtn.disabled = false;
-        });
+        .catch(() => { alert("Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; });
     };
   </script>
 </body>
