@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>LEVZA Employee Form</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -11,75 +11,100 @@
     .logo-container { position: absolute; top: 25px; left: 30px; }
     .logo { width: 250px; }
     .page-container { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 100vh; padding: 100px 20px 40px 20px; }
-    .form-title { font-weight: 600; color: #ffffff; font-size: 2.2rem; text-align: center; }
+    .form-header-text { text-align: center; margin-bottom: 25px; width: 100%; }
+    .form-title { font-weight: 600; color: #ffffff; font-size: 2.2rem; }
     .form-title span { color: #ff9900; }
-    .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); max-width: 900px; width: 100%; }
+    .form-subtitle { font-size: 0.95rem; color: #ccc; }
+    .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(255, 255, 255, 0.3); border-left: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); max-width: 900px; width: 100%; }
     .section-title { font-weight: 600; margin-top: 1.5rem; margin-bottom: 1.5rem; color: #fff; display: flex; align-items: center; gap: 10px; }
     .section-title i { color: #ff9900; }
 
-    /* ====================================================== */
-    /* THE FINAL PASTE & COLOR LOCK FIX (NO WHITE FLASH)      */
-    /* ====================================================== */
-    .form-control, .form-select { 
+    .form-control, .form-select, .flatpickr-input { 
         background-color: rgba(255, 255, 255, 0.08) !important; 
         border: 1px solid rgba(255, 255, 255, 0.2) !important; 
         color: #ffffff !important; 
         border-radius: 10px; 
         height: 48px; 
+        padding-left: 15px; 
+        -webkit-text-fill-color: #ffffff !important;
     }
 
-    /* Is se Notepad paste aur Autofill ka white color hamesha ke liye block ho jayega */
     input:-webkit-autofill,
     input:-webkit-autofill:hover, 
     input:-webkit-autofill:focus, 
-    select:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0 1000px #132a4a inset !important; 
+    input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 1000px #132a4a inset !important;
         -webkit-text-fill-color: white !important;
-        transition: background-color 5000s ease-in-out 0s !important;
+        transition: background-color 5000s ease-in-out 0s;
     }
 
-    .form-control:focus, .form-select:focus { 
-        background-color: rgba(255, 255, 255, 0.15) !important; 
-        border-color: #ff9900 !important; 
+    .form-control:focus, .form-select:focus, .form-control:not(:placeholder-shown) { 
+        background-color: rgba(255, 255, 255, 0.12) !important; 
+        border-color: rgba(255, 153, 0, 0.6) !important; 
         box-shadow: 0 0 15px rgba(255, 153, 0, 0.2) !important;
         color: #fff !important;
     }
 
-    /* ========================================= */
-    /* PREMIUM IPHONE-STYLE CALENDAR UI          */
-    /* ========================================= */
-    .flatpickr-calendar { background: #0b1f3a !important; border: 1px solid rgba(255, 153, 0, 0.4) !important; border-radius: 20px !important; box-shadow: 0 20px 40px rgba(0,0,0,0.6) !important; padding: 10px !important; }
+    .form-control::placeholder { color: #bbb !important; -webkit-text-fill-color: #bbb !important; }
+    .form-select option { background-color: #0e2746 !important; color: #fff !important; }
     
-    /* Header (Month/Year) customization */
-    .flatpickr-month { height: 45px !important; margin-bottom: 10px !important; }
-    .flatpickr-current-month { font-size: 1.2rem !important; color: #fff !important; font-weight: 600 !important; }
-    
-    /* Month aur Year ko glassy segments banana */
-    .flatpickr-monthDropdown-months, .numInputWrapper {
-        background: rgba(255, 255, 255, 0.1) !important;
-        border-radius: 8px !important;
-        padding: 4px 8px !important;
-        margin: 0 5px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        color: #fff !important;
+    .form-control:disabled, .form-select:disabled, .form-control[readonly] { 
+        background-color: rgba(255, 255, 255, 0.05) !important; 
+        color: #fff !important; 
+        opacity: 1 !important; 
+        -webkit-text-fill-color: #fff !important;
         cursor: pointer !important;
     }
 
-    .flatpickr-monthDropdown-months:hover, .numInputWrapper:hover { background: rgba(255, 153, 0, 0.2) !important; }
-    
-    .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; }
-    .flatpickr-day { color: #fff !important; border-radius: 10px !important; }
-    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; }
-    .flatpickr-day:hover { background: rgba(255, 153, 0, 0.3) !important; }
+    .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
+    .btn-submit:hover { box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5); transform: translateY(-2px); }
+    .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s;}
+    .btn-code:hover { background-color: rgba(255, 153, 0, 0.2); border-color: #ff9900; }
+    .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
+    .form-check-label { font-size: 0.95rem; color: #ffffff !important; cursor: pointer; }
 
-    /* Modals Control */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.9); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 10001; padding: 20px; }
-    .modal-overlay.active { display: flex; }
-    .modal-card { background: #0b1f3a; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 24px; padding: 1.5rem; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    /* ============================================ */
+    /* FLATPICKR CALENDAR - COMPLETE WHITE GLITCH FIX */
+    /* ============================================ */
+    .flatpickr-calendar {
+        background: #0b1f3a !important;
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 153, 0, 0.6) !important;
+        border-radius: 15px !important;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important;
+        color: #fff !important;
+    }
+    .flatpickr-calendar.open { background: #0b1f3a !important; }
+    .flatpickr-months { background: #0b1f3a !important; border-radius: 14px 14px 0 0 !important; }
+    .flatpickr-month { background: #0b1f3a !important; color: #fff !important; fill: #fff !important; }
+    .flatpickr-weekdays { background: #0b1f3a !important; }
+    span.flatpickr-weekday { background: #0b1f3a !important; color: #ff9900 !important; font-weight: bold !important; }
+    .flatpickr-days { background: #0b1f3a !important; border-color: rgba(255,153,0,0.2) !important; }
+    .dayContainer { background: #0b1f3a !important; }
+    .flatpickr-innerContainer { background: #0b1f3a !important; border-radius: 0 0 14px 14px !important; }
+    .flatpickr-rContainer { background: #0b1f3a !important; }
+    .flatpickr-day { color: #ffffff !important; border-radius: 8px !important; background: transparent !important; border: 1px solid transparent !important; }
+    .flatpickr-day:hover { background: rgba(255, 153, 0, 0.2) !important; border-color: rgba(255,153,0,0.4) !important; color: #fff !important; }
+    .flatpickr-day.selected, .flatpickr-day.selected:hover { background: #ff9900 !important; border-color: #ff9900 !important; color: #fff !important; }
+    .flatpickr-day.today { border-color: rgba(255,153,0,0.5) !important; }
+    .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay { color: rgba(255,255,255,0.25) !important; }
+    .flatpickr-monthDropdown-months { background: #0b1f3a !important; color: #fff !important; border: none !important; }
+    .flatpickr-monthDropdown-months option { background: #0b1f3a !important; color: #fff !important; }
+    .flatpickr-current-month { color: #ffffff !important; fill: #ffffff !important; font-weight: 600 !important; }
+    .flatpickr-current-month input.cur-year { color: #fff !important; font-weight: 600 !important; }
+    .numInputWrapper span { border-color: rgba(255,255,255,0.2) !important; }
+    .numInputWrapper span:after { border-top-color: #fff !important; border-bottom-color: #fff !important; }
+    .flatpickr-prev-month, .flatpickr-next-month { color: #ff9900 !important; fill: #ff9900 !important; }
+    .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #ffb84d !important; }
+    /* ============================================ */
 
-    .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 50px; font-weight: 600; color: #fff; transition: 0.3s; width: 100%; }
-    .btn-code { height: 48px; border-radius: 10px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-    .btn-success-custom { background-color: #198754 !important; pointer-events: none; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
+    .modal-overlay.active .modal-card { transform: translateY(0); }
+    .otp-input-large { background: rgba(0, 0, 0, 0.3) !important; font-size: 1.8rem !important; letter-spacing: 12px; text-align: center; border: 2px solid rgba(255,153,0,0.5) !important; color: #fff !important; height: 65px; border-radius: 12px; font-weight: bold; }
+    .success-icon { font-size: 4rem; color: #198754; margin-bottom: 1rem; animation: bounce 1s ease; }
+    @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
   </style>
 </head>
 <body>
@@ -89,153 +114,168 @@
   </div>
 
   <div class="page-container">
-    <h2 class="form-title">Employee <span>Application</span></h2>
-    <div class="card mt-4">
+    <div class="form-header-text">
+        <h2 class="form-title">Employee <span>Application Form</span></h2>
+        <p class="form-subtitle">We're excited to learn more about you. Please fill in your details below.</p>
+    </div>
+
+    <div class="card">
       <form id="form">
-        <h5 class="section-title" style="margin-top:0;"><i class="fas fa-user"></i>Personal Info</h5>
-        <div class="row g-3">
+        <h5 class="section-title" style="margin-top: 0;"><i class="fas fa-user"></i>Personal Information</h5>
+        <div class="row g-3 align-items-center">
           <div class="col-md-6"><input type="text" name="FirstName" class="form-control" placeholder="First Name" required></div>
           <div class="col-md-6"><input type="text" name="LastName" class="form-control" placeholder="Last Name" required></div>
-          <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC Number" required></div>
-          <div class="col-md-4">
-              <input type="text" id="dobTrigger" class="form-control" placeholder="Date of Birth" readonly required style="cursor:pointer;">
-              <input type="hidden" id="dob" name="DOB">
-          </div>
+          <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC Number (xxxxx-xxxxxxx-x)" required></div>
+          <div class="col-md-4"><input type="text" id="dob" name="DOB" class="form-control" placeholder="Date of Birth" required></div>
           <div class="col-md-4">
               <select name="Gender" class="form-select" required>
-                  <option value="" selected disabled>Gender</option>
-                  <option>Male</option><option>Female</option><option>Other</option>
+                  <option value="" selected disabled>Select Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
               </select>
           </div>
-          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact" required></div>
-          <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email" required></div>
-          <div class="col-md-2"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">OTP</button></div>
+          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number" required></div>
+          <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
+          <div class="col-md-2"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button></div>
         </div>
 
         <h5 class="section-title"><i class="fas fa-map-marker-alt"></i>Address</h5>
         <div class="row g-3">
            <div class="col-md-12">
-               <select id="country" name="Country" class="form-select" required><option value="" selected disabled>Select Country</option></select>
+               <select id="country" name="Country" class="form-select" required>
+                   <option value="" selected disabled>Select Country</option>
+               </select>
            </div>
-          <div class="col-md-4" id="stateDiv"><select id="state" name="State" class="form-select" required disabled><option value="" selected disabled>State</option></select></div>
-          <div class="col-md-4" id="cityDiv"><select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>City</option></select></div>
+          <div class="col-md-4" id="stateDiv">
+              <select id="state" name="State" class="form-select" required disabled><option value="" selected disabled>Select State</option></select>
+          </div>
+          <div class="col-md-4" id="cityDiv">
+              <select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select>
+          </div>
           <div class="col-md-4"><input type="text" name="Postal" class="form-control" placeholder="Postal Code" required></div>
           <div class="col-md-12"><input type="text" name="Address" class="form-control" placeholder="Street Address" required></div>
         </div>
 
-        <h5 class="section-title"><i class="fas fa-briefcase"></i>Work Details</h5>
+        <h5 class="section-title"><i class="fas fa-briefcase"></i>Employee Details</h5>
         <div class="row g-3">
             <div class="col-md-6">
                 <select name="Position" class="form-select" required>
-                    <option value="" selected disabled>Position</option>
-                    <option>Account Provider PK</option><option>Account Provider UK</option><option>Manager</option><option>Developer</option>
+                    <option value="" selected disabled>Position Applied For</option>
+                    <option>Account Provider PK</option>
+                    <option>Account Provider UK</option>
+                    <option>Manager</option>
+                    <option>Developer</option>
                 </select>
             </div>
             <div class="col-md-6">
                 <select id="investor" name="Investor" class="form-select" required>
                     <option value="" selected disabled>Are you an investor?</option>
-                    <option>No</option><option>Yes</option>
+                    <option>No</option>
+                    <option>Yes</option>
                 </select>
             </div>
-            <div class="col-md-6">
-                <input type="text" id="joiningDateTrigger" class="form-control" placeholder="Joining Date" readonly required style="cursor:pointer;">
-                <input type="hidden" id="joiningDate" name="JoiningDate">
-            </div>
+            <div class="col-md-6"><input type="text" id="joiningDate" name="JoiningDate" class="form-control" placeholder="Available joining date" required></div>
             <div class="col-md-6" id="amountDiv" style="display:none"><input type="number" id="amount" name="InvestmentAmount" class="form-control" placeholder="Amount"></div>
             <div class="col-md-12"><textarea name="GreatFit" class="form-control" rows="3" placeholder="Tell us why you're a great fit..." required></textarea></div>
         </div>
         
-        <div class="form-check mt-4">
-          <input class="form-check-input me-2" type="checkbox" id="declaration" required>
-          <label class="form-check-label" for="declaration" style="color:#fff;">I verify my details.</label>
+        <div class="form-check mt-4 d-flex align-items-center">
+          <input class="form-check-input me-2" type="checkbox" id="declaration" required style="width: 1.2rem; height: 1.2rem; cursor: pointer;">
+          <label class="form-check-label" for="declaration">I have filled all sections and verified my email.</label>
         </div>
         
-        <button id="submitBtn" class="btn-submit mt-3" type="submit"><i class="fas fa-paper-plane"></i> Submit Application</button>
+        <button id="submitBtn" class="btn-submit w-100" type="submit"><i class="fas fa-paper-plane"></i> Submit Application</button>
       </form>
     </div>
   </div>
 
-  <div id="dateModalOverlay" class="modal-overlay">
-      <div class="modal-card">
-          <h5 id="modalTitle" style="color: #ff9900; margin-bottom: 15px;">Select Date</h5>
-          <div id="inlineCalendar"></div>
-          <button type="button" id="confirmDateBtn" class="btn-submit mt-3">Confirm Selection</button>
-          <button type="button" onclick="closeDateModal()" style="background:none; border:none; color:#aaa; margin-top:10px; text-decoration:underline;">Cancel</button>
-      </div>
-  </div>
-
   <div id="otpModalOverlay" class="modal-overlay">
       <div class="modal-card">
-          <h4 style="color:#fff;">Verify Email</h4>
-          <p id="modalEmailText" style="color:#ff9900;"></p>
-          <input type="text" id="verificationCode" class="form-control text-center" placeholder="------" maxlength="6" style="font-size:1.5rem; letter-spacing:10px;">
-          <button type="button" id="verifyCodeBtn" class="btn-submit mt-3">Verify Now</button>
+          <div style="font-size: 3rem; color: #ff9900; margin-bottom: 1rem;"><i class="fas fa-envelope-open-text"></i></div>
+          <h4 style="color: #fff;">Verify Email</h4>
+          <p style="color: #bbb;">Sent to: <span id="modalEmailText" style="color:#ff9900;"></span></p>
+          <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="------" maxlength="6" autocomplete="off">
+          <small id="otpMessage" class="d-block text-warning mt-2"></small>
+          <button type="button" id="verifyCodeBtn" class="btn-submit w-100" style="margin-top: 1.5rem;">Verify Now</button>
+          <button type="button" id="closeModalBtn" style="background: transparent; border: none; color: #aaa; text-decoration: underline; margin-top: 1rem;">Cancel</button>
       </div>
   </div>
 
   <div id="thankYouModalOverlay" class="modal-overlay">
       <div class="modal-card">
-          <div style="font-size:4rem; color:#198754;">✓</div>
-          <h3 style="color:#fff;">Success!</h3>
-          <p style="color:#ccc;">Your application has been submitted.</p>
-          <button type="button" onclick="location.reload()" class="btn-submit mt-3">Close</button>
+          <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+          <h3 style="color: #fff; font-weight: 700;">Thank You!</h3>
+          <p style="color: #ccc; line-height: 1.6;">Your application has been successfully submitted to <strong>LEVZA</strong>.<br><br>We've sent a confirmation email to your inbox.</p>
+          <button type="button" onclick="location.reload()" class="btn-submit w-100" style="margin-top: 1.5rem;">Back to Home</button>
       </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    const locationData = { "Pakistan": { "Punjab": ["Lahore", "Faisalabad"], "Sindh": ["Karachi", "Hyderabad"] }, "United Kingdom": { "England": ["London", "Manchester"] } };
-    const allCountries = ["Pakistan", "United Kingdom", "United States", "Canada", "Australia", "UAE"];
+    const locationData = { "Pakistan": { "Punjab": ["Lahore", "Faisalabad", "Rawalpindi", "Multan", "Gujranwala"], "Sindh": ["Karachi", "Hyderabad", "Sukkur", "Larkana"], "KPK": ["Peshawar", "Abbottabad", "Mardan", "Swat"], "Balochistan": ["Quetta", "Gwadar", "Khuzdar"], "Islamabad": ["Islamabad City"] }, "United Kingdom": { "England": ["London", "Manchester", "Birmingham", "Leeds", "Liverpool"], "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"], "Wales": ["Cardiff", "Swansea", "Newport"], "Northern Ireland": ["Belfast", "Derry"] } };
+    const allCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
     const countrySelect = document.getElementById('country');
     allCountries.forEach(c => countrySelect.add(new Option(c, c)));
+
     countrySelect.onchange = function() {
         const sDiv = document.getElementById('stateDiv'), cDiv = document.getElementById('cityDiv');
         if (locationData[this.value]) {
-            sDiv.innerHTML = '<select id="state" name="State" class="form-select" required><option value="" selected disabled>State</option></select>';
-            cDiv.innerHTML = '<select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>City</option></select>';
+            sDiv.innerHTML = '<select id="state" name="State" class="form-select" required><option value="" selected disabled>Select State</option></select>';
+            cDiv.innerHTML = '<select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select>';
             const sSel = document.getElementById('state'), cSel = document.getElementById('city');
             for (let s in locationData[this.value]) sSel.add(new Option(s, s));
-            sSel.onchange = function() { cSel.innerHTML = '<option value="" selected disabled>City</option>'; cSel.disabled = false; locationData[countrySelect.value][this.value].forEach(city => cSel.add(new Option(city, city))); };
+            sSel.onchange = function() { cSel.innerHTML = '<option value="" selected disabled>Select City</option>'; cSel.disabled = false; locationData[countrySelect.value][this.value].forEach(city => cSel.add(new Option(city, city))); };
         } else { sDiv.innerHTML = '<input type="text" name="State" class="form-control" placeholder="State" required>'; cDiv.innerHTML = '<input type="text" name="City" class="form-control" placeholder="City" required>'; }
     };
 
-    let currentInput, currentHidden;
-    const inlineFp = flatpickr("#inlineCalendar", { 
-        inline: true, 
-        dateFormat: "Y-m-d",
-        monthSelectorType: "dropdown",
-        yearSelectorType: "static",
-        prevArrow: "<i class='fas fa-chevron-left'></i>",
-        nextArrow: "<i class='fas fa-chevron-right'></i>"
+    flatpickr("#dob, #joiningDate", { 
+        altInput: true, 
+        altFormat: "F j, Y", 
+        dateFormat: "Y-m-d", 
+        disableMobile: true, 
+        onReady: function(s, d, i) { 
+            i.altInput.style.cursor = "pointer";
+            i.altInput.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
+            i.altInput.style.color = "#ffffff";
+            i.altInput.style.webkitTextFillColor = "#ffffff";
+        } 
     });
-    
-    function openDateModal(tid, hid, title) { currentInput = document.getElementById(tid); currentHidden = document.getElementById(hid); document.getElementById('modalTitle').innerText = title; document.getElementById('dateModalOverlay').classList.add('active'); }
-    function closeDateModal() { document.getElementById('dateModalOverlay').classList.remove('active'); }
-    document.getElementById('dobTrigger').onclick = () => openDateModal('dobTrigger', 'dob', 'Date of Birth');
-    document.getElementById('joiningDateTrigger').onclick = () => openDateModal('joiningDateTrigger', 'joiningDate', 'Joining Date');
-    document.getElementById('confirmDateBtn').onclick = function() { const sel = inlineFp.input.value; if(sel) { currentHidden.value = sel; currentInput.value = new Date(sel).toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'}); closeDateModal(); } };
 
     document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
 
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec'; 
+
     let isEmailVerified = false;
 
     document.getElementById('sendCodeBtn').onclick = function() {
-        const email = document.getElementById('email'); if (!email.value) return;
-        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        fetch(scriptURL, { method: 'POST', body: new FormData(document.getElementById('form')) }).then(() => { document.getElementById('modalEmailText').innerText = email.value; document.getElementById('otpModalOverlay').classList.add('active'); this.textContent = 'Sent'; });
+        const email = document.getElementById('email');
+        const btn = this;
+        if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
+        let fd = new FormData(); fd.append("action", "sendOTP"); fd.append("Email", email.value);
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('modalEmailText').innerText = email.value; document.getElementById('otpModalOverlay').classList.add('active'); btn.textContent = 'Sent'; btn.disabled = false; } else { alert("Error: " + data.error); btn.textContent = 'Send OTP'; btn.disabled = false; } }).catch(() => { alert("Script Error! Check Permissions."); btn.textContent = 'Send OTP'; btn.disabled = false; });
     };
 
+    document.getElementById('closeModalBtn').onclick = () => { document.getElementById('otpModalOverlay').classList.remove('active'); document.getElementById('sendCodeBtn').textContent = 'Send OTP'; };
+
     document.getElementById('verifyCodeBtn').onclick = function() {
-        isEmailVerified = true; document.getElementById('otpModalOverlay').classList.remove('active'); 
-        document.getElementById('sendCodeBtn').innerHTML = '✓ Verified'; document.getElementById('sendCodeBtn').className = "btn btn-success-custom w-100";
+        const code = document.getElementById('verificationCode').value;
+        const msg = document.getElementById('otpMessage');
+        if (code.length < 6) { msg.innerText = "Enter 6 digits"; return; }
+        this.disabled = true;
+        let fd = new FormData(); fd.append("action", "verifyOTP"); fd.append("Email", document.getElementById('email').value); fd.append("otp", code);
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { isEmailVerified = true; document.getElementById('otpModalOverlay').classList.remove('active'); const btn = document.getElementById('sendCodeBtn'); btn.innerHTML = '<i class="fas fa-check-circle"></i> Verified'; btn.className = "btn btn-success-custom w-100"; document.getElementById('email').readOnly = true; } else { msg.innerText = "Invalid OTP!"; this.disabled = false; } });
     };
 
     document.getElementById('form').onsubmit = function(e) {
-        e.preventDefault(); if(!isEmailVerified) { alert("Verify email!"); return; }
-        document.getElementById('submitBtn').innerHTML = 'Submitting...';
-        fetch(scriptURL, { method: 'POST', body: new FormData(this) }).then(() => { document.getElementById('thankYouModalOverlay').classList.add('active'); });
+        e.preventDefault();
+        if(!isEmailVerified) { alert("Verify email first!"); return; }
+        const sBtn = document.getElementById('submitBtn');
+        sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; sBtn.disabled = true;
+        let fd = new FormData(this); fd.append("action", "submitForm");
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('thankYouModalOverlay').classList.add('active'); } else { alert("Submission Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; } }).catch(() => { alert("Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; });
     };
   </script>
 </body>
