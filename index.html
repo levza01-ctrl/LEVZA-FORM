@@ -25,18 +25,15 @@
     .form-control:disabled, .form-control[readonly] { background-color: rgba(255,255,255,0.05) !important; color: #fff !important; opacity: 1 !important; -webkit-text-fill-color: #fff !important; cursor: pointer !important; }
     textarea.form-control { height: auto !important; }
 
-    /* Custom Trigger Buttons */
     .custom-trigger { background-color: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #bbb; border-radius: 10px; height: 48px; padding: 0 15px; width: 100%; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s; font-size: 1rem; font-family: 'Segoe UI', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
     .custom-trigger.filled { color: #fff; background-color: rgba(255,255,255,0.12); border-color: rgba(255,153,0,0.6); box-shadow: 0 0 15px rgba(255,153,0,0.2); }
     .custom-trigger .trig-icon { color: #ff9900; font-size: 0.85rem; flex-shrink: 0; }
     .custom-trigger.dimmed { opacity: 0.45; pointer-events: none; }
 
-    /* Popup Overlay */
     .pop-overlay { position: fixed; inset: 0; background: rgba(4,15,33,0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: flex-end; justify-content: center; z-index: 99999; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
     .pop-overlay.on { opacity: 1; visibility: visible; }
     @media(min-width: 600px) { .pop-overlay { align-items: center; } }
 
-    /* Select Popup Card */
     .sel-card { background: rgba(8,22,48,0.98); border: 1px solid rgba(255,153,0,0.35); border-radius: 26px 26px 0 0; width: 100%; max-width: 580px; max-height: 78vh; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94); overflow: hidden; }
     .pop-overlay.on .sel-card { transform: translateY(0); }
     @media(min-width: 600px) { .sel-card { border-radius: 22px; transform: scale(0.92) translateY(0); max-height: 72vh; } .pop-overlay.on .sel-card { transform: scale(1); } }
@@ -53,15 +50,20 @@
     .sel-opt.chosen { background: rgba(255,153,0,0.2); color: #ffb84d; font-weight: 600; }
     .sel-opt .chk { color: #ff9900; font-size: 0.9rem; }
 
-    /* Calendar Popup Card */
+    /* ── Calendar Card ── */
     .cal-card { background: rgba(8,22,48,0.98); border: 1px solid rgba(255,153,0,0.35); border-radius: 26px 26px 0 0; width: 100%; max-width: 420px; transform: translateY(100%); transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94); overflow: hidden; }
     .pop-overlay.on .cal-card { transform: translateY(0); }
     @media(min-width: 600px) { .cal-card { border-radius: 22px; transform: scale(0.92); } .pop-overlay.on .cal-card { transform: scale(1); } }
+
+    /* Day view */
+    .cal-day-view { }
     .cal-head { padding: 0 18px 8px; }
     .cal-nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 12px; }
     .cal-nav-btn { background: rgba(255,153,0,0.15); border: 1px solid rgba(255,153,0,0.3); color: #ff9900; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; flex-shrink: 0; }
     .cal-nav-btn:active { background: rgba(255,153,0,0.35); }
-    .cal-my { font-size: 1.05rem; font-weight: 600; color: #fff; text-align: center; }
+    .cal-my { font-size: 1.05rem; font-weight: 600; color: #ff9900; text-align: center; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 8px; transition: background 0.2s; }
+    .cal-my:active { background: rgba(255,153,0,0.15); }
+    .cal-my i { font-size: 0.7rem; }
     .cal-wdays { display: grid; grid-template-columns: repeat(7,1fr); }
     .cal-wd { text-align: center; font-size: 0.72rem; color: #ff9900; font-weight: 700; padding: 5px 0; }
     .cal-days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; padding: 0 12px 10px; }
@@ -73,13 +75,25 @@
     .cal-confirm { background: linear-gradient(135deg,#ff9900,#ff7a00); border: none; border-radius: 12px; height: 48px; font-weight: 600; color: #fff; width: calc(100% - 30px); margin: 8px 15px 18px; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
     .cal-confirm:active { transform: scale(0.98); }
 
+    /* Month-Year Picker View */
+    .cal-picker-view { display: none; padding: 10px 15px 18px; }
+    .cal-picker-view.show { display: block; }
+    .cal-year-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 0 4px; }
+    .cal-year-num { font-size: 1.25rem; font-weight: 700; color: #fff; }
+    .cal-yr-btn { background: rgba(255,153,0,0.15); border: 1px solid rgba(255,153,0,0.3); color: #ff9900; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+    .cal-yr-btn:active { background: rgba(255,153,0,0.35); }
+    .cal-months-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+    .cal-m-opt { padding: 13px 5px; border-radius: 12px; text-align: center; cursor: pointer; color: #fff; font-size: 0.9rem; transition: background 0.18s; border: 1px solid transparent; }
+    .cal-m-opt:active { background: rgba(255,153,0,0.2); }
+    .cal-m-opt.cur-m { background: rgba(255,153,0,0.25); border-color: rgba(255,153,0,0.5); color: #ffb84d; font-weight: 700; }
+    .cal-m-opt.now-m { border-color: rgba(255,255,255,0.2); }
+
     .btn-submit { background: linear-gradient(135deg,#ff9900,#ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
     .btn-submit:hover { box-shadow: 0 5px 15px rgba(255,153,0,0.5); transform: translateY(-2px); }
     .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s; }
     .btn-code:hover { background-color: rgba(255,153,0,0.2); border-color: #ff9900; }
     .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
     .form-check-label { font-size: 0.95rem; color: #ffffff !important; cursor: pointer; }
-
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4,15,33,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
@@ -208,20 +222,42 @@
   <!-- Calendar Popup -->
   <div id="calOverlay" class="pop-overlay" onclick="closePop('cal',event)">
     <div class="cal-card">
-      <div class="cal-head">
-        <div class="drag-bar"></div>
-        <div class="cal-nav">
-          <div class="cal-nav-btn" onclick="calMove(-1)"><i class="fas fa-chevron-left"></i></div>
-          <div class="cal-my" id="calTitle"></div>
-          <div class="cal-nav-btn" onclick="calMove(1)"><i class="fas fa-chevron-right"></i></div>
+
+      <!-- Day View -->
+      <div class="cal-day-view" id="calDayView">
+        <div class="cal-head">
+          <div class="drag-bar"></div>
+          <div class="cal-nav">
+            <div class="cal-nav-btn" onclick="calMove(-1)"><i class="fas fa-chevron-left"></i></div>
+            <div class="cal-my" id="calTitle" onclick="togglePicker()">
+              <span id="calTitleText"></span>
+              <i class="fas fa-chevron-down" id="calTitleArrow"></i>
+            </div>
+            <div class="cal-nav-btn" onclick="calMove(1)"><i class="fas fa-chevron-right"></i></div>
+          </div>
+          <div class="cal-wdays">
+            <div class="cal-wd">Su</div><div class="cal-wd">Mo</div><div class="cal-wd">Tu</div>
+            <div class="cal-wd">We</div><div class="cal-wd">Th</div><div class="cal-wd">Fr</div><div class="cal-wd">Sa</div>
+          </div>
         </div>
-        <div class="cal-wdays">
-          <div class="cal-wd">Su</div><div class="cal-wd">Mo</div><div class="cal-wd">Tu</div>
-          <div class="cal-wd">We</div><div class="cal-wd">Th</div><div class="cal-wd">Fr</div><div class="cal-wd">Sa</div>
-        </div>
+        <div class="cal-days-grid" id="calGrid"></div>
+        <button class="cal-confirm" onclick="confirmCal()">Confirm Date</button>
       </div>
-      <div class="cal-days-grid" id="calGrid"></div>
-      <button class="cal-confirm" onclick="confirmCal()">Confirm Date</button>
+
+      <!-- Month-Year Picker View -->
+      <div class="cal-picker-view" id="calPickerView">
+        <div class="drag-bar" style="margin-bottom:16px;"></div>
+        <div class="cal-year-nav">
+          <div class="cal-yr-btn" onclick="changePickerYear(-1)"><i class="fas fa-chevron-left"></i></div>
+          <div class="cal-year-num" id="pickerYearNum"></div>
+          <div class="cal-yr-btn" onclick="changePickerYear(1)"><i class="fas fa-chevron-right"></i></div>
+        </div>
+        <div class="cal-months-grid" id="calMonthsGrid"></div>
+        <button class="cal-confirm" style="margin-top:14px;" onclick="togglePicker()">
+          <i class="fas fa-calendar-days"></i> Back to Days
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -248,16 +284,13 @@
   </div>
 
   <script>
-    // ─── Data ───
     const locationData = {"Pakistan":{"Punjab":["Lahore","Faisalabad","Rawalpindi","Multan","Gujranwala"],"Sindh":["Karachi","Hyderabad","Sukkur","Larkana"],"KPK":["Peshawar","Abbottabad","Mardan","Swat"],"Balochistan":["Quetta","Gwadar","Khuzdar"],"Islamabad":["Islamabad City"]},"United Kingdom":{"England":["London","Manchester","Birmingham","Leeds","Liverpool"],"Scotland":["Edinburgh","Glasgow","Aberdeen"],"Wales":["Cardiff","Swansea","Newport"],"Northern Ireland":["Belfast","Derry"]}};
     const allCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
-    // ─── Select Popup ───
+    // ── Select Popup ──
     let curSelField = '', curSelAll = [];
-
     function openSel(field, title, opts) {
-      curSelField = field;
-      curSelAll = opts;
+      curSelField = field; curSelAll = opts;
       document.getElementById('selTitle').textContent = title;
       document.getElementById('selSearch').style.display = 'none';
       document.getElementById('selSearch').value = '';
@@ -265,26 +298,21 @@
       document.getElementById('selOverlay').classList.add('on');
       document.body.style.overflow = 'hidden';
     }
-
     function openCountryPop() {
-      curSelField = 'country';
-      curSelAll = allCountries;
+      curSelField = 'country'; curSelAll = allCountries;
       document.getElementById('selTitle').textContent = 'Select Country';
       const s = document.getElementById('selSearch');
-      s.style.display = 'block';
-      s.value = '';
+      s.style.display = 'block'; s.value = '';
       renderOpts(allCountries);
       document.getElementById('selOverlay').classList.add('on');
       document.body.style.overflow = 'hidden';
       setTimeout(() => s.focus(), 380);
     }
-
     function openStatePop() {
       const c = document.getElementById('countryVal').value;
       if (!c || !locationData[c]) return;
       const states = Object.keys(locationData[c]);
-      curSelField = 'state';
-      curSelAll = states;
+      curSelField = 'state'; curSelAll = states;
       document.getElementById('selTitle').textContent = 'Select State';
       document.getElementById('selSearch').style.display = 'none';
       document.getElementById('selSearch').value = '';
@@ -292,14 +320,12 @@
       document.getElementById('selOverlay').classList.add('on');
       document.body.style.overflow = 'hidden';
     }
-
     function openCityPop() {
       const c = document.getElementById('countryVal').value;
       const st = document.getElementById('stateVal').value;
       if (!c || !st || !locationData[c] || !locationData[c][st]) return;
       const cities = locationData[c][st];
-      curSelField = 'city';
-      curSelAll = cities;
+      curSelField = 'city'; curSelAll = cities;
       document.getElementById('selTitle').textContent = 'Select City';
       document.getElementById('selSearch').style.display = 'none';
       document.getElementById('selSearch').value = '';
@@ -307,7 +333,6 @@
       document.getElementById('selOverlay').classList.add('on');
       document.body.style.overflow = 'hidden';
     }
-
     function renderOpts(opts) {
       const cur = document.getElementById(curSelField + 'Val') ? document.getElementById(curSelField + 'Val').value : '';
       const list = document.getElementById('selList');
@@ -321,21 +346,17 @@
       });
       list.scrollTop = 0;
     }
-
     function filterSel() {
       const q = document.getElementById('selSearch').value.toLowerCase();
       renderOpts(curSelAll.filter(o => o.toLowerCase().includes(q)));
     }
-
     function pickOpt(val) {
       if (curSelField === 'country') {
         document.getElementById('countryVal').value = val;
         setTrig('country', val);
-        // Reset state/city
         document.getElementById('stateVal').value = '';
         document.getElementById('cityVal').value = '';
         setTrig('state', ''); setTrig('city', '');
-        // Rebuild stateDiv / cityDiv
         const sDiv = document.getElementById('stateDiv');
         const cDiv = document.getElementById('cityDiv');
         if (locationData[val]) {
@@ -365,47 +386,94 @@
       }
       closePop('sel');
     }
-
     function setTrig(field, val) {
       const lbl = document.getElementById(field + 'Lbl');
       const trig = document.getElementById(field + 'Trig');
       if (!lbl || !trig) return;
-      if (val) {
-        lbl.textContent = val;
-        lbl.style.color = '#fff';
-        trig.classList.add('filled');
-      } else {
-        const defaults = {country:'Select Country',state:'Select State',city:'Select City',gender:'Select Gender',position:'Position Applied For',investor:'Are you an investor?'};
-        lbl.textContent = defaults[field] || '';
-        lbl.style.color = '#bbb';
-        trig.classList.remove('filled');
-      }
+      const defaults = {country:'Select Country',state:'Select State',city:'Select City',gender:'Select Gender',position:'Position Applied For',investor:'Are you an investor?'};
+      if (val) { lbl.textContent = val; lbl.style.color = '#fff'; trig.classList.add('filled'); }
+      else { lbl.textContent = defaults[field] || ''; lbl.style.color = '#bbb'; trig.classList.remove('filled'); }
     }
-
     function closePop(type, e) {
       const id = type === 'sel' ? 'selOverlay' : 'calOverlay';
       if (e && e.target !== document.getElementById(id)) return;
       document.getElementById(id).classList.remove('on');
       document.body.style.overflow = '';
+      if (type === 'cal') showDayView();
     }
 
-    // ─── Calendar ───
+    // ── Calendar ──
     const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     let calField = '', calView = new Date(), calPicked = null;
+    let pickerOpen = false, pickerYear = new Date().getFullYear();
 
     function openCal(field) {
       calField = field;
       const v = document.getElementById(field + 'Val').value;
       calView = v ? new Date(v + 'T12:00:00') : new Date();
       calPicked = v ? new Date(v + 'T12:00:00') : null;
+      showDayView();
       drawCal();
       document.getElementById('calOverlay').classList.add('on');
       document.body.style.overflow = 'hidden';
     }
 
+    function showDayView() {
+      pickerOpen = false;
+      document.getElementById('calDayView').style.display = 'block';
+      document.getElementById('calPickerView').classList.remove('show');
+      const arr = document.getElementById('calTitleArrow');
+      if (arr) arr.style.transform = '';
+    }
+
+    function togglePicker() {
+      pickerOpen = !pickerOpen;
+      const pv = document.getElementById('calPickerView');
+      const dv = document.getElementById('calDayView');
+      const arr = document.getElementById('calTitleArrow');
+      if (pickerOpen) {
+        pickerYear = calView.getFullYear();
+        pv.classList.add('show');
+        dv.style.display = 'none';
+        if (arr) arr.style.transform = 'rotate(180deg)';
+        drawMonthPicker();
+      } else {
+        showDayView();
+        drawCal();
+      }
+    }
+
+    function drawMonthPicker() {
+      document.getElementById('pickerYearNum').textContent = pickerYear;
+      const curM = calView.getMonth();
+      const curY = calView.getFullYear();
+      const nowM = new Date().getMonth();
+      const nowY = new Date().getFullYear();
+      let html = '';
+      MONTHS_SHORT.forEach((m, i) => {
+        const isCur = i === curM && pickerYear === curY;
+        const isNow = i === nowM && pickerYear === nowY;
+        html += `<div class="cal-m-opt${isCur ? ' cur-m' : ''}${isNow && !isCur ? ' now-m' : ''}" onclick="pickMonth(${i})">${m}</div>`;
+      });
+      document.getElementById('calMonthsGrid').innerHTML = html;
+    }
+
+    function changePickerYear(dir) {
+      pickerYear += dir;
+      drawMonthPicker();
+    }
+
+    function pickMonth(m) {
+      calView.setFullYear(pickerYear);
+      calView.setMonth(m);
+      showDayView();
+      drawCal();
+    }
+
     function drawCal() {
       const y = calView.getFullYear(), m = calView.getMonth();
-      document.getElementById('calTitle').textContent = MONTHS[m] + ' ' + y;
+      document.getElementById('calTitleText').textContent = MONTHS[m] + ' ' + y;
       const first = new Date(y, m, 1).getDay();
       const dim = new Date(y, m + 1, 0).getDate();
       const prevDim = new Date(y, m, 0).getDate();
@@ -426,12 +494,10 @@
       calPicked = new Date(calView.getFullYear(), calView.getMonth(), d);
       drawCal();
     }
-
     function calMove(dir) {
       calView.setMonth(calView.getMonth() + dir);
       drawCal();
     }
-
     function confirmCal() {
       if (!calPicked) { closePop('cal'); return; }
       const y = calPicked.getFullYear();
@@ -445,43 +511,30 @@
       closePop('cal');
     }
 
-    // ─── OTP + Submit ───
+    // ── OTP + Submit ──
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec';
     let isEmailVerified = false;
 
     document.getElementById('sendCodeBtn').onclick = function() {
-      const email = document.getElementById('email');
-      const btn = this;
+      const email = document.getElementById('email'), btn = this;
       if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
       let fd = new FormData(); fd.append("action","sendOTP"); fd.append("Email",email.value);
       fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{if(data.result==="success"){document.getElementById('modalEmailText').innerText=email.value;document.getElementById('otpModalOverlay').classList.add('active');btn.textContent='Sent';btn.disabled=false;}else{alert("Error: "+data.error);btn.textContent='Send OTP';btn.disabled=false;}}).catch(()=>{alert("Script Error! Check Permissions.");btn.textContent='Send OTP';btn.disabled=false;});
     };
-
     document.getElementById('closeModalBtn').onclick = () => { document.getElementById('otpModalOverlay').classList.remove('active'); document.getElementById('sendCodeBtn').textContent='Send OTP'; };
-
     document.getElementById('verifyCodeBtn').onclick = function() {
-      const code = document.getElementById('verificationCode').value;
-      const msg = document.getElementById('otpMessage');
+      const code = document.getElementById('verificationCode').value, msg = document.getElementById('otpMessage');
       if (code.length < 6) { msg.innerText = "Enter 6 digits"; return; }
       this.disabled = true;
       let fd = new FormData(); fd.append("action","verifyOTP"); fd.append("Email",document.getElementById('email').value); fd.append("otp",code);
       fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{if(data.result==="success"){isEmailVerified=true;document.getElementById('otpModalOverlay').classList.remove('active');const btn=document.getElementById('sendCodeBtn');btn.innerHTML='<i class="fas fa-check-circle"></i> Verified';btn.className="btn btn-success-custom w-100";document.getElementById('email').readOnly=true;}else{msg.innerText="Invalid OTP!";this.disabled=false;}});
     };
-
     document.getElementById('form').onsubmit = function(e) {
       e.preventDefault();
       if (!isEmailVerified) { alert("Verify email first!"); return; }
-      const checks = [
-        [document.getElementById('form').FirstName,'First Name'],
-        [document.getElementById('form').LastName,'Last Name'],
-        [document.getElementById('form').CNIC,'CNIC'],
-        [document.getElementById('form').Contact,'Contact Number'],
-        [document.getElementById('form').Postal,'Postal Code'],
-        [document.getElementById('form').Address,'Street Address'],
-        [document.getElementById('form').GreatFit,'Why you\'re a great fit'],
-      ];
-      for (const [el,name] of checks) { if (!el.value.trim()) { alert(`Please fill: ${name}`); el.focus(); return; } }
+      const checks = [['FirstName','First Name'],['LastName','Last Name'],['CNIC','CNIC'],['Contact','Contact Number'],['Postal','Postal Code'],['Address','Street Address'],['GreatFit','Why you\'re a great fit']];
+      for (const [n,label] of checks) { const el = this[n]; if (!el || !el.value.trim()) { alert(`Please fill: ${label}`); if(el) el.focus(); return; } }
       if (!document.getElementById('dobVal').value) { alert("Please select Date of Birth."); return; }
       if (!document.getElementById('genderVal').value) { alert("Please select Gender."); return; }
       if (!document.getElementById('countryVal').value) { alert("Please select Country."); return; }
