@@ -20,7 +20,7 @@
     .section-title i { color: #ff9900; }
 
     /* ====================================================== */
-    /* THE ULTIMATE COLOR & GLASSY FIX (NO MORE DARK FIELDS)  */
+    /* THE ULTIMATE MOBILE PASTE & AUTOFILL REPAIR (COUNTRY FIX) */
     /* ====================================================== */
     
     .form-control, .form-select, .flatpickr-input { 
@@ -30,35 +30,40 @@
         border-radius: 10px; 
         height: 48px; 
         padding-left: 15px; 
-        -webkit-text-fill-color: #ffffff !important; /* Force text white */
+        -webkit-text-fill-color: #ffffff !important;
+        transition: all 0.4s ease-in-out !important;
     }
 
-    /* Is se Autofill wala dark background hamesha ke liye khatam ho jayega */
+    /* Target specifically Select/Dropdown to prevent white background on selection/paste */
+    .form-select, .form-select:focus, .form-select:active {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        color: #fff !important;
+    }
+
+    /* Force background for Autofill, Paste, and Long-press on Mobile */
     input:-webkit-autofill,
     input:-webkit-autofill:hover, 
     input:-webkit-autofill:focus, 
-    input:-webkit-autofill:active {
-        -webkit-box-shadow: 0 0 0 1000px #132a4a inset !important; /* Matches your theme background */
+    input:-webkit-autofill:active,
+    select:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px #132a4a inset !important; 
         -webkit-text-fill-color: white !important;
         transition: background-color 5000s ease-in-out 0s;
     }
 
-    /* Fill hone par glassy glow animation (Sub sections par bhi) */
     .form-control:focus, .form-select:focus, .form-control:not(:placeholder-shown) { 
         background-color: rgba(255, 255, 255, 0.12) !important; 
         border-color: rgba(255, 153, 0, 0.6) !important; 
         box-shadow: 0 0 15px rgba(255, 153, 0, 0.2) !important;
-        color: #fff !important;
     }
 
     .form-control::placeholder { color: #bbb !important; -webkit-text-fill-color: #bbb !important; }
     .form-select option { background-color: #0e2746 !important; color: #fff !important; }
     
-    /* Disabled states fix */
     .form-control:disabled, .form-select:disabled, .form-control[readonly] { 
         background-color: rgba(255, 255, 255, 0.05) !important; 
         color: #fff !important; 
-        opacity: 1 !important; 
         -webkit-text-fill-color: #fff !important;
         cursor: pointer !important;
     }
@@ -215,8 +220,8 @@
     flatpickr("#dob, #joiningDate", { altInput: true, altFormat: "F j, Y", dateFormat: "Y-m-d", disableMobile: true, onReady: function(s, d, i) { i.altInput.style.cursor = "pointer"; } });
     document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
 
-    // === APNA SCRIPT URL YAHAN DALEIN ===
-    const scriptURL = 'https://script.google.com/macros/s/AKfycby-sb7nNEEBhCS5OTdbJ_wQil5EgMavpeKnlx1OzqFZczieqdaY9amxQYZ4G6xoOQ5g/exec'; 
+    // === SCRIPT URL (Don't forget to paste yours) ===
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec'; 
 
     let isEmailVerified = false;
 
@@ -226,7 +231,7 @@
         if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
         let fd = new FormData(); fd.append("action", "sendOTP"); fd.append("Email", email.value);
-        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('modalEmailText').innerText = email.value; document.getElementById('otpModalOverlay').classList.add('active'); btn.textContent = 'Sent'; btn.disabled = false; } else { alert("Error: " + data.error); btn.textContent = 'Send OTP'; btn.disabled = false; } }).catch(() => { alert("Script Error! Check Permissions."); btn.textContent = 'Send OTP'; btn.disabled = false; });
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('modalEmailText').innerText = email.value; document.getElementById('otpModalOverlay').classList.add('active'); btn.textContent = 'Sent'; btn.disabled = false; } else { alert("Error: " + data.error); btn.textContent = 'Send OTP'; btn.disabled = false; } }).catch(err => { alert("Check Script Permissions."); btn.textContent = 'Send OTP'; btn.disabled = false; });
     };
 
     document.getElementById('closeModalBtn').onclick = () => { document.getElementById('otpModalOverlay').classList.remove('active'); document.getElementById('sendCodeBtn').textContent = 'Send OTP'; };
