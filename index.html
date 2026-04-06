@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <style>
-    body { background-image: linear-gradient(135deg, rgba(11, 31, 58, 0.7), rgba(20, 47, 85, 0.7)), url('https://i.postimg.cc/4yfdVF95/Chat-GPT-Image-Apr-5-2026-04-46-20-PM.png'); background-size: cover; background-position: center; background-attachment: fixed; font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; position: relative; overflow-x: hidden; }
+    body { font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; position: relative; overflow-x: hidden; background: #0b1f3a; }
+    .bg-layer { position: fixed; inset: 0; background-image: linear-gradient(135deg, rgba(11,31,58,0.7), rgba(20,47,85,0.7)), url('https://i.postimg.cc/4yfdVF95/Chat-GPT-Image-Apr-5-2026-04-46-20-PM.png'); background-size: cover; background-position: center; z-index: -1; }
     .logo-container { position: absolute; top: 25px; left: 30px; }
     .logo { width: 250px; }
     .page-container { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 100vh; padding: 100px 20px 40px 20px; }
@@ -15,125 +15,113 @@
     .form-title { font-weight: 600; color: #ffffff; font-size: 2.2rem; }
     .form-title span { color: #ff9900; }
     .form-subtitle { font-size: 0.95rem; color: #ccc; }
-    .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.15); border-top: 1px solid rgba(255, 255, 255, 0.3); border-left: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); max-width: 900px; width: 100%; }
+    .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.3); border-left: 1px solid rgba(255,255,255,0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.4); max-width: 900px; width: 100%; }
     .section-title { font-weight: 600; margin-top: 1.5rem; margin-bottom: 1.5rem; color: #fff; display: flex; align-items: center; gap: 10px; }
     .section-title i { color: #ff9900; }
-
-    .form-control, .form-select, .flatpickr-input { 
-        background-color: rgba(255, 255, 255, 0.08) !important; 
-        border: 1px solid rgba(255, 255, 255, 0.2) !important; 
-        color: #ffffff !important; 
-        border-radius: 10px; 
-        height: 48px; 
-        padding-left: 15px; 
-        -webkit-text-fill-color: #ffffff !important;
-    }
-
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover, 
-    input:-webkit-autofill:focus, 
-    input:-webkit-autofill:active {
-        -webkit-box-shadow: 0 0 0 1000px #132a4a inset !important;
-        -webkit-text-fill-color: white !important;
-        transition: background-color 5000s ease-in-out 0s;
-    }
-
-    .form-control:focus, .form-select:focus, .form-control:not(:placeholder-shown) { 
-        background-color: rgba(255, 255, 255, 0.12) !important; 
-        border-color: rgba(255, 153, 0, 0.6) !important; 
-        box-shadow: 0 0 15px rgba(255, 153, 0, 0.2) !important;
-        color: #fff !important;
-    }
-
+    .form-control { background-color: rgba(255,255,255,0.08) !important; border: 1px solid rgba(255,255,255,0.2) !important; color: #ffffff !important; border-radius: 10px; height: 48px; padding-left: 15px; -webkit-text-fill-color: #ffffff !important; }
+    input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active { -webkit-box-shadow: 0 0 0 1000px #132a4a inset !important; -webkit-text-fill-color: white !important; transition: background-color 5000s ease-in-out 0s; }
+    .form-control:focus, .form-control:not(:placeholder-shown) { background-color: rgba(255,255,255,0.12) !important; border-color: rgba(255,153,0,0.6) !important; box-shadow: 0 0 15px rgba(255,153,0,0.2) !important; color: #fff !important; }
     .form-control::placeholder { color: #bbb !important; -webkit-text-fill-color: #bbb !important; }
-    .form-select option { background-color: #0e2746 !important; color: #fff !important; }
-    
-    .form-control:disabled, .form-select:disabled, .form-control[readonly] { 
-        background-color: rgba(255, 255, 255, 0.05) !important; 
-        color: #fff !important; 
-        opacity: 1 !important; 
-        -webkit-text-fill-color: #fff !important;
-        cursor: pointer !important;
-    }
+    .form-control:disabled, .form-control[readonly] { background-color: rgba(255,255,255,0.05) !important; color: #fff !important; opacity: 1 !important; -webkit-text-fill-color: #fff !important; cursor: pointer !important; }
+    textarea.form-control { height: auto !important; }
 
-    .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
-    .btn-submit:hover { box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5); transform: translateY(-2px); }
-    .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s;}
-    .btn-code:hover { background-color: rgba(255, 153, 0, 0.2); border-color: #ff9900; }
+    /* Custom Trigger Buttons */
+    .custom-trigger { background-color: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #bbb; border-radius: 10px; height: 48px; padding: 0 15px; width: 100%; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s; font-size: 1rem; font-family: 'Segoe UI', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .custom-trigger.filled { color: #fff; background-color: rgba(255,255,255,0.12); border-color: rgba(255,153,0,0.6); box-shadow: 0 0 15px rgba(255,153,0,0.2); }
+    .custom-trigger .trig-icon { color: #ff9900; font-size: 0.85rem; flex-shrink: 0; }
+    .custom-trigger.dimmed { opacity: 0.45; pointer-events: none; }
+
+    /* Popup Overlay */
+    .pop-overlay { position: fixed; inset: 0; background: rgba(4,15,33,0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: flex-end; justify-content: center; z-index: 99999; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+    .pop-overlay.on { opacity: 1; visibility: visible; }
+    @media(min-width: 600px) { .pop-overlay { align-items: center; } }
+
+    /* Select Popup Card */
+    .sel-card { background: rgba(8,22,48,0.98); border: 1px solid rgba(255,153,0,0.35); border-radius: 26px 26px 0 0; width: 100%; max-width: 580px; max-height: 78vh; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94); overflow: hidden; }
+    .pop-overlay.on .sel-card { transform: translateY(0); }
+    @media(min-width: 600px) { .sel-card { border-radius: 22px; transform: scale(0.92) translateY(0); max-height: 72vh; } .pop-overlay.on .sel-card { transform: scale(1); } }
+    .drag-bar { width: 42px; height: 4px; background: rgba(255,255,255,0.28); border-radius: 3px; margin: 14px auto 0; }
+    .sel-head { padding: 14px 18px 12px; border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+    .sel-title { font-size: 1.05rem; font-weight: 600; color: #fff; text-align: center; margin-bottom: 12px; }
+    .sel-search { background: rgba(255,255,255,0.1) !important; border: 1px solid rgba(255,255,255,0.2) !important; border-radius: 10px; color: #fff !important; height: 40px; padding: 0 14px; width: 100%; font-size: 0.95rem; outline: none; -webkit-text-fill-color: #fff !important; }
+    .sel-search::placeholder { color: #999; }
+    .sel-list { overflow-y: auto; padding: 8px; flex: 1; overscroll-behavior: contain; }
+    .sel-list::-webkit-scrollbar { width: 3px; }
+    .sel-list::-webkit-scrollbar-thumb { background: rgba(255,153,0,0.4); border-radius: 3px; }
+    .sel-opt { padding: 12px 14px; border-radius: 10px; color: #fff; cursor: pointer; transition: background 0.18s; font-size: 0.95rem; display: flex; align-items: center; justify-content: space-between; }
+    .sel-opt:active { background: rgba(255,153,0,0.2); }
+    .sel-opt.chosen { background: rgba(255,153,0,0.2); color: #ffb84d; font-weight: 600; }
+    .sel-opt .chk { color: #ff9900; font-size: 0.9rem; }
+
+    /* Calendar Popup Card */
+    .cal-card { background: rgba(8,22,48,0.98); border: 1px solid rgba(255,153,0,0.35); border-radius: 26px 26px 0 0; width: 100%; max-width: 420px; transform: translateY(100%); transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94); overflow: hidden; }
+    .pop-overlay.on .cal-card { transform: translateY(0); }
+    @media(min-width: 600px) { .cal-card { border-radius: 22px; transform: scale(0.92); } .pop-overlay.on .cal-card { transform: scale(1); } }
+    .cal-head { padding: 0 18px 8px; }
+    .cal-nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 12px; }
+    .cal-nav-btn { background: rgba(255,153,0,0.15); border: 1px solid rgba(255,153,0,0.3); color: #ff9900; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; flex-shrink: 0; }
+    .cal-nav-btn:active { background: rgba(255,153,0,0.35); }
+    .cal-my { font-size: 1.05rem; font-weight: 600; color: #fff; text-align: center; }
+    .cal-wdays { display: grid; grid-template-columns: repeat(7,1fr); }
+    .cal-wd { text-align: center; font-size: 0.72rem; color: #ff9900; font-weight: 700; padding: 5px 0; }
+    .cal-days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; padding: 0 12px 10px; }
+    .cal-d { text-align: center; padding: 9px 2px; border-radius: 50%; cursor: pointer; color: #fff; font-size: 0.88rem; transition: background 0.18s; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
+    .cal-d:active { background: rgba(255,153,0,0.25); }
+    .cal-d.sel { background: #ff9900 !important; color: #fff; font-weight: 700; }
+    .cal-d.tod { border: 1px solid rgba(255,153,0,0.55); }
+    .cal-d.other { color: rgba(255,255,255,0.22); cursor: default; }
+    .cal-confirm { background: linear-gradient(135deg,#ff9900,#ff7a00); border: none; border-radius: 12px; height: 48px; font-weight: 600; color: #fff; width: calc(100% - 30px); margin: 8px 15px 18px; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
+    .cal-confirm:active { transform: scale(0.98); }
+
+    .btn-submit { background: linear-gradient(135deg,#ff9900,#ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
+    .btn-submit:hover { box-shadow: 0 5px 15px rgba(255,153,0,0.5); transform: translateY(-2px); }
+    .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s; }
+    .btn-code:hover { background-color: rgba(255,153,0,0.2); border-color: #ff9900; }
     .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
     .form-check-label { font-size: 0.95rem; color: #ffffff !important; cursor: pointer; }
 
-    /* ============================================ */
-    /* FLATPICKR CALENDAR - COMPLETE WHITE GLITCH FIX */
-    /* ============================================ */
-    .flatpickr-calendar {
-        background: #0b1f3a !important;
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 153, 0, 0.6) !important;
-        border-radius: 15px !important;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important;
-        color: #fff !important;
-    }
-    .flatpickr-calendar.open { background: #0b1f3a !important; }
-    .flatpickr-months { background: #0b1f3a !important; border-radius: 14px 14px 0 0 !important; }
-    .flatpickr-month { background: #0b1f3a !important; color: #fff !important; fill: #fff !important; }
-    .flatpickr-weekdays { background: #0b1f3a !important; }
-    span.flatpickr-weekday { background: #0b1f3a !important; color: #ff9900 !important; font-weight: bold !important; }
-    .flatpickr-days { background: #0b1f3a !important; border-color: rgba(255,153,0,0.2) !important; }
-    .dayContainer { background: #0b1f3a !important; }
-    .flatpickr-innerContainer { background: #0b1f3a !important; border-radius: 0 0 14px 14px !important; }
-    .flatpickr-rContainer { background: #0b1f3a !important; }
-    .flatpickr-day { color: #ffffff !important; border-radius: 8px !important; background: transparent !important; border: 1px solid transparent !important; }
-    .flatpickr-day:hover { background: rgba(255, 153, 0, 0.2) !important; border-color: rgba(255,153,0,0.4) !important; color: #fff !important; }
-    .flatpickr-day.selected, .flatpickr-day.selected:hover { background: #ff9900 !important; border-color: #ff9900 !important; color: #fff !important; }
-    .flatpickr-day.today { border-color: rgba(255,153,0,0.5) !important; }
-    .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay { color: rgba(255,255,255,0.25) !important; }
-    .flatpickr-monthDropdown-months { background: #0b1f3a !important; color: #fff !important; border: none !important; }
-    .flatpickr-monthDropdown-months option { background: #0b1f3a !important; color: #fff !important; }
-    .flatpickr-current-month { color: #ffffff !important; fill: #ffffff !important; font-weight: 600 !important; }
-    .flatpickr-current-month input.cur-year { color: #fff !important; font-weight: 600 !important; }
-    .numInputWrapper span { border-color: rgba(255,255,255,0.2) !important; }
-    .numInputWrapper span:after { border-top-color: #fff !important; border-bottom-color: #fff !important; }
-    .flatpickr-prev-month, .flatpickr-next-month { color: #ff9900 !important; fill: #ff9900 !important; }
-    .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #ffb84d !important; }
-    /* ============================================ */
-
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4,15,33,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
+    .modal-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
     .modal-overlay.active .modal-card { transform: translateY(0); }
-    .otp-input-large { background: rgba(0, 0, 0, 0.3) !important; font-size: 1.8rem !important; letter-spacing: 12px; text-align: center; border: 2px solid rgba(255,153,0,0.5) !important; color: #fff !important; height: 65px; border-radius: 12px; font-weight: bold; }
+    .otp-input-large { background: rgba(0,0,0,0.3) !important; font-size: 1.8rem !important; letter-spacing: 12px; text-align: center; border: 2px solid rgba(255,153,0,0.5) !important; color: #fff !important; height: 65px; border-radius: 12px; font-weight: bold; }
     .success-icon { font-size: 4rem; color: #198754; margin-bottom: 1rem; animation: bounce 1s ease; }
-    @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+    @keyframes bounce { 0%,100%{transform:scale(1);}50%{transform:scale(1.2);} }
   </style>
 </head>
 <body>
+  <div class="bg-layer"></div>
 
   <div class="logo-container">
-      <img src="https://i.postimg.cc/MKh5pB49/Gemini-Generated-Image-f1z1rjf1z1rjf1z1-removebg-preview.png" class="logo" alt="LEVZA Logo">
+    <img src="https://i.postimg.cc/MKh5pB49/Gemini-Generated-Image-f1z1rjf1z1rjf1z1-removebg-preview.png" class="logo" alt="LEVZA Logo">
   </div>
 
   <div class="page-container">
     <div class="form-header-text">
-        <h2 class="form-title">Employee <span>Application Form</span></h2>
-        <p class="form-subtitle">We're excited to learn more about you. Please fill in your details below.</p>
+      <h2 class="form-title">Employee <span>Application Form</span></h2>
+      <p class="form-subtitle">We're excited to learn more about you. Please fill in your details below.</p>
     </div>
 
     <div class="card">
-      <form id="form">
-        <h5 class="section-title" style="margin-top: 0;"><i class="fas fa-user"></i>Personal Information</h5>
+      <form id="form" novalidate>
+        <h5 class="section-title" style="margin-top:0;"><i class="fas fa-user"></i>Personal Information</h5>
         <div class="row g-3 align-items-center">
           <div class="col-md-6"><input type="text" name="FirstName" class="form-control" placeholder="First Name" required></div>
           <div class="col-md-6"><input type="text" name="LastName" class="form-control" placeholder="Last Name" required></div>
           <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC Number (xxxxx-xxxxxxx-x)" required></div>
-          <div class="col-md-4"><input type="text" id="dob" name="DOB" class="form-control" placeholder="Date of Birth" required></div>
           <div class="col-md-4">
-              <select name="Gender" class="form-select" required>
-                  <option value="" selected disabled>Select Gender</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
-              </select>
+            <input type="hidden" name="DOB" id="dobVal">
+            <div class="custom-trigger" id="dobTrig" onclick="openCal('dob')">
+              <span id="dobLbl" style="color:#bbb">Date of Birth</span>
+              <i class="fas fa-calendar-alt trig-icon"></i>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <input type="hidden" name="Gender" id="genderVal">
+            <div class="custom-trigger" id="genderTrig" onclick="openSel('gender','Select Gender',['Male','Female','Other'])">
+              <span id="genderLbl" style="color:#bbb">Select Gender</span>
+              <i class="fas fa-chevron-down trig-icon"></i>
+            </div>
           </div>
           <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number" required></div>
           <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
@@ -142,16 +130,26 @@
 
         <h5 class="section-title"><i class="fas fa-map-marker-alt"></i>Address</h5>
         <div class="row g-3">
-           <div class="col-md-12">
-               <select id="country" name="Country" class="form-select" required>
-                   <option value="" selected disabled>Select Country</option>
-               </select>
-           </div>
+          <div class="col-md-12">
+            <input type="hidden" name="Country" id="countryVal">
+            <div class="custom-trigger" id="countryTrig" onclick="openCountryPop()">
+              <span id="countryLbl" style="color:#bbb">Select Country</span>
+              <i class="fas fa-chevron-down trig-icon"></i>
+            </div>
+          </div>
           <div class="col-md-4" id="stateDiv">
-              <select id="state" name="State" class="form-select" required disabled><option value="" selected disabled>Select State</option></select>
+            <input type="hidden" name="State" id="stateVal">
+            <div class="custom-trigger dimmed" id="stateTrig" onclick="openStatePop()">
+              <span id="stateLbl" style="color:#bbb">Select State</span>
+              <i class="fas fa-chevron-down trig-icon"></i>
+            </div>
           </div>
           <div class="col-md-4" id="cityDiv">
-              <select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select>
+            <input type="hidden" name="City" id="cityVal">
+            <div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop()">
+              <span id="cityLbl" style="color:#bbb">Select City</span>
+              <i class="fas fa-chevron-down trig-icon"></i>
+            </div>
           </div>
           <div class="col-md-4"><input type="text" name="Postal" class="form-control" placeholder="Postal Code" required></div>
           <div class="col-md-12"><input type="text" name="Address" class="form-control" placeholder="Street Address" required></div>
@@ -159,123 +157,344 @@
 
         <h5 class="section-title"><i class="fas fa-briefcase"></i>Employee Details</h5>
         <div class="row g-3">
-            <div class="col-md-6">
-                <select name="Position" class="form-select" required>
-                    <option value="" selected disabled>Position Applied For</option>
-                    <option>Account Provider PK</option>
-                    <option>Account Provider UK</option>
-                    <option>Manager</option>
-                    <option>Developer</option>
-                </select>
+          <div class="col-md-6">
+            <input type="hidden" name="Position" id="positionVal">
+            <div class="custom-trigger" id="positionTrig" onclick="openSel('position','Position Applied For',['Account Provider PK','Account Provider UK','Manager','Developer'])">
+              <span id="positionLbl" style="color:#bbb">Position Applied For</span>
+              <i class="fas fa-chevron-down trig-icon"></i>
             </div>
-            <div class="col-md-6">
-                <select id="investor" name="Investor" class="form-select" required>
-                    <option value="" selected disabled>Are you an investor?</option>
-                    <option>No</option>
-                    <option>Yes</option>
-                </select>
+          </div>
+          <div class="col-md-6">
+            <input type="hidden" name="Investor" id="investorVal">
+            <div class="custom-trigger" id="investorTrig" onclick="openSel('investor','Are you an investor?',['No','Yes'])">
+              <span id="investorLbl" style="color:#bbb">Are you an investor?</span>
+              <i class="fas fa-chevron-down trig-icon"></i>
             </div>
-            <div class="col-md-6"><input type="text" id="joiningDate" name="JoiningDate" class="form-control" placeholder="Available joining date" required></div>
-            <div class="col-md-6" id="amountDiv" style="display:none"><input type="number" id="amount" name="InvestmentAmount" class="form-control" placeholder="Amount"></div>
-            <div class="col-md-12"><textarea name="GreatFit" class="form-control" rows="3" placeholder="Tell us why you're a great fit..." required></textarea></div>
+          </div>
+          <div class="col-md-6">
+            <input type="hidden" name="JoiningDate" id="joiningVal">
+            <div class="custom-trigger" id="joiningTrig" onclick="openCal('joining')">
+              <span id="joiningLbl" style="color:#bbb">Available joining date</span>
+              <i class="fas fa-calendar-alt trig-icon"></i>
+            </div>
+          </div>
+          <div class="col-md-6" id="amountDiv" style="display:none">
+            <input type="number" name="InvestmentAmount" class="form-control" placeholder="Amount">
+          </div>
+          <div class="col-md-12"><textarea name="GreatFit" class="form-control" rows="3" placeholder="Tell us why you're a great fit..." required></textarea></div>
         </div>
-        
+
         <div class="form-check mt-4 d-flex align-items-center">
-          <input class="form-check-input me-2" type="checkbox" id="declaration" required style="width: 1.2rem; height: 1.2rem; cursor: pointer;">
+          <input class="form-check-input me-2" type="checkbox" id="declaration" required style="width:1.2rem;height:1.2rem;cursor:pointer;">
           <label class="form-check-label" for="declaration">I have filled all sections and verified my email.</label>
         </div>
-        
         <button id="submitBtn" class="btn-submit w-100" type="submit"><i class="fas fa-paper-plane"></i> Submit Application</button>
       </form>
     </div>
   </div>
 
-  <div id="otpModalOverlay" class="modal-overlay">
-      <div class="modal-card">
-          <div style="font-size: 3rem; color: #ff9900; margin-bottom: 1rem;"><i class="fas fa-envelope-open-text"></i></div>
-          <h4 style="color: #fff;">Verify Email</h4>
-          <p style="color: #bbb;">Sent to: <span id="modalEmailText" style="color:#ff9900;"></span></p>
-          <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="------" maxlength="6" autocomplete="off">
-          <small id="otpMessage" class="d-block text-warning mt-2"></small>
-          <button type="button" id="verifyCodeBtn" class="btn-submit w-100" style="margin-top: 1.5rem;">Verify Now</button>
-          <button type="button" id="closeModalBtn" style="background: transparent; border: none; color: #aaa; text-decoration: underline; margin-top: 1rem;">Cancel</button>
+  <!-- Select Popup -->
+  <div id="selOverlay" class="pop-overlay" onclick="closePop('sel',event)">
+    <div class="sel-card">
+      <div class="drag-bar"></div>
+      <div class="sel-head">
+        <div class="sel-title" id="selTitle">Select</div>
+        <input type="text" class="sel-search" id="selSearch" placeholder="Search..." oninput="filterSel()" style="display:none;">
       </div>
+      <div class="sel-list" id="selList"></div>
+    </div>
+  </div>
+
+  <!-- Calendar Popup -->
+  <div id="calOverlay" class="pop-overlay" onclick="closePop('cal',event)">
+    <div class="cal-card">
+      <div class="cal-head">
+        <div class="drag-bar"></div>
+        <div class="cal-nav">
+          <div class="cal-nav-btn" onclick="calMove(-1)"><i class="fas fa-chevron-left"></i></div>
+          <div class="cal-my" id="calTitle"></div>
+          <div class="cal-nav-btn" onclick="calMove(1)"><i class="fas fa-chevron-right"></i></div>
+        </div>
+        <div class="cal-wdays">
+          <div class="cal-wd">Su</div><div class="cal-wd">Mo</div><div class="cal-wd">Tu</div>
+          <div class="cal-wd">We</div><div class="cal-wd">Th</div><div class="cal-wd">Fr</div><div class="cal-wd">Sa</div>
+        </div>
+      </div>
+      <div class="cal-days-grid" id="calGrid"></div>
+      <button class="cal-confirm" onclick="confirmCal()">Confirm Date</button>
+    </div>
+  </div>
+
+  <!-- OTP Modal -->
+  <div id="otpModalOverlay" class="modal-overlay">
+    <div class="modal-card">
+      <div style="font-size:3rem;color:#ff9900;margin-bottom:1rem;"><i class="fas fa-envelope-open-text"></i></div>
+      <h4 style="color:#fff;">Verify Email</h4>
+      <p style="color:#bbb;">Sent to: <span id="modalEmailText" style="color:#ff9900;"></span></p>
+      <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="------" maxlength="6" autocomplete="off">
+      <small id="otpMessage" class="d-block text-warning mt-2"></small>
+      <button type="button" id="verifyCodeBtn" class="btn-submit w-100" style="margin-top:1.5rem;">Verify Now</button>
+      <button type="button" id="closeModalBtn" style="background:transparent;border:none;color:#aaa;text-decoration:underline;margin-top:1rem;">Cancel</button>
+    </div>
   </div>
 
   <div id="thankYouModalOverlay" class="modal-overlay">
-      <div class="modal-card">
-          <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-          <h3 style="color: #fff; font-weight: 700;">Thank You!</h3>
-          <p style="color: #ccc; line-height: 1.6;">Your application has been successfully submitted to <strong>LEVZA</strong>.<br><br>We've sent a confirmation email to your inbox.</p>
-          <button type="button" onclick="location.reload()" class="btn-submit w-100" style="margin-top: 1.5rem;">Back to Home</button>
-      </div>
+    <div class="modal-card">
+      <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+      <h3 style="color:#fff;font-weight:700;">Thank You!</h3>
+      <p style="color:#ccc;line-height:1.6;">Your application has been successfully submitted to <strong>LEVZA</strong>.<br><br>We've sent a confirmation email to your inbox.</p>
+      <button type="button" onclick="location.reload()" class="btn-submit w-100" style="margin-top:1.5rem;">Back to Home</button>
+    </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
-    const locationData = { "Pakistan": { "Punjab": ["Lahore", "Faisalabad", "Rawalpindi", "Multan", "Gujranwala"], "Sindh": ["Karachi", "Hyderabad", "Sukkur", "Larkana"], "KPK": ["Peshawar", "Abbottabad", "Mardan", "Swat"], "Balochistan": ["Quetta", "Gwadar", "Khuzdar"], "Islamabad": ["Islamabad City"] }, "United Kingdom": { "England": ["London", "Manchester", "Birmingham", "Leeds", "Liverpool"], "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"], "Wales": ["Cardiff", "Swansea", "Newport"], "Northern Ireland": ["Belfast", "Derry"] } };
+    // ─── Data ───
+    const locationData = {"Pakistan":{"Punjab":["Lahore","Faisalabad","Rawalpindi","Multan","Gujranwala"],"Sindh":["Karachi","Hyderabad","Sukkur","Larkana"],"KPK":["Peshawar","Abbottabad","Mardan","Swat"],"Balochistan":["Quetta","Gwadar","Khuzdar"],"Islamabad":["Islamabad City"]},"United Kingdom":{"England":["London","Manchester","Birmingham","Leeds","Liverpool"],"Scotland":["Edinburgh","Glasgow","Aberdeen"],"Wales":["Cardiff","Swansea","Newport"],"Northern Ireland":["Belfast","Derry"]}};
     const allCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
-    const countrySelect = document.getElementById('country');
-    allCountries.forEach(c => countrySelect.add(new Option(c, c)));
+    // ─── Select Popup ───
+    let curSelField = '', curSelAll = [];
 
-    countrySelect.onchange = function() {
-        const sDiv = document.getElementById('stateDiv'), cDiv = document.getElementById('cityDiv');
-        if (locationData[this.value]) {
-            sDiv.innerHTML = '<select id="state" name="State" class="form-select" required><option value="" selected disabled>Select State</option></select>';
-            cDiv.innerHTML = '<select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select>';
-            const sSel = document.getElementById('state'), cSel = document.getElementById('city');
-            for (let s in locationData[this.value]) sSel.add(new Option(s, s));
-            sSel.onchange = function() { cSel.innerHTML = '<option value="" selected disabled>Select City</option>'; cSel.disabled = false; locationData[countrySelect.value][this.value].forEach(city => cSel.add(new Option(city, city))); };
-        } else { sDiv.innerHTML = '<input type="text" name="State" class="form-control" placeholder="State" required>'; cDiv.innerHTML = '<input type="text" name="City" class="form-control" placeholder="City" required>'; }
-    };
+    function openSel(field, title, opts) {
+      curSelField = field;
+      curSelAll = opts;
+      document.getElementById('selTitle').textContent = title;
+      document.getElementById('selSearch').style.display = 'none';
+      document.getElementById('selSearch').value = '';
+      renderOpts(opts);
+      document.getElementById('selOverlay').classList.add('on');
+      document.body.style.overflow = 'hidden';
+    }
 
-    flatpickr("#dob, #joiningDate", { 
-        altInput: true, 
-        altFormat: "F j, Y", 
-        dateFormat: "Y-m-d", 
-        disableMobile: true, 
-        onReady: function(s, d, i) { 
-            i.altInput.style.cursor = "pointer";
-            i.altInput.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
-            i.altInput.style.color = "#ffffff";
-            i.altInput.style.webkitTextFillColor = "#ffffff";
-        } 
-    });
+    function openCountryPop() {
+      curSelField = 'country';
+      curSelAll = allCountries;
+      document.getElementById('selTitle').textContent = 'Select Country';
+      const s = document.getElementById('selSearch');
+      s.style.display = 'block';
+      s.value = '';
+      renderOpts(allCountries);
+      document.getElementById('selOverlay').classList.add('on');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => s.focus(), 380);
+    }
 
-    document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
+    function openStatePop() {
+      const c = document.getElementById('countryVal').value;
+      if (!c || !locationData[c]) return;
+      const states = Object.keys(locationData[c]);
+      curSelField = 'state';
+      curSelAll = states;
+      document.getElementById('selTitle').textContent = 'Select State';
+      document.getElementById('selSearch').style.display = 'none';
+      document.getElementById('selSearch').value = '';
+      renderOpts(states);
+      document.getElementById('selOverlay').classList.add('on');
+      document.body.style.overflow = 'hidden';
+    }
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec'; 
+    function openCityPop() {
+      const c = document.getElementById('countryVal').value;
+      const st = document.getElementById('stateVal').value;
+      if (!c || !st || !locationData[c] || !locationData[c][st]) return;
+      const cities = locationData[c][st];
+      curSelField = 'city';
+      curSelAll = cities;
+      document.getElementById('selTitle').textContent = 'Select City';
+      document.getElementById('selSearch').style.display = 'none';
+      document.getElementById('selSearch').value = '';
+      renderOpts(cities);
+      document.getElementById('selOverlay').classList.add('on');
+      document.body.style.overflow = 'hidden';
+    }
 
+    function renderOpts(opts) {
+      const cur = document.getElementById(curSelField + 'Val') ? document.getElementById(curSelField + 'Val').value : '';
+      const list = document.getElementById('selList');
+      list.innerHTML = '';
+      opts.forEach(o => {
+        const d = document.createElement('div');
+        d.className = 'sel-opt' + (o === cur ? ' chosen' : '');
+        d.innerHTML = o + (o === cur ? '<i class="fas fa-check-circle chk"></i>' : '');
+        d.onclick = () => pickOpt(o);
+        list.appendChild(d);
+      });
+      list.scrollTop = 0;
+    }
+
+    function filterSel() {
+      const q = document.getElementById('selSearch').value.toLowerCase();
+      renderOpts(curSelAll.filter(o => o.toLowerCase().includes(q)));
+    }
+
+    function pickOpt(val) {
+      if (curSelField === 'country') {
+        document.getElementById('countryVal').value = val;
+        setTrig('country', val);
+        // Reset state/city
+        document.getElementById('stateVal').value = '';
+        document.getElementById('cityVal').value = '';
+        setTrig('state', ''); setTrig('city', '');
+        // Rebuild stateDiv / cityDiv
+        const sDiv = document.getElementById('stateDiv');
+        const cDiv = document.getElementById('cityDiv');
+        if (locationData[val]) {
+          sDiv.innerHTML = '<input type="hidden" name="State" id="stateVal"><div class="custom-trigger" id="stateTrig" onclick="openStatePop()"><span id="stateLbl" style="color:#bbb">Select State</span><i class="fas fa-chevron-down trig-icon"></i></div>';
+          cDiv.innerHTML = '<input type="hidden" name="City" id="cityVal"><div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop()"><span id="cityLbl" style="color:#bbb">Select City</span><i class="fas fa-chevron-down trig-icon"></i></div>';
+        } else {
+          sDiv.innerHTML = '<input type="text" name="State" id="stateVal" class="form-control" placeholder="State" required>';
+          cDiv.innerHTML = '<input type="text" name="City" id="cityVal" class="form-control" placeholder="City" required>';
+        }
+      } else if (curSelField === 'state') {
+        document.getElementById('stateVal').value = val;
+        setTrig('state', val);
+        document.getElementById('cityVal').value = '';
+        setTrig('city', '');
+        const ct = document.getElementById('cityTrig');
+        if (ct) ct.classList.remove('dimmed');
+      } else if (curSelField === 'city') {
+        document.getElementById('cityVal').value = val;
+        setTrig('city', val);
+      } else if (curSelField === 'investor') {
+        document.getElementById('investorVal').value = val;
+        setTrig('investor', val);
+        document.getElementById('amountDiv').style.display = val === 'Yes' ? 'block' : 'none';
+      } else {
+        document.getElementById(curSelField + 'Val').value = val;
+        setTrig(curSelField, val);
+      }
+      closePop('sel');
+    }
+
+    function setTrig(field, val) {
+      const lbl = document.getElementById(field + 'Lbl');
+      const trig = document.getElementById(field + 'Trig');
+      if (!lbl || !trig) return;
+      if (val) {
+        lbl.textContent = val;
+        lbl.style.color = '#fff';
+        trig.classList.add('filled');
+      } else {
+        const defaults = {country:'Select Country',state:'Select State',city:'Select City',gender:'Select Gender',position:'Position Applied For',investor:'Are you an investor?'};
+        lbl.textContent = defaults[field] || '';
+        lbl.style.color = '#bbb';
+        trig.classList.remove('filled');
+      }
+    }
+
+    function closePop(type, e) {
+      const id = type === 'sel' ? 'selOverlay' : 'calOverlay';
+      if (e && e.target !== document.getElementById(id)) return;
+      document.getElementById(id).classList.remove('on');
+      document.body.style.overflow = '';
+    }
+
+    // ─── Calendar ───
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    let calField = '', calView = new Date(), calPicked = null;
+
+    function openCal(field) {
+      calField = field;
+      const v = document.getElementById(field + 'Val').value;
+      calView = v ? new Date(v + 'T12:00:00') : new Date();
+      calPicked = v ? new Date(v + 'T12:00:00') : null;
+      drawCal();
+      document.getElementById('calOverlay').classList.add('on');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function drawCal() {
+      const y = calView.getFullYear(), m = calView.getMonth();
+      document.getElementById('calTitle').textContent = MONTHS[m] + ' ' + y;
+      const first = new Date(y, m, 1).getDay();
+      const dim = new Date(y, m + 1, 0).getDate();
+      const prevDim = new Date(y, m, 0).getDate();
+      const now = new Date();
+      let html = '';
+      for (let i = first - 1; i >= 0; i--) html += `<div class="cal-d other">${prevDim - i}</div>`;
+      for (let d = 1; d <= dim; d++) {
+        const isT = now.getDate()===d && now.getMonth()===m && now.getFullYear()===y;
+        const isS = calPicked && calPicked.getDate()===d && calPicked.getMonth()===m && calPicked.getFullYear()===y;
+        html += `<div class="cal-d${isT?' tod':''}${isS?' sel':''}" onclick="pickDay(${d})">${d}</div>`;
+      }
+      const total = Math.ceil((first + dim) / 7) * 7;
+      for (let n = 1; n <= total - first - dim; n++) html += `<div class="cal-d other">${n}</div>`;
+      document.getElementById('calGrid').innerHTML = html;
+    }
+
+    function pickDay(d) {
+      calPicked = new Date(calView.getFullYear(), calView.getMonth(), d);
+      drawCal();
+    }
+
+    function calMove(dir) {
+      calView.setMonth(calView.getMonth() + dir);
+      drawCal();
+    }
+
+    function confirmCal() {
+      if (!calPicked) { closePop('cal'); return; }
+      const y = calPicked.getFullYear();
+      const m = String(calPicked.getMonth()+1).padStart(2,'0');
+      const d = String(calPicked.getDate()).padStart(2,'0');
+      document.getElementById(calField + 'Val').value = `${y}-${m}-${d}`;
+      const lbl = document.getElementById(calField + 'Lbl');
+      lbl.textContent = `${MONTHS[calPicked.getMonth()]} ${d}, ${y}`;
+      lbl.style.color = '#fff';
+      document.getElementById(calField + 'Trig').classList.add('filled');
+      closePop('cal');
+    }
+
+    // ─── OTP + Submit ───
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec';
     let isEmailVerified = false;
 
     document.getElementById('sendCodeBtn').onclick = function() {
-        const email = document.getElementById('email');
-        const btn = this;
-        if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
-        let fd = new FormData(); fd.append("action", "sendOTP"); fd.append("Email", email.value);
-        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('modalEmailText').innerText = email.value; document.getElementById('otpModalOverlay').classList.add('active'); btn.textContent = 'Sent'; btn.disabled = false; } else { alert("Error: " + data.error); btn.textContent = 'Send OTP'; btn.disabled = false; } }).catch(() => { alert("Script Error! Check Permissions."); btn.textContent = 'Send OTP'; btn.disabled = false; });
+      const email = document.getElementById('email');
+      const btn = this;
+      if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
+      let fd = new FormData(); fd.append("action","sendOTP"); fd.append("Email",email.value);
+      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{if(data.result==="success"){document.getElementById('modalEmailText').innerText=email.value;document.getElementById('otpModalOverlay').classList.add('active');btn.textContent='Sent';btn.disabled=false;}else{alert("Error: "+data.error);btn.textContent='Send OTP';btn.disabled=false;}}).catch(()=>{alert("Script Error! Check Permissions.");btn.textContent='Send OTP';btn.disabled=false;});
     };
 
-    document.getElementById('closeModalBtn').onclick = () => { document.getElementById('otpModalOverlay').classList.remove('active'); document.getElementById('sendCodeBtn').textContent = 'Send OTP'; };
+    document.getElementById('closeModalBtn').onclick = () => { document.getElementById('otpModalOverlay').classList.remove('active'); document.getElementById('sendCodeBtn').textContent='Send OTP'; };
 
     document.getElementById('verifyCodeBtn').onclick = function() {
-        const code = document.getElementById('verificationCode').value;
-        const msg = document.getElementById('otpMessage');
-        if (code.length < 6) { msg.innerText = "Enter 6 digits"; return; }
-        this.disabled = true;
-        let fd = new FormData(); fd.append("action", "verifyOTP"); fd.append("Email", document.getElementById('email').value); fd.append("otp", code);
-        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { isEmailVerified = true; document.getElementById('otpModalOverlay').classList.remove('active'); const btn = document.getElementById('sendCodeBtn'); btn.innerHTML = '<i class="fas fa-check-circle"></i> Verified'; btn.className = "btn btn-success-custom w-100"; document.getElementById('email').readOnly = true; } else { msg.innerText = "Invalid OTP!"; this.disabled = false; } });
+      const code = document.getElementById('verificationCode').value;
+      const msg = document.getElementById('otpMessage');
+      if (code.length < 6) { msg.innerText = "Enter 6 digits"; return; }
+      this.disabled = true;
+      let fd = new FormData(); fd.append("action","verifyOTP"); fd.append("Email",document.getElementById('email').value); fd.append("otp",code);
+      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{if(data.result==="success"){isEmailVerified=true;document.getElementById('otpModalOverlay').classList.remove('active');const btn=document.getElementById('sendCodeBtn');btn.innerHTML='<i class="fas fa-check-circle"></i> Verified';btn.className="btn btn-success-custom w-100";document.getElementById('email').readOnly=true;}else{msg.innerText="Invalid OTP!";this.disabled=false;}});
     };
 
     document.getElementById('form').onsubmit = function(e) {
-        e.preventDefault();
-        if(!isEmailVerified) { alert("Verify email first!"); return; }
-        const sBtn = document.getElementById('submitBtn');
-        sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; sBtn.disabled = true;
-        let fd = new FormData(this); fd.append("action", "submitForm");
-        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('thankYouModalOverlay').classList.add('active'); } else { alert("Submission Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; } }).catch(() => { alert("Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; });
+      e.preventDefault();
+      if (!isEmailVerified) { alert("Verify email first!"); return; }
+      const checks = [
+        [document.getElementById('form').FirstName,'First Name'],
+        [document.getElementById('form').LastName,'Last Name'],
+        [document.getElementById('form').CNIC,'CNIC'],
+        [document.getElementById('form').Contact,'Contact Number'],
+        [document.getElementById('form').Postal,'Postal Code'],
+        [document.getElementById('form').Address,'Street Address'],
+        [document.getElementById('form').GreatFit,'Why you\'re a great fit'],
+      ];
+      for (const [el,name] of checks) { if (!el.value.trim()) { alert(`Please fill: ${name}`); el.focus(); return; } }
+      if (!document.getElementById('dobVal').value) { alert("Please select Date of Birth."); return; }
+      if (!document.getElementById('genderVal').value) { alert("Please select Gender."); return; }
+      if (!document.getElementById('countryVal').value) { alert("Please select Country."); return; }
+      const stEl = document.getElementById('stateVal'); if (!stEl || !stEl.value.trim()) { alert("Please select/enter State."); return; }
+      const ctEl = document.getElementById('cityVal'); if (!ctEl || !ctEl.value.trim()) { alert("Please select/enter City."); return; }
+      if (!document.getElementById('positionVal').value) { alert("Please select Position."); return; }
+      if (!document.getElementById('investorVal').value) { alert("Please select Investor status."); return; }
+      if (!document.getElementById('joiningVal').value) { alert("Please select Joining Date."); return; }
+      if (!document.getElementById('declaration').checked) { alert("Please check the declaration."); return; }
+      const sBtn = document.getElementById('submitBtn');
+      sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; sBtn.disabled = true;
+      let fd = new FormData(this); fd.append("action","submitForm");
+      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{if(data.result==="success"){document.getElementById('thankYouModalOverlay').classList.add('active');}else{alert("Submission Error!");sBtn.innerHTML='<i class="fas fa-paper-plane"></i> Submit Application';sBtn.disabled=false;}}).catch(()=>{alert("Error!");sBtn.innerHTML='<i class="fas fa-paper-plane"></i> Submit Application';sBtn.disabled=false;});
     };
   </script>
 </body>
