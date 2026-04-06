@@ -20,29 +20,35 @@
     .section-title i { color: #ff9900; }
 
     /* ====================================================== */
-    /* THE ULTIMATE ANTI-WHITE GLITCH FIX (LOCKING COLORS)    */
+    /* THE ULTIMATE COLOR & GLASSY FIX (NO MORE DARK FIELDS)  */
     /* ====================================================== */
-    .form-control, .form-select { 
+    
+    .form-control, .form-select, .flatpickr-input { 
         background-color: rgba(255, 255, 255, 0.08) !important; 
         border: 1px solid rgba(255, 255, 255, 0.2) !important; 
         color: #ffffff !important; 
         border-radius: 10px; 
         height: 48px; 
         padding-left: 15px; 
-        -webkit-text-fill-color: #ffffff !important;
-        transition: background-color 5000s ease-in-out 0s; /* Fixes autofill flash */
+        -webkit-text-fill-color: #ffffff !important; /* Force text white */
     }
 
+    /* Is se Autofill wala dark background hamesha ke liye khatam ho jayega (Paste Glitch Fixed Here) */
     input:-webkit-autofill,
     input:-webkit-autofill:hover, 
     input:-webkit-autofill:focus, 
     input:-webkit-autofill:active,
-    select:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px #132a4a inset !important; 
-        -webkit-text-fill-color: #ffffff !important;
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus,
+    select:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 1000px #132a4a inset !important; /* Matches your theme background */
+        -webkit-text-fill-color: white !important;
+        transition: background-color 5000s ease-in-out 0s !important;
     }
 
-    .form-control:focus, .form-select:focus { 
+    /* Fill hone par glassy glow animation (Sub sections par bhi) */
+    .form-control:focus, .form-select:focus, .form-control:not(:placeholder-shown) { 
         background-color: rgba(255, 255, 255, 0.12) !important; 
         border-color: rgba(255, 153, 0, 0.6) !important; 
         box-shadow: 0 0 15px rgba(255, 153, 0, 0.2) !important;
@@ -52,14 +58,16 @@
     .form-control::placeholder { color: #bbb !important; -webkit-text-fill-color: #bbb !important; }
     .form-select option { background-color: #0e2746 !important; color: #fff !important; }
     
+    /* Disabled states fix */
     .form-control:disabled, .form-select:disabled, .form-control[readonly] { 
         background-color: rgba(255, 255, 255, 0.05) !important; 
         color: #fff !important; 
+        opacity: 1 !important; 
         -webkit-text-fill-color: #fff !important;
         cursor: pointer !important;
     }
+    /* ====================================================== */
 
-    /* Buttons & Checkbox */
     .btn-submit { background: linear-gradient(135deg, #ff9900, #ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
     .btn-submit:hover { box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5); transform: translateY(-2px); }
     .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s;}
@@ -67,22 +75,23 @@
     .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
     .form-check-label { font-size: 0.95rem; color: #ffffff !important; cursor: pointer; }
 
-    /* ========================================= */
-    /* HEAVY UI MODAL (IPHONE STYLE CALENDAR)    */
-    /* ========================================= */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
-    .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 24px; padding: 2rem; width: 95%; max-width: 400px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
-    .modal-overlay.active .modal-card { transform: translateY(0); }
-
-    .flatpickr-calendar.inline { background: transparent !important; border: none !important; box-shadow: none !important; width: 100% !important; }
-    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; }
-    .flatpickr-current-month, .cur-year { color: #fff !important; fill: #fff !important; }
+    /* Calendar Styling (Included Heavy UI adjustments) */
+    .flatpickr-calendar { background: rgba(11, 31, 58, 0.98) !important; backdrop-filter: blur(15px); border: 1px solid rgba(255, 153, 0, 0.6) !important; border-radius: 15px !important; box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important; }
+    .flatpickr-monthDropdown-months { background: #0b1f3a !important; color: #fff !important; }
+    .flatpickr-current-month, .cur-year { color: #ffffff !important; fill: #ffffff !important; font-weight: 600 !important; }
     .flatpickr-weekday { color: #ff9900 !important; font-weight: bold !important; }
-    .flatpickr-day { color: #fff !important; }
-    .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg { fill: #fff !important; }
+    .flatpickr-day { color: #ffffff !important; }
+    .flatpickr-day.selected { background: #ff9900 !important; border-color: #ff9900 !important; }
     
-    /* Other Modal Elements */
+    /* Heavy UI Inline Calendar Specifics */
+    .flatpickr-calendar.inline { background: transparent !important; border: none !important; box-shadow: none !important; width: 100% !important; }
+    .flatpickr-months .flatpickr-prev-month svg, .flatpickr-months .flatpickr-next-month svg { fill: #fff !important; }
+
+    /* Modals */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 15, 33, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-card { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
+    .modal-overlay.active .modal-card { transform: translateY(0); }
     .otp-input-large { background: rgba(0, 0, 0, 0.3) !important; font-size: 1.8rem !important; letter-spacing: 12px; text-align: center; border: 2px solid rgba(255,153,0,0.5) !important; color: #fff !important; height: 65px; border-radius: 12px; font-weight: bold; }
     .success-icon { font-size: 4rem; color: #198754; margin-bottom: 1rem; animation: bounce 1s ease; }
     @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
@@ -109,7 +118,7 @@
           <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC Number (xxxxx-xxxxxxx-x)" required></div>
           
           <div class="col-md-4">
-              <input type="text" id="dobTrigger" class="form-control" placeholder="Date of Birth" readonly required>
+              <input type="text" id="dobTrigger" class="form-control" placeholder="Date of Birth" readonly required> 
               <input type="hidden" id="dob" name="DOB">
           </div>
           
@@ -133,8 +142,12 @@
                    <option value="" selected disabled>Select Country</option>
                </select>
            </div>
-          <div class="col-md-4" id="stateDiv"><select id="state" name="State" class="form-select" required disabled><option value="" selected disabled>Select State</option></select></div>
-          <div class="col-md-4" id="cityDiv"><select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select></div>
+          <div class="col-md-4" id="stateDiv">
+              <select id="state" name="State" class="form-select" required disabled><option value="" selected disabled>Select State</option></select>
+          </div>
+          <div class="col-md-4" id="cityDiv">
+              <select id="city" name="City" class="form-select" required disabled><option value="" selected disabled>Select City</option></select>
+          </div>
           <div class="col-md-4"><input type="text" name="Postal" class="form-control" placeholder="Postal Code" required></div>
           <div class="col-md-12"><input type="text" name="Address" class="form-control" placeholder="Street Address" required></div>
         </div>
@@ -159,7 +172,7 @@
             </div>
             
             <div class="col-md-6">
-                <input type="text" id="joiningDateTrigger" class="form-control" placeholder="Available joining date" readonly required>
+                <input type="text" id="joiningDateTrigger" class="form-control" placeholder="Available joining date" readonly required> 
                 <input type="hidden" id="joiningDate" name="JoiningDate">
             </div>
             
@@ -202,7 +215,7 @@
       <div class="modal-card">
           <div class="success-icon"><i class="fas fa-check-circle"></i></div>
           <h3 style="color: #fff; font-weight: 700;">Thank You!</h3>
-          <p style="color: #ccc;">Your application has been successfully submitted to <strong>LEVZA</strong>.</p>
+          <p style="color: #ccc; line-height: 1.6;">Your application has been successfully submitted to <strong>LEVZA</strong>.<br><br>We've sent a confirmation email to your inbox.</p>
           <button type="button" onclick="location.reload()" class="btn-submit w-100" style="margin-top: 1.5rem;">Back to Home</button>
       </div>
   </div>
@@ -226,41 +239,65 @@
         } else { sDiv.innerHTML = '<input type="text" name="State" class="form-control" placeholder="State" required>'; cDiv.innerHTML = '<input type="text" name="City" class="form-control" placeholder="City" required>'; }
     };
 
-    /* HEAVY UI MODAL CALENDAR LOGIC */
-    let currentTargetInput = null, currentTargetHidden = null;
-    const inlineFp = flatpickr("#inlineCalendar", { inline: true, dateFormat: "Y-m-d", monthSelectorType: "dropdown", yearSelectorType: "static" });
-    function openDateModal(tid, hid, title) { currentTargetInput = document.getElementById(tid); currentTargetHidden = document.getElementById(hid); document.getElementById('modalTitle').innerText = title; document.getElementById('dateModalOverlay').classList.add('active'); }
+    /* HEAVY UI CALENDAR SCRIPT (Replaces old Flatpickr code) */
+    let currentTargetInput = null;
+    let currentTargetHidden = null;
+    const inlineFp = flatpickr("#inlineCalendar", { inline: true, dateFormat: "Y-m-d" });
+    
+    function openDateModal(tid, hid, title) { 
+        currentTargetInput = document.getElementById(tid); 
+        currentTargetHidden = document.getElementById(hid); 
+        document.getElementById('modalTitle').innerText = title; 
+        document.getElementById('dateModalOverlay').classList.add('active'); 
+    }
     function closeDateModal() { document.getElementById('dateModalOverlay').classList.remove('active'); }
+    
     document.getElementById('dobTrigger').onclick = () => openDateModal('dobTrigger', 'dob', 'Select Birth Date');
     document.getElementById('joiningDateTrigger').onclick = () => openDateModal('joiningDateTrigger', 'joiningDate', 'Select Joining Date');
-    document.getElementById('confirmDateBtn').onclick = function() { const sel = inlineFp.input.value; if (sel) { currentTargetHidden.value = sel; currentTargetInput.value = new Date(sel).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); closeDateModal(); } };
+    
+    document.getElementById('confirmDateBtn').onclick = function() { 
+        const sel = inlineFp.input.value; 
+        if (sel) { 
+            currentTargetHidden.value = sel; 
+            currentTargetInput.value = new Date(sel).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); 
+            closeDateModal(); 
+        } 
+    };
 
     document.getElementById('investor').onchange = function() { document.getElementById('amountDiv').style.display = this.value === "Yes" ? "block" : "none"; };
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec'; 
+    // === APNA SCRIPT URL YAHAN DALEIN ===
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec'; 
 
     let isEmailVerified = false;
 
     document.getElementById('sendCodeBtn').onclick = function() {
-        const email = document.getElementById('email'); if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
-        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; this.disabled = true;
+        const email = document.getElementById('email');
+        const btn = this;
+        if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
         let fd = new FormData(); fd.append("action", "sendOTP"); fd.append("Email", email.value);
-        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('modalEmailText').innerText = email.value; document.getElementById('otpModalOverlay').classList.add('active'); this.textContent = 'Sent'; this.disabled = false; } else { alert("Error"); this.textContent = 'Send OTP'; this.disabled = false; } }).catch(() => { this.textContent = 'Send OTP'; this.disabled = false; });
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('modalEmailText').innerText = email.value; document.getElementById('otpModalOverlay').classList.add('active'); btn.textContent = 'Sent'; btn.disabled = false; } else { alert("Error: " + data.error); btn.textContent = 'Send OTP'; btn.disabled = false; } }).catch(() => { alert("Script Error! Check Permissions."); btn.textContent = 'Send OTP'; btn.disabled = false; });
     };
 
     document.getElementById('closeModalBtn').onclick = () => { document.getElementById('otpModalOverlay').classList.remove('active'); document.getElementById('sendCodeBtn').textContent = 'Send OTP'; };
 
     document.getElementById('verifyCodeBtn').onclick = function() {
-        const code = document.getElementById('verificationCode').value; if (code.length < 6) return; this.disabled = true;
+        const code = document.getElementById('verificationCode').value;
+        const msg = document.getElementById('otpMessage');
+        if (code.length < 6) { msg.innerText = "Enter 6 digits"; return; }
+        this.disabled = true;
         let fd = new FormData(); fd.append("action", "verifyOTP"); fd.append("Email", document.getElementById('email').value); fd.append("otp", code);
-        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { isEmailVerified = true; document.getElementById('otpModalOverlay').classList.remove('active'); const btn = document.getElementById('sendCodeBtn'); btn.innerHTML = '<i class="fas fa-check-circle"></i> Verified'; btn.className = "btn btn-success-custom w-100"; document.getElementById('email').readOnly = true; } else { document.getElementById('otpMessage').innerText = "Invalid OTP!"; this.disabled = false; } });
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { isEmailVerified = true; document.getElementById('otpModalOverlay').classList.remove('active'); const btn = document.getElementById('sendCodeBtn'); btn.innerHTML = '<i class="fas fa-check-circle"></i> Verified'; btn.className = "btn btn-success-custom w-100"; document.getElementById('email').readOnly = true; } else { msg.innerText = "Invalid OTP!"; this.disabled = false; } });
     };
 
     document.getElementById('form').onsubmit = function(e) {
-        e.preventDefault(); if(!isEmailVerified) { alert("Verify email first!"); return; }
-        const sBtn = document.getElementById('submitBtn'); sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; sBtn.disabled = true;
+        e.preventDefault();
+        if(!isEmailVerified) { alert("Verify email first!"); return; }
+        const sBtn = document.getElementById('submitBtn');
+        sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; sBtn.disabled = true;
         let fd = new FormData(this); fd.append("action", "submitForm");
-        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('thankYouModalOverlay').classList.add('active'); } else { alert("Error!"); sBtn.innerHTML = 'Submit'; sBtn.disabled = false; } });
+        fetch(scriptURL, { method: 'POST', body: fd }).then(res => res.json()).then(data => { if(data.result === "success") { document.getElementById('thankYouModalOverlay').classList.add('active'); } else { alert("Submission Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; } }).catch(() => { alert("Error!"); sBtn.innerHTML = 'Submit Application'; sBtn.disabled = false; });
     };
   </script>
 </body>
