@@ -2,14 +2,11 @@
 <html>
 <head>
   <title>LEVZA Employee Form</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    /* ══════════════════════════════════════════
-       CSS VARIABLES
-    ══════════════════════════════════════════ */
     :root {
       --amber: #f59e0b;
       --amber-light: #fcd34d;
@@ -25,23 +22,32 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { height: -webkit-fill-available; }
+
     body {
       font-family: 'DM Sans', 'Segoe UI', sans-serif;
       color: #fff;
       min-height: 100vh;
+      min-height: -webkit-fill-available;
       position: relative;
       overflow-x: hidden;
       background: var(--deep);
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* ── BACKGROUND — mobile zoom fix ── */
     .bg-layer {
       position: fixed; inset: 0;
       background-image:
-        linear-gradient(135deg, rgba(7,15,31,0.82), rgba(13,30,56,0.78)),
+        linear-gradient(135deg, rgba(7,15,31,0.85), rgba(13,30,56,0.80)),
         url('https://i.postimg.cc/4yfdVF95/Chat-GPT-Image-Apr-5-2026-04-46-20-PM.png');
       background-size: cover;
-      background-position: center;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
       z-index: -1;
+      transform: translateZ(0);
+      will-change: transform;
     }
     .bg-layer::after {
       content: '';
@@ -51,71 +57,89 @@
       pointer-events: none;
     }
 
-    .logo-container { position: absolute; top: 25px; left: 30px; z-index: 10; }
-    .logo { width: 230px; }
+    /* ── LOGO + TAGLINE ── */
+    .logo-container {
+      position: absolute; top: 22px; left: 28px; z-index: 10;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .logo { width: 210px; display: block; }
+    .logo-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      color: var(--amber);
+      opacity: 0.82;
+      margin-top: 3px;
+      text-align: center;
+      white-space: nowrap;
+      position: relative;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.6s;
+      opacity: 0;
+    }
+    .logo-tagline::before,
+    .logo-tagline::after {
+      content: '';
+      display: inline-block;
+      width: 18px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(245,158,11,0.6));
+      vertical-align: middle;
+      margin: 0 7px;
+    }
+    .logo-tagline::after {
+      background: linear-gradient(270deg, transparent, rgba(245,158,11,0.6));
+    }
 
     .page-container {
       display: flex; flex-direction: column; align-items: center;
       justify-content: center; width: 100%; min-height: 100vh;
-      padding: 100px 20px 60px 20px;
+      padding: 110px 20px 60px 20px;
     }
 
-    /* ══════════════════════════════════════════
-       HEADER — with animated shimmer
-    ══════════════════════════════════════════ */
+    /* ── HEADER ── */
     .form-header-text {
-      text-align: center; margin-bottom: 36px; width: 100%;
+      text-align: center; margin-bottom: 32px; width: 100%;
       opacity: 0; animation: fadeInUp 0.8s ease forwards; animation-delay: 0.1s;
     }
-
-    /* Eyebrow with animated dots */
     .header-eyebrow {
       display: inline-flex; align-items: center; gap: 10px;
-      font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
-      color: var(--amber); font-weight: 500;
-      margin-bottom: 14px;
+      font-size: 0.68rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--amber); font-weight: 500; margin-bottom: 12px;
     }
     .header-eyebrow::before,
     .header-eyebrow::after {
-      content: '';
-      display: block; width: 32px; height: 1px;
+      content: ''; display: block; width: 28px; height: 1px;
       background: linear-gradient(90deg, transparent, var(--amber));
     }
     .header-eyebrow::after { background: linear-gradient(270deg, transparent, var(--amber)); }
-
-    /* Animated badge below eyebrow */
     .header-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(245,158,11,0.08);
-      border: 1px solid rgba(245,158,11,0.22);
+      background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.22);
       border-radius: 20px; padding: 4px 14px;
-      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(245,158,11,0.85); font-weight: 500;
-      margin-bottom: 16px;
+      font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(245,158,11,0.85); font-weight: 500; margin-bottom: 14px;
       animation: badgePulse 3s ease infinite;
     }
     @keyframes badgePulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); border-color: rgba(245,158,11,0.22); }
+      0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); border-color: rgba(245,158,11,0.22); }
       50% { box-shadow: 0 0 14px rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.4); }
     }
     .badge-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--amber);
+      width: 5px; height: 5px; border-radius: 50%; background: var(--amber);
       animation: dotBlink 1.5s ease infinite;
     }
     @keyframes dotBlink {
-      0%, 100% { opacity: 0.4; transform: scale(0.8); }
+      0%,100% { opacity: 0.4; transform: scale(0.8); }
       50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 6px rgba(245,158,11,0.6); }
     }
-
     .form-title {
       font-family: 'Cormorant Garamond', serif;
-      font-weight: 600; font-size: 3rem; line-height: 1.1;
-      color: #fff; letter-spacing: -0.01em;
-      margin-bottom: 10px;
+      font-weight: 600; font-size: 2.9rem; line-height: 1.1;
+      color: #fff; letter-spacing: -0.01em; margin-bottom: 10px;
       position: relative; display: inline-block;
+      overflow: hidden;
     }
-    /* Shimmer light streak across the title */
     .form-title::after {
       content: '';
       position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
@@ -124,117 +148,74 @@
       animation: titleShimmer 5s ease infinite;
       pointer-events: none;
     }
-    @keyframes titleShimmer {
-      0%, 30% { left: -100%; }
-      60%, 100% { left: 160%; }
-    }
-    .form-title em {
-      font-style: italic; color: var(--amber);
-      text-shadow: 0 0 40px rgba(245,158,11,0.35);
-    }
-    .form-subtitle {
-      font-size: 0.88rem; color: rgba(255,255,255,0.45);
-      font-weight: 300; letter-spacing: 0.02em;
-    }
+    @keyframes titleShimmer { 0%,30%{left:-100%} 60%,100%{left:160%} }
+    .form-title em { font-style: italic; color: var(--amber); text-shadow: 0 0 40px rgba(245,158,11,0.35); }
+    .form-subtitle { font-size: 0.86rem; color: rgba(255,255,255,0.42); font-weight: 300; letter-spacing: 0.02em; }
     .header-divider {
-      width: 48px; height: 1px;
+      width: 44px; height: 1px;
       background: linear-gradient(90deg, transparent, var(--amber), transparent);
-      margin: 16px auto 0;
+      margin: 14px auto 0;
       animation: dividerGlow 3s ease infinite;
     }
-    @keyframes dividerGlow {
-      0%, 100% { width: 48px; opacity: 0.6; }
-      50% { width: 80px; opacity: 1; }
-    }
+    @keyframes dividerGlow { 0%,100%{width:44px;opacity:0.6} 50%{width:72px;opacity:1} }
 
-    /* ══════════════════════════════════════════
-       MAIN CARD
-    ══════════════════════════════════════════ */
+    /* ── MAIN CARD ── */
     .card {
       background: var(--glass-bg);
-      backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
-      border-radius: 20px; padding: 2.8rem;
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-radius: 20px; padding: 2.6rem;
       border: 1px solid var(--glass-border);
       border-top: 1px solid var(--glass-border-top);
       border-left: 1px solid var(--glass-border-top);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
       max-width: 920px; width: 100%;
       opacity: 0; animation: fadeInUp 0.8s ease forwards; animation-delay: 0.28s;
+      transform: translateZ(0);
     }
-
     .section-title {
-      font-weight: 500; margin-top: 0.5rem; margin-bottom: 1.4rem;
+      font-weight: 500; margin-top: 0.4rem; margin-bottom: 1.3rem;
       color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 10px;
-      font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase;
+      font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
     }
     .section-title .icon-dot {
       width: 26px; height: 26px; border-radius: 50%;
       background: var(--amber-dim); border: 1px solid rgba(245,158,11,0.3);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .section-title .icon-dot i { color: var(--amber); font-size: 0.65rem; }
-    .section-title::after {
-      content: ''; flex: 1; height: 1px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent);
-    }
+    .section-title::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent); }
 
-    /* ══════════════════════════════════════════
-       ANIMATIONS
-    ══════════════════════════════════════════ */
+    /* ── ANIMATIONS ── */
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(32px); }
+      from { opacity: 0; transform: translateY(28px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20% { transform: translateX(-7px); }
-      40% { transform: translateX(7px); }
-      60% { transform: translateX(-4px); }
-      80% { transform: translateX(4px); }
+      0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)}
     }
     .shake { animation: shake 0.4s ease; }
+    .section-block { opacity: 0; animation: fadeInUp 0.6s ease forwards; }
+    .section-block:nth-child(1) { animation-delay: 0.5s; }
+    .section-block:nth-child(2) { animation-delay: 0.68s; }
+    .section-block:nth-child(3) { animation-delay: 0.86s; }
+    .form-footer-block { opacity: 0; animation: fadeInUp 0.6s ease forwards; animation-delay: 1.04s; }
 
-    .section-block { opacity: 0; animation: fadeInUp 0.65s ease forwards; }
-    .section-block:nth-child(1) { animation-delay: 0.52s; }
-    .section-block:nth-child(2) { animation-delay: 0.72s; }
-    .section-block:nth-child(3) { animation-delay: 0.92s; }
-    .form-footer-block { opacity: 0; animation: fadeInUp 0.65s ease forwards; animation-delay: 1.12s; }
-
-    /* ══════════════════════════════════════════
-       FIELD ERROR STATES (replaces alert)
-    ══════════════════════════════════════════ */
-    .field-error .form-control {
-      border-color: rgba(239,68,68,0.55) !important;
-      box-shadow: 0 0 0 3px rgba(239,68,68,0.1) !important;
-    }
-    .field-error .custom-trigger,
-    .field-error .beam-wrap {
-      border-radius: 12px;
-      box-shadow: 0 0 0 3px rgba(239,68,68,0.12);
-    }
-    .err-msg {
-      font-size: 0.74rem; color: #f87171;
-      margin-top: 5px; display: none;
-      padding-left: 4px; letter-spacing: 0.01em;
-    }
+    /* ── FIELD ERRORS ── */
+    .field-error .form-control { border-color: rgba(239,68,68,0.55) !important; box-shadow: 0 0 0 3px rgba(239,68,68,0.1) !important; }
+    .field-error .custom-trigger, .field-error .beam-wrap { border-radius: 12px; box-shadow: 0 0 0 3px rgba(239,68,68,0.12); }
+    .err-msg { font-size: 0.72rem; color: #f87171; margin-top: 5px; display: none; padding-left: 4px; letter-spacing: 0.01em; }
     .field-error .err-msg { display: block; }
 
-    /* ══════════════════════════════════════════
-       INPUTS
-    ══════════════════════════════════════════ */
+    /* ── INPUTS ── */
     .form-control {
       background-color: rgba(255,255,255,0.055) !important;
       border: 1px solid rgba(255,255,255,0.12) !important;
-      color: #ffffff !important;
-      border-radius: 10px; height: 48px; padding-left: 16px;
+      color: #ffffff !important; border-radius: 10px; height: 48px; padding-left: 16px;
       -webkit-text-fill-color: #ffffff !important;
-      transition: border-color 0.4s, background-color 0.4s, box-shadow 0.3s;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
+      transition: border-color 0.3s, background-color 0.3s, box-shadow 0.25s;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
     }
-    input:-webkit-autofill, input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus, input:-webkit-autofill:active {
+    input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
       -webkit-box-shadow: 0 0 0 1000px #0f2040 inset !important;
       -webkit-text-fill-color: white !important;
       transition: background-color 5000s ease-in-out 0s;
@@ -247,89 +228,50 @@
     }
     .form-control::placeholder { color: rgba(255,255,255,0.28) !important; -webkit-text-fill-color: rgba(255,255,255,0.28) !important; }
     .form-control:disabled, .form-control[readonly] {
-      background-color: rgba(255,255,255,0.04) !important;
-      color: #fff !important; opacity: 1 !important;
-      -webkit-text-fill-color: #fff !important; cursor: pointer !important;
+      background-color: rgba(255,255,255,0.04) !important; color: #fff !important;
+      opacity: 1 !important; -webkit-text-fill-color: #fff !important; cursor: pointer !important;
     }
     textarea.form-control { height: auto !important; resize: none; padding-top: 14px; }
-
-    /* Verified email field */
     #email.verified-field {
-      border-color: rgba(34,197,94,0.45) !important;
-      background-color: rgba(34,197,94,0.06) !important;
-      -webkit-text-fill-color: #4ade80 !important;
-      color: #4ade80 !important;
+      border-color: rgba(34,197,94,0.45) !important; background-color: rgba(34,197,94,0.06) !important;
+      -webkit-text-fill-color: #4ade80 !important; color: #4ade80 !important;
     }
 
-    /* ══════════════════════════════════════════
-       BEAM — lighter, slower
-    ══════════════════════════════════════════ */
-    @property --beam-angle {
-      syntax: '<angle>';
-      initial-value: 0deg;
-      inherits: false;
-    }
-    @keyframes spinBeam {
-      from { --beam-angle: 0deg; }
-      to   { --beam-angle: 360deg; }
-    }
+    /* ── BEAM / LIQUID BORDER ── */
+    @property --beam-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+    @keyframes spinBeam { from{--beam-angle:0deg} to{--beam-angle:360deg} }
 
     .beam-wrap { position: relative; border-radius: 12px; }
     .beam-wrap::before {
-      content: '';
-      position: absolute; inset: -1.5px; border-radius: 12px;
-      background: conic-gradient(
-        from var(--beam-angle, 0deg),
-        transparent 0deg,
-        rgba(245,158,11,0.55) 45deg,
-        rgba(253,211,100,0.7) 75deg,
-        rgba(245,158,11,0.55) 105deg,
-        transparent 150deg
-      );
-      opacity: 0;
-      transition: opacity 0.6s ease;
-      pointer-events: none; z-index: 0;
+      content: ''; position: absolute; inset: -1.5px; border-radius: 12px;
+      background: conic-gradient(from var(--beam-angle,0deg), transparent 0deg, rgba(245,158,11,0.55) 45deg, rgba(253,211,100,0.7) 75deg, rgba(245,158,11,0.55) 105deg, transparent 150deg);
+      opacity: 0; transition: opacity 0.5s ease; pointer-events: none; z-index: 0;
     }
-    .beam-wrap::after {
-      content: ''; position: absolute; inset: 1px;
-      border-radius: 10.5px; background: var(--surface);
-      pointer-events: none; z-index: 1;
-    }
+    .beam-wrap::after { content:''; position:absolute; inset:1px; border-radius:10.5px; background:var(--surface); pointer-events:none; z-index:1; }
     .beam-wrap > * { position: relative; z-index: 2; }
-    .beam-wrap.beam-on::before {
-      opacity: 1;
-      animation: spinBeam 3.5s linear infinite;
-    }
+    .beam-wrap.beam-on::before { opacity: 1; animation: spinBeam 3.5s linear infinite; }
 
-    /* TRIG BEAM */
     .trig-beam { position: relative; border-radius: 12px; }
     .trig-beam::before {
       content: ''; position: absolute; inset: -1.5px; border-radius: 12px;
-      background: conic-gradient(from var(--beam-angle, 0deg), transparent 0deg, rgba(245,158,11,0.5) 45deg, rgba(253,211,100,0.65) 75deg, rgba(245,158,11,0.5) 105deg, transparent 150deg);
+      background: conic-gradient(from var(--beam-angle,0deg), transparent 0deg, rgba(245,158,11,0.5) 45deg, rgba(253,211,100,0.65) 75deg, rgba(245,158,11,0.5) 105deg, transparent 150deg);
       opacity: 0; transition: opacity 0.5s; pointer-events: none; z-index: 0;
     }
-    .trig-beam::after { content: ''; position: absolute; inset: 1px; border-radius: 10.5px; background: var(--surface); pointer-events: none; z-index: 1; }
+    .trig-beam::after { content:''; position:absolute; inset:1px; border-radius:10.5px; background:var(--surface); pointer-events:none; z-index:1; }
     .trig-beam > * { position: relative; z-index: 2; }
     .trig-beam.beam-flash::before { opacity: 1; animation: spinBeam 3.5s linear infinite; }
 
-    /* ══════════════════════════════════════════
-       SUBMIT BUTTON — premium redesign
-    ══════════════════════════════════════════ */
+    /* ── SUBMIT BUTTON ── */
     .btn-submit {
       position: relative; overflow: hidden;
       background: linear-gradient(110deg, #92400e 0%, #d97706 28%, #f59e0b 50%, #d97706 72%, #92400e 100%);
       background-size: 300% 100%;
       animation: btnPulse 4s ease infinite;
-      border: 1px solid rgba(245,158,11,0.35);
-      border-radius: 14px; height: 56px;
-      font-weight: 600; color: #fff;
-      font-size: 1rem; font-family: 'DM Sans', sans-serif;
-      letter-spacing: 0.08em; text-transform: uppercase;
+      border: 1px solid rgba(245,158,11,0.35); border-radius: 14px; height: 56px;
+      font-weight: 600; color: #fff; font-size: 1rem;
+      font-family: 'DM Sans', sans-serif; letter-spacing: 0.08em; text-transform: uppercase;
       cursor: pointer; width: 100%;
-      box-shadow:
-        0 6px 28px rgba(217,119,6,0.35),
-        0 1px 0 rgba(255,255,255,0.12) inset,
-        0 -1px 0 rgba(0,0,0,0.2) inset;
+      box-shadow: 0 6px 28px rgba(217,119,6,0.35), 0 1px 0 rgba(255,255,255,0.12) inset, 0 -1px 0 rgba(0,0,0,0.2) inset;
       transition: box-shadow 0.4s, transform 0.3s, border-color 0.3s;
     }
     @keyframes btnPulse {
@@ -337,289 +279,190 @@
       50%  { background-position: 0% 0;   box-shadow: 0 8px 38px rgba(245,158,11,0.55), 0 1px 0 rgba(255,255,255,0.18) inset; }
       100% { background-position: 100% 0; box-shadow: 0 6px 28px rgba(217,119,6,0.35), 0 1px 0 rgba(255,255,255,0.12) inset; }
     }
-    /* Continuous shimmer sweep */
     .btn-submit::before {
-      content: '';
-      position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+      content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
       background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
-      transform: skewX(-22deg);
-      animation: btnShimmer 4s ease infinite;
+      transform: skewX(-22deg); animation: btnShimmer 4s ease infinite;
     }
-    @keyframes btnShimmer {
-      0%, 20%  { left: -100%; }
-      60%, 100% { left: 170%; }
-    }
-    /* Top gloss line */
+    @keyframes btnShimmer { 0%,20%{left:-100%} 60%,100%{left:170%} }
     .btn-submit::after {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
       border-radius: 14px 14px 0 0;
     }
-    .btn-submit:hover {
-      box-shadow: 0 12px 45px rgba(245,158,11,0.6), 0 1px 0 rgba(255,255,255,0.18) inset;
-      transform: translateY(-3px);
-      border-color: rgba(245,158,11,0.65);
-    }
+    .btn-submit:hover { box-shadow: 0 12px 45px rgba(245,158,11,0.6), 0 1px 0 rgba(255,255,255,0.18) inset; transform: translateY(-2px); border-color: rgba(245,158,11,0.65); }
     .btn-submit:active { transform: translateY(-1px); }
     .btn-submit:disabled { cursor: not-allowed; opacity: 0.6; transform: none; animation: none; }
-
-    /* Click ripple on submit */
     .btn-submit .submit-ripple {
-      position: absolute; border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      transform: scale(0);
-      animation: submitRipple 0.7s ease-out forwards;
-      pointer-events: none;
+      position: absolute; border-radius: 50%; background: rgba(255,255,255,0.3);
+      transform: scale(0); animation: submitRipple 0.7s ease-out forwards; pointer-events: none;
     }
-    @keyframes submitRipple {
-      to { transform: scale(5); opacity: 0; }
-    }
+    @keyframes submitRipple { to{transform:scale(5);opacity:0} }
 
     .btn-code {
-      height: 48px; border-radius: 10px;
-      background-color: rgba(255,255,255,0.07);
+      height: 48px; border-radius: 10px; background-color: rgba(255,255,255,0.07);
       color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.14);
-      transition: all 0.3s; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+      transition: all 0.3s; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
     }
     .btn-code:hover { background-color: var(--amber-dim); border-color: rgba(245,158,11,0.4); color: #fff; }
     .btn-success-custom {
-      background: rgba(34,197,94,0.12) !important;
-      color: #4ade80 !important;
-      border: 1px solid rgba(34,197,94,0.3) !important;
-      pointer-events: none; height: 48px; border-radius: 10px;
-      font-size: 0.82rem; font-family: 'DM Sans', sans-serif;
-      width: 100%; display: flex; align-items: center; justify-content: center;
-      gap: 6px;
+      background: rgba(34,197,94,0.12) !important; color: #4ade80 !important;
+      border: 1px solid rgba(34,197,94,0.3) !important; pointer-events: none;
+      height: 48px; border-radius: 10px; font-size: 0.82rem;
+      font-family: 'DM Sans', sans-serif; width: 100%;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
     }
 
-    /* ══════════════════════════════════════════
-       TEXTAREA PROGRESS RING
-    ══════════════════════════════════════════ */
+    /* ── TEXTAREA RING ── */
     .textarea-counter-wrap { position: relative; }
-    .progress-ring-wrap {
-      position: absolute; bottom: 10px; right: 12px;
-      width: 34px; height: 34px; pointer-events: none;
-    }
+    .progress-ring-wrap { position: absolute; bottom: 10px; right: 12px; width: 34px; height: 34px; pointer-events: none; }
     .progress-ring-wrap svg { transform: rotate(-90deg); }
     .ring-bg { fill: none; stroke: rgba(255,255,255,0.07); stroke-width: 2.5; }
-    .ring-fill {
-      fill: none; stroke: var(--amber); stroke-width: 2.5;
-      stroke-linecap: round; stroke-dasharray: 88; stroke-dashoffset: 88;
-      transition: stroke-dashoffset 0.35s ease, stroke 0.35s;
-    }
-    .ring-text {
-      position: absolute; inset: 0; display: flex;
-      align-items: center; justify-content: center;
-      font-size: 7.5px; font-weight: 600;
-      color: var(--amber); letter-spacing: -0.3px;
-      font-family: 'DM Sans', sans-serif;
-    }
+    .ring-fill { fill: none; stroke: var(--amber); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 88; stroke-dashoffset: 88; transition: stroke-dashoffset 0.35s ease, stroke 0.35s; }
+    .ring-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 7.5px; font-weight: 600; color: var(--amber); letter-spacing: -0.3px; font-family: 'DM Sans', sans-serif; }
     textarea[name="GreatFit"] { padding-right: 50px; }
 
-    /* ══════════════════════════════════════════
-       LIQUID CHECKBOX — with ripple
-    ══════════════════════════════════════════ */
+    /* ── LIQUID CHECKBOX (shrunk) ── */
     .liquid-footer {
-      position: relative; overflow: hidden;
-      border-radius: 14px; margin-top: 1.8rem;
-      padding: 1.4rem 1.6rem;
-      background: rgba(245,158,11,0.04);
-      border: 1px solid rgba(245,158,11,0.14);
+      position: relative; overflow: hidden; border-radius: 12px;
+      margin-top: 1.4rem; padding: 1rem 1.2rem;
+      background: rgba(245,158,11,0.04); border: 1px solid rgba(245,158,11,0.14);
     }
     .liquid-footer::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: linear-gradient(110deg, transparent 30%, rgba(245,158,11,0.06) 50%, transparent 70%);
-      background-size: 200% 100%;
-      animation: liquidShimmer 5s ease infinite;
-      pointer-events: none;
+      background-size: 200% 100%; animation: liquidShimmer 5s ease infinite; pointer-events: none;
     }
-    @keyframes liquidShimmer {
-      0%   { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
+    @keyframes liquidShimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
     .liquid-footer::after {
-      content: '';
-      position: absolute; inset: 0; border-radius: 14px;
-      background: conic-gradient(
-        from var(--beam-angle, 0deg),
-        transparent 0deg, rgba(245,158,11,0.22) 45deg,
-        rgba(253,211,100,0.3) 75deg, rgba(245,158,11,0.22) 110deg,
-        transparent 155deg
-      );
-      opacity: 1; pointer-events: none; z-index: 0;
-      animation: spinBeam 6s linear infinite;
+      content: ''; position: absolute; inset: 0; border-radius: 12px;
+      background: conic-gradient(from var(--beam-angle,0deg), transparent 0deg, rgba(245,158,11,0.22) 45deg, rgba(253,211,100,0.3) 75deg, rgba(245,158,11,0.22) 110deg, transparent 155deg);
+      opacity: 1; pointer-events: none; z-index: 0; animation: spinBeam 6s linear infinite;
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude;
-      padding: 1px;
+      -webkit-mask-composite: xor; mask-composite: exclude; padding: 1px;
     }
     .liquid-footer > * { position: relative; z-index: 1; }
-
-    .liquid-check-row { display: flex; align-items: center; gap: 14px; }
-
-    /* Checkbox ripple wrapper */
-    .checkbox-ripple-wrap {
-      position: relative; flex-shrink: 0;
-      width: 20px; height: 20px;
-    }
+    .liquid-check-row { display: flex; align-items: center; gap: 12px; }
+    .checkbox-ripple-wrap { position: relative; flex-shrink: 0; width: 20px; height: 20px; }
     .liq-checkbox {
       appearance: none; -webkit-appearance: none;
       width: 20px; height: 20px; border-radius: 6px;
-      background: rgba(255,255,255,0.06);
-      border: 1.5px solid rgba(245,158,11,0.35);
-      cursor: pointer; position: relative;
-      transition: all 0.35s; outline: none;
-      display: block;
+      background: rgba(255,255,255,0.06); border: 1.5px solid rgba(245,158,11,0.35);
+      cursor: pointer; position: relative; transition: all 0.35s; outline: none; display: block;
     }
-    .liq-checkbox:checked {
-      background: linear-gradient(135deg, #d97706, #b45309);
-      border-color: #d97706;
-      box-shadow: 0 0 20px rgba(217,119,6,0.45);
-    }
-    .liq-checkbox:checked::after {
-      content: '';
-      position: absolute; top: 3px; left: 6px;
-      width: 5px; height: 9px;
-      border: 2px solid white; border-top: none; border-left: none;
-      transform: rotate(42deg);
-    }
-    /* Liquid ripple rings on check */
-    .check-ripple {
-      position: absolute; inset: 0; border-radius: 50%;
-      pointer-events: none;
-    }
-    .check-ripple::before,
-    .check-ripple::after {
-      content: '';
-      position: absolute; inset: -2px; border-radius: 50%;
-      border: 1.5px solid rgba(245,158,11,0.7);
-      opacity: 0; transform: scale(1);
-    }
-    .liq-checkbox:checked ~ .check-ripple::before {
-      animation: rippleRing 0.6s ease-out forwards;
-    }
-    .liq-checkbox:checked ~ .check-ripple::after {
-      animation: rippleRing 0.6s ease-out 0.15s forwards;
-    }
-    @keyframes rippleRing {
-      0%   { transform: scale(1); opacity: 0.8; }
-      100% { transform: scale(3.5); opacity: 0; }
-    }
-    /* Liquid burst particles */
-    .liq-check-label {
-      font-size: 0.88rem; color: rgba(255,255,255,0.65);
-      cursor: pointer; font-weight: 300; letter-spacing: 0.01em;
-      line-height: 1.4;
-    }
+    .liq-checkbox:checked { background: linear-gradient(135deg, #d97706, #b45309); border-color: #d97706; box-shadow: 0 0 20px rgba(217,119,6,0.45); }
+    .liq-checkbox:checked::after { content:''; position:absolute; top:3px; left:6px; width:5px; height:9px; border:2px solid white; border-top:none; border-left:none; transform:rotate(42deg); }
+    .check-ripple { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; }
+    .check-ripple::before, .check-ripple::after { content:''; position:absolute; inset:-2px; border-radius:50%; border:1.5px solid rgba(245,158,11,0.7); opacity:0; transform:scale(1); }
+    .liq-checkbox:checked ~ .check-ripple::before { animation: rippleRing 0.6s ease-out forwards; }
+    .liq-checkbox:checked ~ .check-ripple::after { animation: rippleRing 0.6s ease-out 0.15s forwards; }
+    @keyframes rippleRing { 0%{transform:scale(1);opacity:0.8} 100%{transform:scale(3.5);opacity:0} }
+    .liq-check-label { font-size: 0.84rem; color: rgba(255,255,255,0.62); cursor: pointer; font-weight: 300; letter-spacing: 0.01em; line-height: 1.45; }
 
-    /* ══════════════════════════════════════════
-       CUSTOM TRIGGER (dropdowns / calendar)
-    ══════════════════════════════════════════ */
+    /* ── CUSTOM TRIGGER ── */
     .custom-trigger {
-      background-color: rgba(255,255,255,0.055);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.32);
-      border-radius: 10px; height: 48px; padding: 0 16px;
-      width: 100%; display: flex; align-items: center;
-      justify-content: space-between; cursor: pointer;
-      transition: all 0.35s; font-size: 0.9rem;
-      font-family: 'DM Sans', sans-serif;
-      user-select: none; -webkit-tap-highlight-color: transparent;
-      position: relative;
+      background-color: rgba(255,255,255,0.055); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.32); border-radius: 10px; height: 48px; padding: 0 16px;
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; transition: all 0.3s; font-size: 0.9rem;
+      font-family: 'DM Sans', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent;
     }
-    .custom-trigger:hover {
-      background-color: rgba(255,255,255,0.08);
-      border-color: rgba(245,158,11,0.25);
-    }
-    .custom-trigger.filled {
-      color: #fff;
-      background-color: rgba(255,255,255,0.08);
-      border-color: rgba(245,158,11,0.38);
-    }
+    .custom-trigger:hover { background-color: rgba(255,255,255,0.08); border-color: rgba(245,158,11,0.25); }
+    .custom-trigger.filled { color: #fff; background-color: rgba(255,255,255,0.08); border-color: rgba(245,158,11,0.38); }
     .custom-trigger .trig-icon { color: var(--amber); font-size: 0.8rem; flex-shrink: 0; transition: transform 0.3s; }
     .custom-trigger.dimmed { opacity: 0.38; pointer-events: none; }
 
-    /* ══════════════════════════════════════════
-       POPUPS — SELECT & CALENDAR
-    ══════════════════════════════════════════ */
+    /* ── POPUPS ── */
     .pop-overlay {
-      position: fixed; inset: 0;
-      background: rgba(4,10,24,0.82);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      position: fixed; inset: 0; background: rgba(4,10,24,0.85);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       display: flex; align-items: flex-end; justify-content: center;
       z-index: 99999; opacity: 0; visibility: hidden;
-      transition: opacity 0.35s, visibility 0.35s;
+      transition: opacity 0.3s, visibility 0.3s;
     }
     .pop-overlay.on { opacity: 1; visibility: visible; }
     @media(min-width: 600px) { .pop-overlay { align-items: center; } }
 
+    /* SELECT CARD — with liquid border */
     .sel-card {
       position: relative; overflow: hidden;
       background: linear-gradient(160deg, rgba(13,26,52,0.98) 0%, rgba(8,16,36,0.99) 100%);
       border: 1px solid rgba(255,255,255,0.08);
-      border-top: 1px solid rgba(255,255,255,0.16);
-      border-radius: 24px 24px 0 0;
-      width: 100%; max-width: 580px; max-height: 80vh;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      border-radius: 24px 24px 0 0; width: 100%; max-width: 580px; max-height: 80vh;
       display: flex; flex-direction: column;
       transform: translateY(100%);
-      transition: transform 0.42s cubic-bezier(0.25,0.46,0.45,0.94);
+      transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
       box-shadow: 0 -8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
     }
     .pop-overlay.on .sel-card { transform: translateY(0); }
+    /* Radial glow top */
     .sel-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.07) 0%, transparent 65%);
-      pointer-events: none;
+      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.09) 0%, transparent 60%);
     }
+    /* Liquid spinning border */
+    .sel-card::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+      border-radius: 24px 24px 0 0;
+      background: conic-gradient(from var(--beam-angle,0deg), transparent 0deg, rgba(245,158,11,0.45) 50deg, rgba(253,211,100,0.6) 80deg, rgba(245,158,11,0.45) 110deg, transparent 165deg);
+      animation: spinBeam 5s linear infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; padding: 1px;
+    }
+    .sel-card > * { position: relative; z-index: 3; }
+
     @media(min-width: 600px) {
-      .sel-card { border-radius: 20px; transform: scale(0.9) translateY(0); max-height: 72vh; }
+      .sel-card { border-radius: 20px; transform: scale(0.92); max-height: 72vh; }
       .pop-overlay.on .sel-card { transform: scale(1); }
+      .sel-card::after { border-radius: 20px; }
     }
 
+    /* CALENDAR CARD — with liquid border */
     .cal-card {
       position: relative; overflow: hidden;
       background: linear-gradient(160deg, rgba(13,26,52,0.98) 0%, rgba(8,16,36,0.99) 100%);
       border: 1px solid rgba(255,255,255,0.08);
-      border-top: 1px solid rgba(255,255,255,0.16);
-      border-radius: 24px 24px 0 0;
-      width: 100%; max-width: 400px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      border-radius: 24px 24px 0 0; width: 100%; max-width: 400px;
       transform: translateY(100%);
-      transition: transform 0.42s cubic-bezier(0.25,0.46,0.45,0.94);
+      transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
       box-shadow: 0 -8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
     }
     .pop-overlay.on .cal-card { transform: translateY(0); }
     .cal-card::before {
-      content: ''; position: absolute;
-      top: 0; left: 0; right: 0; height: 120px;
-      background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.1) 0%, transparent 70%);
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.11) 0%, transparent 70%);
       pointer-events: none; z-index: 0;
     }
-    .cal-card > * { position: relative; z-index: 1; }
+    /* Liquid spinning border */
+    .cal-card::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+      border-radius: 24px 24px 0 0;
+      background: conic-gradient(from var(--beam-angle,0deg), transparent 0deg, rgba(245,158,11,0.5) 55deg, rgba(253,211,100,0.65) 85deg, rgba(245,158,11,0.5) 115deg, transparent 170deg);
+      animation: spinBeam 4.5s linear infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; padding: 1px;
+    }
+    .cal-card > * { position: relative; z-index: 3; }
+
     @media(min-width: 600px) {
-      .cal-card { border-radius: 20px; transform: scale(0.9); }
+      .cal-card { border-radius: 20px; transform: scale(0.92); }
       .pop-overlay.on .cal-card { transform: scale(1); }
+      .cal-card::after { border-radius: 20px; }
     }
 
-    .drag-bar {
-      width: 36px; height: 3px;
-      background: rgba(255,255,255,0.18);
-      border-radius: 2px; margin: 14px auto 0;
-    }
-
+    .drag-bar { width: 36px; height: 3px; background: rgba(255,255,255,0.18); border-radius: 2px; margin: 14px auto 0; }
     .sel-head { padding: 14px 18px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
     .sel-title { font-size: 0.95rem; font-weight: 500; color: rgba(255,255,255,0.9); text-align: center; margin-bottom: 12px; letter-spacing: 0.04em; }
     .sel-search {
-      background: rgba(255,255,255,0.07) !important;
-      border: 1px solid rgba(255,255,255,0.12) !important;
-      border-radius: 10px; color: #fff !important;
-      height: 40px; padding: 0 14px; width: 100%;
-      font-size: 0.88rem; outline: none;
-      -webkit-text-fill-color: #fff !important;
-      font-family: 'DM Sans', sans-serif;
-      transition: border-color 0.3s;
+      background: rgba(255,255,255,0.07) !important; border: 1px solid rgba(255,255,255,0.12) !important;
+      border-radius: 10px; color: #fff !important; height: 40px; padding: 0 14px; width: 100%;
+      font-size: 0.88rem; outline: none; -webkit-text-fill-color: #fff !important;
+      font-family: 'DM Sans', sans-serif; transition: border-color 0.3s;
     }
     .sel-search:focus { border-color: rgba(245,158,11,0.4) !important; }
     .sel-search::placeholder { color: rgba(255,255,255,0.3); }
@@ -628,92 +471,119 @@
     .sel-list::-webkit-scrollbar-thumb { background: rgba(245,158,11,0.3); border-radius: 2px; }
     .sel-opt {
       padding: 12px 14px; border-radius: 10px; color: rgba(255,255,255,0.8);
-      cursor: pointer; transition: background 0.2s;
-      font-size: 0.88rem; display: flex; align-items: center;
-      justify-content: space-between; font-family: 'DM Sans', sans-serif;
+      cursor: pointer; transition: background 0.18s; font-size: 0.88rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: 'DM Sans', sans-serif; position: relative; overflow: hidden;
     }
-    .sel-opt:hover { background: rgba(255,255,255,0.05); }
+    .sel-opt::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+      background: linear-gradient(90deg, rgba(245,158,11,0.08), transparent);
+      transition: width 0.3s ease;
+    }
+    .sel-opt:hover::before { width: 100%; }
+    .sel-opt:hover { color: #fff; }
     .sel-opt:active { background: rgba(245,158,11,0.12); }
     .sel-opt.chosen { background: rgba(245,158,11,0.12); color: var(--amber-light); font-weight: 500; }
+    .sel-opt.chosen::before { width: 100%; background: linear-gradient(90deg, rgba(245,158,11,0.12), transparent); }
     .sel-opt .chk { color: var(--amber); font-size: 0.85rem; }
 
-    /* CALENDAR */
+    /* ── CALENDAR ── */
     .cal-head { padding: 0 16px 8px; }
     .cal-nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 10px; }
     .cal-nav-btn {
-      background: rgba(245,158,11,0.1);
-      border: 1px solid rgba(245,158,11,0.22);
-      color: var(--amber); width: 34px; height: 34px; border-radius: 50%;
+      background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.22);
+      color: var(--amber); width: 36px; height: 36px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 0.78rem; transition: background 0.2s;
+      cursor: pointer; font-size: 0.78rem; transition: all 0.2s;
     }
-    .cal-nav-btn:active { background: rgba(245,158,11,0.25); }
+    .cal-nav-btn:hover { background: rgba(245,158,11,0.2); box-shadow: 0 0 12px rgba(245,158,11,0.25); }
+    .cal-nav-btn:active { background: rgba(245,158,11,0.3); }
     .cal-my {
-      font-size: 0.95rem; font-weight: 500; color: var(--amber);
-      cursor: pointer; display: flex; align-items: center;
-      gap: 6px; padding: 4px 10px; border-radius: 8px; transition: background 0.2s;
-      font-family: 'DM Sans', sans-serif; letter-spacing: 0.02em;
+      font-size: 0.95rem; font-weight: 500; color: var(--amber); cursor: pointer;
+      display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 8px;
+      transition: all 0.2s; font-family: 'DM Sans', sans-serif; letter-spacing: 0.02em;
+      border: 1px solid transparent;
     }
-    .cal-my:active { background: rgba(245,158,11,0.1); }
-    .cal-my i { font-size: 0.65rem; }
+    .cal-my:hover { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.2); }
+    .cal-my:active { background: rgba(245,158,11,0.18); }
+    .cal-my i { font-size: 0.65rem; transition: transform 0.3s; }
     .cal-wdays { display: grid; grid-template-columns: repeat(7,1fr); padding: 0 4px; }
-    .cal-wd { text-align: center; font-size: 0.68rem; color: rgba(245,158,11,0.6); font-weight: 600; padding: 6px 0; letter-spacing: 0.06em; }
-    .cal-days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; padding: 0 8px 10px; }
+    .cal-wd { text-align: center; font-size: 0.67rem; color: rgba(245,158,11,0.6); font-weight: 600; padding: 6px 0; letter-spacing: 0.06em; }
+    .cal-days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; padding: 0 8px 10px; }
     .cal-d {
-      text-align: center; padding: 8px 2px; border-radius: 50%;
+      text-align: center; padding: 7px 2px; border-radius: 50%;
       cursor: pointer; color: rgba(255,255,255,0.75);
-      font-size: 0.84rem; transition: background 0.18s, color 0.18s, transform 0.15s;
+      font-size: 0.84rem; transition: all 0.18s;
       aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'DM Sans', sans-serif; position: relative;
     }
-    .cal-d:hover { background: rgba(245,158,11,0.1); color: #fff; transform: scale(1.1); }
-    .cal-d:active { background: rgba(245,158,11,0.2); }
-    .cal-d.sel { background: linear-gradient(135deg, #d97706, #b45309) !important; color: #fff; font-weight: 600; box-shadow: 0 0 12px rgba(217,119,6,0.4); }
-    .cal-d.tod { border: 1px solid rgba(245,158,11,0.4); color: var(--amber-light); }
-    .cal-d.other { color: rgba(255,255,255,0.16); cursor: default; pointer-events: none; }
-
+    .cal-d:hover { background: rgba(245,158,11,0.12); color: #fff; transform: scale(1.12); }
+    .cal-d:active { background: rgba(245,158,11,0.22); transform: scale(1.05); }
+    .cal-d.sel {
+      background: linear-gradient(135deg, #d97706, #b45309) !important;
+      color: #fff; font-weight: 600;
+      box-shadow: 0 0 16px rgba(217,119,6,0.5), 0 0 6px rgba(245,158,11,0.3);
+    }
+    .cal-d.tod { border: 1px solid rgba(245,158,11,0.45); color: var(--amber-light); }
+    .cal-d.other { color: rgba(255,255,255,0.14); cursor: default; pointer-events: none; }
     .cal-confirm {
       background: linear-gradient(135deg, #d97706, #b45309);
       border: none; border-radius: 12px; height: 46px; font-weight: 500;
       color: #fff; width: calc(100% - 28px); margin: 6px 14px 16px;
-      font-size: 0.9rem; cursor: pointer; transition: all 0.3s;
+      font-size: 0.9rem; cursor: pointer; transition: all 0.25s;
       font-family: 'DM Sans', sans-serif; letter-spacing: 0.03em;
-      box-shadow: 0 4px 16px rgba(217,119,6,0.3);
+      box-shadow: 0 4px 20px rgba(217,119,6,0.35); position: relative; overflow: hidden;
     }
+    .cal-confirm::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: skewX(-20deg); animation: btnShimmer 3s ease infinite;
+    }
+    .cal-confirm:hover { box-shadow: 0 6px 26px rgba(217,119,6,0.5); transform: translateY(-1px); }
     .cal-confirm:active { transform: scale(0.98); }
     .cal-picker-view { display: none; padding: 8px 14px 16px; }
     .cal-picker-view.show { display: block; }
     .cal-year-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px; }
     .cal-year-num { font-size: 1.15rem; font-weight: 600; color: #fff; font-family: 'DM Sans', sans-serif; }
-    .cal-yr-btn { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.22); color: var(--amber); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
-    .cal-yr-btn:active { background: rgba(245,158,11,0.25); }
+    .cal-yr-btn { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.22); color: var(--amber); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+    .cal-yr-btn:hover { background: rgba(245,158,11,0.2); box-shadow: 0 0 12px rgba(245,158,11,0.2); }
+    .cal-yr-btn:active { background: rgba(245,158,11,0.3); }
     .cal-months-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
     .cal-m-opt {
       padding: 12px 5px; border-radius: 10px; text-align: center;
       cursor: pointer; color: rgba(255,255,255,0.7); font-size: 0.86rem;
-      transition: background 0.18s; border: 1px solid transparent;
-      font-family: 'DM Sans', sans-serif;
+      transition: all 0.18s; border: 1px solid transparent;
+      font-family: 'DM Sans', sans-serif; position: relative; overflow: hidden;
     }
-    .cal-m-opt:active { background: rgba(245,158,11,0.12); }
-    .cal-m-opt.cur-m { background: rgba(245,158,11,0.14); border-color: rgba(245,158,11,0.35); color: var(--amber-light); font-weight: 500; }
+    .cal-m-opt::before {
+      content:''; position:absolute; inset:0; border-radius:10px;
+      background: conic-gradient(from var(--beam-angle,0deg), transparent 0deg, rgba(245,158,11,0.3) 60deg, rgba(253,211,100,0.4) 90deg, rgba(245,158,11,0.3) 120deg, transparent 180deg);
+      opacity:0; animation: spinBeam 4s linear infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; padding:1px;
+      transition: opacity 0.25s;
+    }
+    .cal-m-opt:hover::before, .cal-m-opt.cur-m::before { opacity: 1; }
+    .cal-m-opt:hover { background: rgba(245,158,11,0.08); color: #fff; }
+    .cal-m-opt:active { background: rgba(245,158,11,0.15); }
+    .cal-m-opt.cur-m { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.32); color: var(--amber-light); font-weight: 500; }
     .cal-m-opt.now-m { border-color: rgba(255,255,255,0.14); }
 
-    /* ══════════════════════════════════════════
-       MODALS
-    ══════════════════════════════════════════ */
+    /* ── MODALS ── */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(4,10,24,0.88); backdrop-filter: blur(12px);
+      background: rgba(4,10,24,0.88); backdrop-filter: blur(10px);
       display: flex; align-items: center; justify-content: center;
-      z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s;
+      z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.35s;
+      padding: 20px;
     }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-card {
       background: linear-gradient(160deg, rgba(13,26,52,0.98) 0%, rgba(8,16,36,0.99) 100%);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-top: 1px solid rgba(255,255,255,0.18);
-      border-radius: 20px; padding: 2.4rem; width: 90%; max-width: 400px;
-      text-align: center; transform: translateY(28px) scale(0.97); transition: all 0.4s;
+      border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px; padding: 2.2rem; width: 100%; max-width: 400px;
+      text-align: center; transform: translateY(24px) scale(0.97); transition: all 0.35s;
       box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
     }
     .modal-overlay.active .modal-card { transform: translateY(0) scale(1); }
@@ -721,137 +591,152 @@
       background: rgba(0,0,0,0.3) !important; font-size: 1.7rem !important;
       letter-spacing: 14px; text-align: center;
       border: 1.5px solid rgba(245,158,11,0.4) !important;
-      color: #fff !important; height: 64px; border-radius: 12px;
-      font-weight: 700;
+      color: #fff !important; height: 64px; border-radius: 12px; font-weight: 700;
     }
 
-    /* ══════════════════════════════════════════
-       THANK YOU MODAL — premium
-    ══════════════════════════════════════════ */
-    .thankyou-stars {
-      display: flex; justify-content: center; gap: 6px;
-      margin-bottom: 1rem;
-    }
-    .thankyou-stars i {
-      color: var(--amber); font-size: 0.85rem;
-      animation: starPop 0.4s ease backwards;
-    }
-    .thankyou-stars i:nth-child(1) { animation-delay: 0.7s; }
-    .thankyou-stars i:nth-child(2) { animation-delay: 0.85s; }
-    .thankyou-stars i:nth-child(3) { animation-delay: 1.0s; }
-    .thankyou-stars i:nth-child(4) { animation-delay: 1.15s; }
-    .thankyou-stars i:nth-child(5) { animation-delay: 1.3s; }
-    @keyframes starPop {
-      0%   { transform: scale(0) rotate(-30deg); opacity: 0; }
-      70%  { transform: scale(1.3) rotate(5deg); opacity: 1; }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    }
-    .thankyou-tag {
-      display: inline-block;
-      background: rgba(245,158,11,0.1);
-      border: 1px solid rgba(245,158,11,0.25);
-      border-radius: 20px; padding: 3px 12px;
-      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--amber); margin-bottom: 0.8rem;
-    }
-
-    /* SVG checkmark */
+    /* ── THANK YOU ── */
+    .thankyou-stars { display: flex; justify-content: center; gap: 6px; margin-bottom: 1rem; }
+    .thankyou-stars i { color: var(--amber); font-size: 0.85rem; animation: starPop 0.4s ease backwards; }
+    .thankyou-stars i:nth-child(1){animation-delay:0.7s} .thankyou-stars i:nth-child(2){animation-delay:0.85s}
+    .thankyou-stars i:nth-child(3){animation-delay:1.0s} .thankyou-stars i:nth-child(4){animation-delay:1.15s}
+    .thankyou-stars i:nth-child(5){animation-delay:1.3s}
+    @keyframes starPop { 0%{transform:scale(0) rotate(-30deg);opacity:0} 70%{transform:scale(1.3) rotate(5deg);opacity:1} 100%{transform:scale(1) rotate(0deg);opacity:1} }
+    .thankyou-tag { display: inline-block; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 3px 12px; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.8rem; }
     .check-circle-wrap { width: 86px; height: 86px; margin: 0 auto 1.2rem; }
     .check-circle-wrap svg { width: 100%; height: 100%; }
     .check-circle { fill: none; stroke: #22c55e; stroke-width: 2.5; stroke-dasharray: 283; stroke-dashoffset: 283; }
     .check-tick { fill: none; stroke: #22c55e; stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 80; stroke-dashoffset: 80; }
     .modal-overlay.active .check-circle { animation: drawCircle 0.6s ease forwards 0.12s; }
     .modal-overlay.active .check-tick   { animation: drawTick  0.45s ease forwards 0.65s; }
-    @keyframes drawCircle { to { stroke-dashoffset: 0; } }
-    @keyframes drawTick   { to { stroke-dashoffset: 0; } }
+    @keyframes drawCircle { to{stroke-dashoffset:0} }
+    @keyframes drawTick   { to{stroke-dashoffset:0} }
 
-    /* ══════════════════════════════════════════
-       TOAST NOTIFICATION (replaces alerts)
-    ══════════════════════════════════════════ */
-    .toast-wrap {
-      position: fixed; top: 24px; right: 24px;
-      z-index: 99999;
-      display: flex; flex-direction: column; gap: 10px;
-    }
+    /* ── TOAST ── */
+    .toast-wrap { position: fixed; top: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; max-width: calc(100vw - 40px); }
     .toast-item {
-      display: flex; align-items: center; gap: 12px;
-      background: rgba(13,26,52,0.97);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px; padding: 14px 18px;
-      max-width: 320px; min-width: 260px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-      animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
-      overflow: hidden; position: relative;
+      display: flex; align-items: center; gap: 12px; background: rgba(13,26,52,0.97);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 13px 16px;
+      max-width: 300px; min-width: 240px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; overflow: hidden; position: relative;
     }
-    .toast-item.toast-error { border-left: 3px solid #f87171; }
-    .toast-item.toast-success { border-left: 3px solid #4ade80; }
-    .toast-item.toast-warn { border-left: 3px solid var(--amber); }
+    .toast-item.toast-error{border-left:3px solid #f87171} .toast-item.toast-success{border-left:3px solid #4ade80} .toast-item.toast-warn{border-left:3px solid var(--amber)}
     .toast-item.toast-out { animation: toastOut 0.3s ease forwards; }
-    .toast-icon { font-size: 1rem; flex-shrink: 0; }
-    .toast-error .toast-icon { color: #f87171; }
-    .toast-success .toast-icon { color: #4ade80; }
-    .toast-warn .toast-icon { color: var(--amber); }
-    .toast-text { font-size: 0.85rem; color: rgba(255,255,255,0.85); line-height: 1.4; flex: 1; }
-    .toast-bar {
-      position: absolute; bottom: 0; left: 0;
-      height: 2px; background: currentColor; opacity: 0.4;
-      animation: toastBar 4s linear forwards;
-    }
-    .toast-error .toast-bar { color: #f87171; }
-    .toast-success .toast-bar { color: #4ade80; }
-    .toast-warn .toast-bar { color: var(--amber); }
-    @keyframes toastIn {
-      from { transform: translateX(120%); opacity: 0; }
-      to   { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes toastOut {
-      to { transform: translateX(120%); opacity: 0; }
-    }
-    @keyframes toastBar {
-      from { width: 100%; }
-      to   { width: 0%; }
-    }
+    .toast-icon { font-size: 0.95rem; flex-shrink: 0; }
+    .toast-error .toast-icon{color:#f87171} .toast-success .toast-icon{color:#4ade80} .toast-warn .toast-icon{color:var(--amber)}
+    .toast-text { font-size: 0.83rem; color: rgba(255,255,255,0.85); line-height: 1.4; flex: 1; }
+    .toast-bar { position: absolute; bottom: 0; left: 0; height: 2px; background: currentColor; opacity: 0.4; animation: toastBar 4s linear forwards; }
+    .toast-error .toast-bar{color:#f87171} .toast-success .toast-bar{color:#4ade80} .toast-warn .toast-bar{color:var(--amber)}
+    @keyframes toastIn { from{transform:translateX(120%);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes toastOut { to{transform:translateX(120%);opacity:0} }
+    @keyframes toastBar { from{width:100%} to{width:0%} }
 
-    /* Loading dots */
+    /* ── LOADING DOTS ── */
     .loading-dots { display: inline-flex; gap: 4px; align-items: center; }
-    .loading-dots span {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: rgba(255,255,255,0.8);
-      animation: dotBounce 1.2s ease infinite;
-    }
-    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes dotBounce {
-      0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
-      40% { transform: scale(1); opacity: 1; }
+    .loading-dots span { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.8); animation: dotBounce 1.2s ease infinite; }
+    .loading-dots span:nth-child(2){animation-delay:0.2s} .loading-dots span:nth-child(3){animation-delay:0.4s}
+    @keyframes dotBounce { 0%,80%,100%{transform:scale(0.7);opacity:0.5} 40%{transform:scale(1);opacity:1} }
+
+    .section-block + .section-block { margin-top: 1.6rem; }
+
+    /* ════════════════════════════════════════
+       MOBILE RESPONSIVE — comprehensive
+    ════════════════════════════════════════ */
+    @media (max-width: 767px) {
+      /* Background stays fixed, no zoom */
+      .bg-layer {
+        background-attachment: scroll;
+        background-position: center center;
+      }
+
+      /* Logo */
+      .logo-container { top: 16px; left: 50%; transform: translateX(-50%); }
+      .logo { width: 170px; }
+      .logo-tagline { font-size: 0.62rem; letter-spacing: 0.16em; }
+      .logo-tagline::before, .logo-tagline::after { width: 14px; }
+
+      /* Page container */
+      .page-container { padding: 100px 12px 40px; }
+
+      /* Header */
+      .form-header-text { margin-bottom: 22px; }
+      .form-title { font-size: 2rem; }
+      .form-subtitle { font-size: 0.8rem; padding: 0 8px; }
+      .header-eyebrow { font-size: 0.62rem; }
+
+      /* Card */
+      .card {
+        padding: 1.4rem 1.1rem;
+        border-radius: 16px;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+
+      /* Section title */
+      .section-title { font-size: 0.72rem; margin-bottom: 1rem; }
+      .section-block + .section-block { margin-top: 1.3rem; }
+
+      /* All grid columns become full-width */
+      .row.g-3 > [class*="col-"] { padding-left: 6px; padding-right: 6px; }
+      .row.g-3 { --bs-gutter-x: 0.6rem; --bs-gutter-y: 0.6rem; }
+
+      /* Email + OTP row — stack email full width, OTP button below */
+      .col-md-5 { width: 100%; }
+      .col-md-2 { width: 100%; }
+
+      /* Inputs */
+      .form-control { height: 46px; font-size: 0.88rem; }
+      .custom-trigger { height: 46px; font-size: 0.88rem; }
+      .btn-code { height: 46px; }
+
+      /* Submit button */
+      .btn-submit { height: 52px; font-size: 0.92rem; }
+
+      /* Liquid footer */
+      .liquid-footer { padding: 0.9rem 1rem; margin-top: 1rem; }
+      .liq-check-label { font-size: 0.8rem; }
+
+      /* Modal */
+      .modal-card { padding: 1.8rem 1.4rem; }
+      .otp-input-large { font-size: 1.5rem !important; letter-spacing: 10px; }
+
+      /* Toast */
+      .toast-wrap { top: 14px; right: 12px; left: 12px; align-items: flex-end; }
+      .toast-item { max-width: 100%; min-width: unset; padding: 11px 14px; }
+
+      /* Reduce heavy animations on mobile for performance */
+      .card { animation-duration: 0.5s; }
+      .section-block { animation-duration: 0.45s; }
     }
 
-    /* section spacing */
-    .section-block + .section-block { margin-top: 1.8rem; }
+    @media (max-width: 400px) {
+      .page-container { padding: 95px 10px 36px; }
+      .form-title { font-size: 1.75rem; }
+      .card { padding: 1.2rem 0.9rem; }
+      .form-control, .custom-trigger, .btn-code { height: 44px; font-size: 0.84rem; }
+    }
+
+    /* Reduce motion for low-power preference */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
   </style>
 </head>
 <body>
   <div class="bg-layer"></div>
-
-  <!-- Toast container -->
   <div class="toast-wrap" id="toastWrap"></div>
 
   <div class="logo-container">
     <img src="https://i.postimg.cc/MKh5pB49/Gemini-Generated-Image-f1z1rjf1z1rjf1z1-removebg-preview.png" class="logo" alt="LEVZA Logo">
+    <span class="logo-tagline">Just What You Needed</span>
   </div>
 
   <div class="page-container">
-
-    <!-- ══ HEADER ══ -->
+    <!-- HEADER -->
     <div class="form-header-text">
-      <div class="header-eyebrow">
-        <span></span>LEVZA Careers<span></span>
-      </div>
-      <!-- Animated badge -->
+      <div class="header-eyebrow"><span></span>LEVZA Careers<span></span></div>
       <div>
         <span class="header-badge">
-          <span class="badge-dot"></span>
-          Employee Application
+          <span class="badge-dot"></span>Employee Application
         </span>
       </div>
       <h2 class="form-title">Join the <em>Team</em></h2>
@@ -862,11 +747,10 @@
     <div class="card">
       <form id="form" novalidate>
 
-        <!-- ── SECTION 1: Personal Information ── -->
+        <!-- SECTION 1: Personal Info -->
         <div class="section-block">
           <h5 class="section-title">
-            <span class="icon-dot"><i class="fas fa-user"></i></span>
-            Personal Information
+            <span class="icon-dot"><i class="fas fa-user"></i></span>Personal Information
           </h5>
           <div class="row g-3 align-items-start">
             <div class="col-md-6">
@@ -901,28 +785,28 @@
               </div>
               <div class="err-msg" id="err-gender"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select gender</div>
             </div>
-            <div class="col-md-5">
-              <div class="beam-wrap" id="wrap-Contact"><input type="tel" name="Contact" id="contactInput" class="form-control" placeholder="Contact Number  +92 3xx xxxxxxx" required></div>
+            <!-- Contact + Email + OTP — on mobile each is full width -->
+            <div class="col-12 col-md-5">
+              <div class="beam-wrap" id="wrap-Contact"><input type="tel" name="Contact" id="contactInput" class="form-control" placeholder="Contact  +92 3xx xxxxxxx" required></div>
               <div class="err-msg" id="err-Contact"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Contact number is required</div>
             </div>
-            <div class="col-md-5">
+            <div class="col-9 col-md-5">
               <div class="beam-wrap" id="wrap-Email"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
               <div class="err-msg" id="err-Email"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Valid email is required</div>
             </div>
-            <div class="col-md-2">
+            <div class="col-3 col-md-2">
               <button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button>
             </div>
           </div>
         </div>
 
-        <!-- ── SECTION 2: Address ── -->
+        <!-- SECTION 2: Address -->
         <div class="section-block">
           <h5 class="section-title">
-            <span class="icon-dot"><i class="fas fa-map-marker-alt"></i></span>
-            Address
+            <span class="icon-dot"><i class="fas fa-map-marker-alt"></i></span>Address
           </h5>
           <div class="row g-3">
-            <div class="col-md-12">
+            <div class="col-12">
               <input type="hidden" name="Country" id="countryVal">
               <div class="trig-beam" id="wrap-country">
                 <div class="custom-trigger" id="countryTrig" onclick="openCountryPop();flashTrigBeam(this)">
@@ -932,7 +816,7 @@
               </div>
               <div class="err-msg" id="err-country"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a country</div>
             </div>
-            <div class="col-md-4" id="stateDiv">
+            <div class="col-6 col-md-4" id="stateDiv">
               <input type="hidden" name="State" id="stateVal">
               <div class="trig-beam" id="wrap-state">
                 <div class="custom-trigger dimmed" id="stateTrig" onclick="openStatePop();flashTrigBeam(this)">
@@ -942,7 +826,7 @@
               </div>
               <div class="err-msg" id="err-state"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a state</div>
             </div>
-            <div class="col-md-4" id="cityDiv">
+            <div class="col-6 col-md-4" id="cityDiv">
               <input type="hidden" name="City" id="cityVal">
               <div class="trig-beam" id="wrap-city">
                 <div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop();flashTrigBeam(this)">
@@ -952,25 +836,24 @@
               </div>
               <div class="err-msg" id="err-city"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a city</div>
             </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-4">
               <div class="beam-wrap" id="wrap-Postal"><input type="text" name="Postal" class="form-control" placeholder="Postal Code" required></div>
               <div class="err-msg" id="err-Postal"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Postal code is required</div>
             </div>
-            <div class="col-md-12">
+            <div class="col-12">
               <div class="beam-wrap" id="wrap-Address"><input type="text" name="Address" class="form-control" placeholder="Street Address" required></div>
               <div class="err-msg" id="err-Address"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Street address is required</div>
             </div>
           </div>
         </div>
 
-        <!-- ── SECTION 3: Employee Details ── -->
+        <!-- SECTION 3: Employee Details -->
         <div class="section-block">
           <h5 class="section-title">
-            <span class="icon-dot"><i class="fas fa-briefcase"></i></span>
-            Employee Details
+            <span class="icon-dot"><i class="fas fa-briefcase"></i></span>Employee Details
           </h5>
           <div class="row g-3">
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
               <input type="hidden" name="Position" id="positionVal">
               <div class="trig-beam" id="wrap-position">
                 <div class="custom-trigger" id="positionTrig" onclick="openSel('position','Position Applied For',['Account Provider PK','Account Provider UK','Manager','Developer']);flashTrigBeam(this)">
@@ -980,7 +863,7 @@
               </div>
               <div class="err-msg" id="err-position"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a position</div>
             </div>
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
               <input type="hidden" name="Investor" id="investorVal">
               <div class="trig-beam" id="wrap-investor">
                 <div class="custom-trigger" id="investorTrig" onclick="openSel('investor','Are you an investor?',['No','Yes']);flashTrigBeam(this)">
@@ -990,7 +873,7 @@
               </div>
               <div class="err-msg" id="err-investor"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select investor status</div>
             </div>
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
               <input type="hidden" name="JoiningDate" id="joiningVal">
               <div class="trig-beam" id="wrap-joining">
                 <div class="custom-trigger" id="joiningTrig" onclick="openCal('joining');flashTrigBeam(this)">
@@ -1000,10 +883,10 @@
               </div>
               <div class="err-msg" id="err-joining"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a joining date</div>
             </div>
-            <div class="col-md-6" id="amountDiv" style="display:none">
+            <div class="col-12 col-md-6" id="amountDiv" style="display:none">
               <div class="beam-wrap"><input type="number" name="InvestmentAmount" class="form-control" placeholder="Investment Amount (PKR)"></div>
             </div>
-            <div class="col-md-12">
+            <div class="col-12">
               <div class="beam-wrap textarea-counter-wrap" id="wrap-GreatFit">
                 <textarea name="GreatFit" id="greatFitTA" class="form-control" rows="4"
                   placeholder="Tell us why you're a great fit for LEVZA..." required maxlength="300"></textarea>
@@ -1020,22 +903,20 @@
           </div>
         </div>
 
-        <!-- ── FOOTER: Liquid checkbox + submit ── -->
+        <!-- FOOTER -->
         <div class="form-footer-block">
           <div class="liquid-footer">
             <div class="liquid-check-row">
-              <!-- Checkbox with ripple wrapper -->
               <div class="checkbox-ripple-wrap">
                 <input class="liq-checkbox" type="checkbox" id="declaration" required>
                 <div class="check-ripple" id="checkRipple"></div>
               </div>
               <label class="liq-check-label" for="declaration">
-                I confirm that all information provided is accurate, complete, and my email has been verified. I understand that false information may result in disqualification.
+                I confirm all information is accurate and my email has been verified. False information may result in disqualification.
               </label>
             </div>
           </div>
-
-          <button id="submitBtn" class="btn-submit" type="submit" style="margin-top:1.2rem;">
+          <button id="submitBtn" class="btn-submit" type="submit" style="margin-top:1rem;">
             <i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application
           </button>
         </div>
@@ -1044,7 +925,7 @@
     </div>
   </div>
 
-  <!-- ── Select Popup ── -->
+  <!-- SELECT POPUP -->
   <div id="selOverlay" class="pop-overlay" onclick="closePop('sel',event)">
     <div class="sel-card">
       <div class="drag-bar"></div>
@@ -1056,7 +937,7 @@
     </div>
   </div>
 
-  <!-- ── Calendar Popup ── -->
+  <!-- CALENDAR POPUP -->
   <div id="calOverlay" class="pop-overlay" onclick="closePop('cal',event)">
     <div class="cal-card">
       <div class="cal-day-view" id="calDayView">
@@ -1093,10 +974,10 @@
     </div>
   </div>
 
-  <!-- ── OTP Modal ── -->
+  <!-- OTP MODAL -->
   <div id="otpModalOverlay" class="modal-overlay">
     <div class="modal-card">
-      <div style="font-size:2.6rem;color:var(--amber);margin-bottom:1rem;opacity:0.9;"><i class="fas fa-envelope-open-text"></i></div>
+      <div style="font-size:2.4rem;color:var(--amber);margin-bottom:1rem;opacity:0.9;"><i class="fas fa-envelope-open-text"></i></div>
       <h4 style="color:#fff;font-weight:500;margin-bottom:8px;font-family:'DM Sans',sans-serif;">Verify your Email</h4>
       <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-bottom:1.2rem;">OTP sent to <span id="modalEmailText" style="color:var(--amber);font-weight:500;"></span></p>
       <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="——————" maxlength="6" autocomplete="off" inputmode="numeric">
@@ -1108,7 +989,7 @@
     </div>
   </div>
 
-  <!-- ── Thank You Modal — premium ── -->
+  <!-- THANK YOU MODAL -->
   <div id="thankYouModalOverlay" class="modal-overlay">
     <div class="modal-card">
       <div class="check-circle-wrap">
@@ -1124,8 +1005,8 @@
       </div>
       <div class="thankyou-tag">Application Received</div>
       <h3 style="color:#fff;font-weight:600;font-family:'Cormorant Garamond',serif;font-size:2rem;margin-bottom:12px;line-height:1.1;">Welcome to<br><em style="color:var(--amber);font-style:italic;">LEVZA</em></h3>
-      <p style="color:rgba(255,255,255,0.5);line-height:1.7;font-size:0.87rem;margin-bottom:0.4rem;">Your journey with us begins here. We've received your application and our team will review it with great care.</p>
-      <p style="color:rgba(255,255,255,0.3);font-size:0.78rem;margin-bottom:1.6rem;">A confirmation has been sent to your inbox. Please check your spam folder too.</p>
+      <p style="color:rgba(255,255,255,0.5);line-height:1.7;font-size:0.87rem;margin-bottom:0.4rem;">Your journey begins here. We've received your application and will review it with great care.</p>
+      <p style="color:rgba(255,255,255,0.3);font-size:0.78rem;margin-bottom:1.6rem;">A confirmation has been sent to your inbox.</p>
       <button type="button" onclick="location.reload()" class="btn-submit" style="height:48px;font-size:0.9rem;">
         <i class="fas fa-arrow-left" style="margin-right:8px;"></i>Back to Home
       </button>
@@ -1133,25 +1014,18 @@
   </div>
 
   <script>
-    /* ════════════════════════════════════════
-       TOAST NOTIFICATIONS
-    ════════════════════════════════════════ */
-    function showToast(msg, type = 'error', duration = 4000) {
+    /* TOAST */
+    function showToast(msg, type='error', duration=4000) {
       const wrap = document.getElementById('toastWrap');
-      const icons = { error: 'fa-circle-xmark', success: 'fa-circle-check', warn: 'fa-triangle-exclamation' };
+      const icons = { error:'fa-circle-xmark', success:'fa-circle-check', warn:'fa-triangle-exclamation' };
       const t = document.createElement('div');
       t.className = `toast-item toast-${type}`;
       t.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span class="toast-text">${msg}</span><div class="toast-bar"></div>`;
       wrap.appendChild(t);
-      setTimeout(() => {
-        t.classList.add('toast-out');
-        setTimeout(() => t.remove(), 300);
-      }, duration);
+      setTimeout(() => { t.classList.add('toast-out'); setTimeout(() => t.remove(), 300); }, duration);
     }
 
-    /* ════════════════════════════════════════
-       FIELD ERROR HELPERS
-    ════════════════════════════════════════ */
+    /* FIELD ERRORS */
     function setFieldError(id, show) {
       const wrap = document.getElementById('wrap-' + id);
       const err  = document.getElementById('err-' + id);
@@ -1167,566 +1041,358 @@
       if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    /* ════════════════════════════════════════
-       BEAM — input focus
-    ════════════════════════════════════════ */
+    /* BEAMS */
     function initBeams() {
       document.querySelectorAll('.beam-wrap input, .beam-wrap textarea').forEach(el => {
         el.addEventListener('focus', function() {
           this.closest('.beam-wrap').classList.add('beam-on');
           setFieldError(this.name, false);
         });
-        el.addEventListener('blur',  function() { this.closest('.beam-wrap').classList.remove('beam-on'); });
+        el.addEventListener('blur', function() { this.closest('.beam-wrap').classList.remove('beam-on'); });
       });
     }
     initBeams();
-
     function flashTrigBeam(trigEl) {
       const wrap = trigEl.closest('.trig-beam');
       if (!wrap) return;
       wrap.classList.add('beam-flash');
-      setTimeout(() => wrap.classList.remove('beam-flash'), 1200);
+      setTimeout(() => wrap.classList.remove('beam-flash'), 1400);
     }
 
-    /* ════════════════════════════════════════
-       TEXTAREA RING
-    ════════════════════════════════════════ */
-    const MAX_CHARS = 300, CIRC = 88;
-    const ringFill = document.getElementById('ringFill');
-    const ringText = document.getElementById('ringText');
+    /* TEXTAREA RING */
+    const MAX_CHARS=300, CIRC=88;
+    const ringFill=document.getElementById('ringFill'), ringText=document.getElementById('ringText');
     document.getElementById('greatFitTA').addEventListener('input', function() {
-      const len = this.value.length;
-      const pct = len / MAX_CHARS;
-      ringFill.style.strokeDashoffset = Math.max(0, CIRC - pct * CIRC);
+      const len=this.value.length, pct=len/MAX_CHARS;
+      ringFill.style.strokeDashoffset = Math.max(0, CIRC - pct*CIRC);
       ringText.textContent = len;
-      const col = pct >= 0.9 ? '#ef4444' : '#f59e0b';
-      ringFill.style.stroke = col; ringText.style.color = col;
+      const col = pct>=0.9 ? '#ef4444' : '#f59e0b';
+      ringFill.style.stroke=col; ringText.style.color=col;
     });
 
-    /* ════════════════════════════════════════
-       CNIC AUTO-FORMAT  xxxxx-xxxxxxx-x
-    ════════════════════════════════════════ */
-    document.getElementById('cnicInput').addEventListener('input', function(e) {
-      let v = this.value.replace(/\D/g, '').slice(0, 13);
-      let f = v;
-      if (v.length > 5)  f = v.slice(0,5) + '-' + v.slice(5);
-      if (v.length > 12) f = v.slice(0,5) + '-' + v.slice(5,12) + '-' + v.slice(12);
-      this.value = f;
+    /* CNIC FORMAT */
+    document.getElementById('cnicInput').addEventListener('input', function() {
+      let v=this.value.replace(/\D/g,'').slice(0,13), f=v;
+      if (v.length>5)  f=v.slice(0,5)+'-'+v.slice(5);
+      if (v.length>12) f=v.slice(0,5)+'-'+v.slice(5,12)+'-'+v.slice(12);
+      this.value=f;
     });
 
-    /* ════════════════════════════════════════
-       CHECKBOX LIQUID RIPPLE
-    ════════════════════════════════════════ */
+    /* CHECKBOX RIPPLE + PARTICLES */
     document.getElementById('declaration').addEventListener('change', function() {
-      const rippleWrap = document.getElementById('checkRipple');
-      // Remove and re-add to retrigger animation
-      rippleWrap.style.animation = 'none';
-      rippleWrap.offsetHeight; // reflow
-      rippleWrap.style.animation = '';
-
-      // Create floating particles
       if (this.checked) {
-        const rect = this.getBoundingClientRect();
-        for (let i = 0; i < 6; i++) {
-          const p = document.createElement('div');
-          const angle = (i / 6) * Math.PI * 2;
-          const dist = 28 + Math.random() * 18;
-          p.style.cssText = `
-            position:fixed; width:4px; height:4px; border-radius:50%;
-            background:rgba(245,158,11,${0.5 + Math.random()*0.5});
-            left:${rect.left + 10}px; top:${rect.top + 10}px;
-            pointer-events:none; z-index:99999;
-            animation: particleFly${i} 0.6s ease-out forwards;
-          `;
+        const rect=this.getBoundingClientRect();
+        for (let i=0;i<6;i++) {
+          const p=document.createElement('div');
+          const angle=(i/6)*Math.PI*2, dist=28+Math.random()*18;
+          p.style.cssText=`position:fixed;width:4px;height:4px;border-radius:50%;background:rgba(245,158,11,${0.5+Math.random()*0.5});left:${rect.left+10}px;top:${rect.top+10}px;pointer-events:none;z-index:99999;`;
           document.body.appendChild(p);
-          p.animate([
-            { transform: 'translate(0,0) scale(1)', opacity: 1 },
-            { transform: `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px) scale(0)`, opacity: 0 }
-          ], { duration: 600, easing: 'ease-out', fill: 'forwards' }).onfinish = () => p.remove();
+          p.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(0)`,opacity:0}],{duration:600,easing:'ease-out',fill:'forwards'}).onfinish=()=>p.remove();
         }
       }
     });
 
-    /* ════════════════════════════════════════
-       SUBMIT BUTTON RIPPLE
-    ════════════════════════════════════════ */
+    /* SUBMIT RIPPLE */
     document.getElementById('submitBtn').addEventListener('mousedown', function(e) {
-      const rect = this.getBoundingClientRect();
-      const r = document.createElement('span');
-      r.className = 'submit-ripple';
-      const size = Math.max(rect.width, rect.height);
-      r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px;`;
-      this.appendChild(r);
-      setTimeout(() => r.remove(), 700);
+      const rect=this.getBoundingClientRect();
+      const r=document.createElement('span'); r.className='submit-ripple';
+      const size=Math.max(rect.width,rect.height);
+      r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;`;
+      this.appendChild(r); setTimeout(()=>r.remove(),700);
     });
 
-    /* ════════════════════════════════════════
-       LOCATION DATA
-    ════════════════════════════════════════ */
-    const locationData = {"Pakistan":{"Punjab":["Lahore","Faisalabad","Rawalpindi","Multan","Gujranwala","Sialkot","Bahawalpur","Sargodha","Sheikhupura","Jhang"],"Sindh":["Karachi","Hyderabad","Sukkur","Larkana","Nawabshah"],"KPK":["Peshawar","Abbottabad","Mardan","Swat","Kohat"],"Balochistan":["Quetta","Gwadar","Khuzdar","Turbat"],"Islamabad":["Islamabad City"]},"United Kingdom":{"England":["London","Manchester","Birmingham","Leeds","Liverpool","Sheffield","Bristol","Newcastle"],"Scotland":["Edinburgh","Glasgow","Aberdeen","Dundee"],"Wales":["Cardiff","Swansea","Newport"],"Northern Ireland":["Belfast","Derry"]}};
-    const allCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+    /* LOCATION DATA */
+    const locationData={"Pakistan":{"Punjab":["Lahore","Faisalabad","Rawalpindi","Multan","Gujranwala","Sialkot","Bahawalpur","Sargodha","Sheikhupura","Jhang"],"Sindh":["Karachi","Hyderabad","Sukkur","Larkana","Nawabshah"],"KPK":["Peshawar","Abbottabad","Mardan","Swat","Kohat"],"Balochistan":["Quetta","Gwadar","Khuzdar","Turbat"],"Islamabad":["Islamabad City"]},"United Kingdom":{"England":["London","Manchester","Birmingham","Leeds","Liverpool","Sheffield","Bristol","Newcastle"],"Scotland":["Edinburgh","Glasgow","Aberdeen","Dundee"],"Wales":["Cardiff","Swansea","Newport"],"Northern Ireland":["Belfast","Derry"]}};
+    const allCountries=["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
-    /* ════════════════════════════════════════
-       SELECT POPUP
-    ════════════════════════════════════════ */
-    let curSelField = '', curSelAll = [];
-    function openSel(field, title, opts) {
-      curSelField = field; curSelAll = opts;
-      document.getElementById('selTitle').textContent = title;
-      document.getElementById('selSearch').style.display = 'none';
-      document.getElementById('selSearch').value = '';
+    /* SELECT POPUP */
+    let curSelField='', curSelAll=[];
+    function openSel(field,title,opts) {
+      curSelField=field; curSelAll=opts;
+      document.getElementById('selTitle').textContent=title;
+      document.getElementById('selSearch').style.display='none';
+      document.getElementById('selSearch').value='';
       renderOpts(opts);
       document.getElementById('selOverlay').classList.add('on');
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow='hidden';
     }
     function openCountryPop() {
-      curSelField = 'country'; curSelAll = allCountries;
-      document.getElementById('selTitle').textContent = 'Select Country';
-      const s = document.getElementById('selSearch');
-      s.style.display = 'block'; s.value = '';
+      curSelField='country'; curSelAll=allCountries;
+      document.getElementById('selTitle').textContent='Select Country';
+      const s=document.getElementById('selSearch'); s.style.display='block'; s.value='';
       renderOpts(allCountries);
       document.getElementById('selOverlay').classList.add('on');
-      document.body.style.overflow = 'hidden';
-      setTimeout(() => s.focus(), 400);
+      document.body.style.overflow='hidden';
+      setTimeout(()=>s.focus(),400);
     }
     function openStatePop() {
-      const c = document.getElementById('countryVal').value;
-      if (!c || !locationData[c]) return;
-      curSelField = 'state'; curSelAll = Object.keys(locationData[c]);
-      document.getElementById('selTitle').textContent = 'Select State / Province';
-      document.getElementById('selSearch').style.display = 'none';
-      document.getElementById('selSearch').value = '';
+      const c=document.getElementById('countryVal').value;
+      if (!c||!locationData[c]) return;
+      curSelField='state'; curSelAll=Object.keys(locationData[c]);
+      document.getElementById('selTitle').textContent='Select State / Province';
+      document.getElementById('selSearch').style.display='none';
+      document.getElementById('selSearch').value='';
       renderOpts(curSelAll);
       document.getElementById('selOverlay').classList.add('on');
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow='hidden';
     }
     function openCityPop() {
-      const c = document.getElementById('countryVal').value;
-      const st = document.getElementById('stateVal').value;
-      if (!c || !st || !locationData[c] || !locationData[c][st]) return;
-      curSelField = 'city'; curSelAll = locationData[c][st];
-      document.getElementById('selTitle').textContent = 'Select City';
-      document.getElementById('selSearch').style.display = 'none';
-      document.getElementById('selSearch').value = '';
+      const c=document.getElementById('countryVal').value, st=document.getElementById('stateVal').value;
+      if (!c||!st||!locationData[c]||!locationData[c][st]) return;
+      curSelField='city'; curSelAll=locationData[c][st];
+      document.getElementById('selTitle').textContent='Select City';
+      document.getElementById('selSearch').style.display='none';
+      document.getElementById('selSearch').value='';
       renderOpts(curSelAll);
       document.getElementById('selOverlay').classList.add('on');
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow='hidden';
     }
     function renderOpts(opts) {
-      const curEl = document.getElementById(curSelField + 'Val');
-      const cur = curEl ? curEl.value : '';
-      const list = document.getElementById('selList');
-      list.innerHTML = '';
+      const curEl=document.getElementById(curSelField+'Val'), cur=curEl?curEl.value:'';
+      const list=document.getElementById('selList'); list.innerHTML='';
       opts.forEach(o => {
-        const d = document.createElement('div');
-        d.className = 'sel-opt' + (o === cur ? ' chosen' : '');
-        d.innerHTML = `<span>${o}</span>` + (o === cur ? '<i class="fas fa-check-circle chk"></i>' : '');
-        d.onclick = () => pickOpt(o);
-        list.appendChild(d);
+        const d=document.createElement('div');
+        d.className='sel-opt'+(o===cur?' chosen':'');
+        d.innerHTML=`<span>${o}</span>`+(o===cur?'<i class="fas fa-check-circle chk"></i>':'');
+        d.onclick=()=>pickOpt(o); list.appendChild(d);
       });
-      list.scrollTop = 0;
+      list.scrollTop=0;
     }
     function filterSel() {
-      const q = document.getElementById('selSearch').value.toLowerCase();
-      renderOpts(curSelAll.filter(o => o.toLowerCase().includes(q)));
+      const q=document.getElementById('selSearch').value.toLowerCase();
+      renderOpts(curSelAll.filter(o=>o.toLowerCase().includes(q)));
     }
     function pickOpt(val) {
-      if (curSelField === 'country') {
-        document.getElementById('countryVal').value = val;
-        setTrig('country', val);
-        setFieldError('country', false);
-        document.getElementById('stateVal') && (document.getElementById('stateVal').value = '');
-        document.getElementById('cityVal') && (document.getElementById('cityVal').value = '');
-        setTrig('state', ''); setTrig('city', '');
-        const sDiv = document.getElementById('stateDiv');
-        const cDiv = document.getElementById('cityDiv');
+      if (curSelField==='country') {
+        document.getElementById('countryVal').value=val; setTrig('country',val); setFieldError('country',false);
+        document.getElementById('stateVal')&&(document.getElementById('stateVal').value='');
+        document.getElementById('cityVal')&&(document.getElementById('cityVal').value='');
+        setTrig('state',''); setTrig('city','');
+        const sDiv=document.getElementById('stateDiv'), cDiv=document.getElementById('cityDiv');
         if (locationData[val]) {
-          sDiv.innerHTML = '<input type="hidden" name="State" id="stateVal"><div class="trig-beam" id="wrap-state"><div class="custom-trigger" id="stateTrig" onclick="openStatePop();flashTrigBeam(this)"><span id="stateLbl">Select State</span><i class="fas fa-chevron-down trig-icon"></i></div></div><div class="err-msg" id="err-state"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a state</div>';
-          cDiv.innerHTML = '<input type="hidden" name="City" id="cityVal"><div class="trig-beam" id="wrap-city"><div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop();flashTrigBeam(this)"><span id="cityLbl">Select City</span><i class="fas fa-chevron-down trig-icon"></i></div></div><div class="err-msg" id="err-city"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a city</div>';
+          sDiv.innerHTML='<input type="hidden" name="State" id="stateVal"><div class="trig-beam" id="wrap-state"><div class="custom-trigger" id="stateTrig" onclick="openStatePop();flashTrigBeam(this)"><span id="stateLbl">Select State</span><i class="fas fa-chevron-down trig-icon"></i></div></div><div class="err-msg" id="err-state"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a state</div>';
+          cDiv.innerHTML='<input type="hidden" name="City" id="cityVal"><div class="trig-beam" id="wrap-city"><div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop();flashTrigBeam(this)"><span id="cityLbl">Select City</span><i class="fas fa-chevron-down trig-icon"></i></div></div><div class="err-msg" id="err-city"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a city</div>';
         } else {
-          sDiv.innerHTML = '<div class="beam-wrap" id="wrap-state"><input type="text" name="State" id="stateVal" class="form-control" placeholder="State / Province" required></div><div class="err-msg" id="err-state"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>State is required</div>';
-          cDiv.innerHTML = '<div class="beam-wrap" id="wrap-city"><input type="text" name="City" id="cityVal" class="form-control" placeholder="City" required></div><div class="err-msg" id="err-city"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>City is required</div>';
+          sDiv.innerHTML='<div class="beam-wrap" id="wrap-state"><input type="text" name="State" id="stateVal" class="form-control" placeholder="State / Province" required></div><div class="err-msg" id="err-state"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>State is required</div>';
+          cDiv.innerHTML='<div class="beam-wrap" id="wrap-city"><input type="text" name="City" id="cityVal" class="form-control" placeholder="City" required></div><div class="err-msg" id="err-city"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>City is required</div>';
           initBeams();
         }
-      } else if (curSelField === 'state') {
-        document.getElementById('stateVal').value = val; setTrig('state', val);
-        setFieldError('state', false);
-        document.getElementById('cityVal').value = ''; setTrig('city', '');
-        const ct = document.getElementById('cityTrig');
-        if (ct) ct.classList.remove('dimmed');
-      } else if (curSelField === 'city') {
-        document.getElementById('cityVal').value = val; setTrig('city', val);
-        setFieldError('city', false);
-      } else if (curSelField === 'investor') {
-        document.getElementById('investorVal').value = val; setTrig('investor', val);
-        setFieldError('investor', false);
-        document.getElementById('amountDiv').style.display = val === 'Yes' ? 'block' : 'none';
-        if (val === 'Yes') setTimeout(initBeams, 60);
+      } else if (curSelField==='state') {
+        document.getElementById('stateVal').value=val; setTrig('state',val); setFieldError('state',false);
+        document.getElementById('cityVal').value=''; setTrig('city','');
+        const ct=document.getElementById('cityTrig'); if(ct) ct.classList.remove('dimmed');
+      } else if (curSelField==='city') {
+        document.getElementById('cityVal').value=val; setTrig('city',val); setFieldError('city',false);
+      } else if (curSelField==='investor') {
+        document.getElementById('investorVal').value=val; setTrig('investor',val); setFieldError('investor',false);
+        document.getElementById('amountDiv').style.display=val==='Yes'?'block':'none';
+        if (val==='Yes') setTimeout(initBeams,60);
       } else {
-        document.getElementById(curSelField + 'Val').value = val; setTrig(curSelField, val);
-        setFieldError(curSelField, false);
+        document.getElementById(curSelField+'Val').value=val; setTrig(curSelField,val); setFieldError(curSelField,false);
       }
       closePop('sel');
     }
-    function setTrig(field, val) {
-      const lbl = document.getElementById(field + 'Lbl');
-      const trig = document.getElementById(field + 'Trig');
-      if (!lbl || !trig) return;
-      const defaults = {country:'Select Country',state:'Select State',city:'Select City',gender:'Select Gender',position:'Position Applied For',investor:'Are you an investor?',dob:'Date of Birth',joining:'Available Joining Date'};
-      if (val) { lbl.textContent = val; lbl.style.color = '#fff'; trig.classList.add('filled'); }
-      else { lbl.textContent = defaults[field] || ''; lbl.style.color = ''; trig.classList.remove('filled'); }
+    function setTrig(field,val) {
+      const lbl=document.getElementById(field+'Lbl'), trig=document.getElementById(field+'Trig');
+      if (!lbl||!trig) return;
+      const defaults={country:'Select Country',state:'Select State',city:'Select City',gender:'Select Gender',position:'Position Applied For',investor:'Are you an investor?',dob:'Date of Birth',joining:'Available Joining Date'};
+      if (val) { lbl.textContent=val; lbl.style.color='#fff'; trig.classList.add('filled'); }
+      else { lbl.textContent=defaults[field]||''; lbl.style.color=''; trig.classList.remove('filled'); }
     }
-    function closePop(type, e) {
-      const id = type === 'sel' ? 'selOverlay' : 'calOverlay';
-      if (e && e.target !== document.getElementById(id)) return;
+    function closePop(type,e) {
+      const id=type==='sel'?'selOverlay':'calOverlay';
+      if (e&&e.target!==document.getElementById(id)) return;
       document.getElementById(id).classList.remove('on');
-      document.body.style.overflow = '';
-      if (type === 'cal') showDayView();
+      document.body.style.overflow='';
+      if (type==='cal') showDayView();
     }
 
-    /* ════════════════════════════════════════
-       CALENDAR
-    ════════════════════════════════════════ */
-    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    let calField = '', calView = new Date(), calPicked = null;
-    let pickerOpen = false, pickerYear = new Date().getFullYear();
+    /* CALENDAR */
+    const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    let calField='', calView=new Date(), calPicked=null, pickerOpen=false, pickerYear=new Date().getFullYear();
 
     function openCal(field) {
-      calField = field;
-      const v = document.getElementById(field + 'Val').value;
-      calView = v ? new Date(v + 'T12:00:00') : new Date();
-      calPicked = v ? new Date(v + 'T12:00:00') : null;
+      calField=field;
+      const v=document.getElementById(field+'Val').value;
+      calView=v?new Date(v+'T12:00:00'):new Date();
+      calPicked=v?new Date(v+'T12:00:00'):null;
       showDayView(); drawCal();
       document.getElementById('calOverlay').classList.add('on');
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow='hidden';
     }
     function showDayView() {
-      pickerOpen = false;
-      document.getElementById('calDayView').style.display = 'block';
+      pickerOpen=false;
+      document.getElementById('calDayView').style.display='block';
       document.getElementById('calPickerView').classList.remove('show');
-      const arr = document.getElementById('calTitleArrow');
-      if (arr) arr.style.transform = '';
+      const arr=document.getElementById('calTitleArrow'); if(arr) arr.style.transform='';
     }
     function togglePicker() {
-      pickerOpen = !pickerOpen;
-      const pv = document.getElementById('calPickerView');
-      const dv = document.getElementById('calDayView');
-      const arr = document.getElementById('calTitleArrow');
+      pickerOpen=!pickerOpen;
+      const pv=document.getElementById('calPickerView'), dv=document.getElementById('calDayView');
+      const arr=document.getElementById('calTitleArrow');
       if (pickerOpen) {
-        pickerYear = calView.getFullYear(); pv.classList.add('show'); dv.style.display = 'none';
-        if (arr) arr.style.transform = 'rotate(180deg)';
-        drawMonthPicker();
+        pickerYear=calView.getFullYear(); pv.classList.add('show'); dv.style.display='none';
+        if(arr) arr.style.transform='rotate(180deg)'; drawMonthPicker();
       } else { showDayView(); drawCal(); }
     }
     function drawMonthPicker() {
-      document.getElementById('pickerYearNum').textContent = pickerYear;
-      const curM = calView.getMonth(), curY = calView.getFullYear();
-      const nowM = new Date().getMonth(), nowY = new Date().getFullYear();
-      let html = '';
-      MONTHS_SHORT.forEach((m, i) => {
-        const isCur = i === curM && pickerYear === curY;
-        const isNow = i === nowM && pickerYear === nowY;
-        html += `<div class="cal-m-opt${isCur?' cur-m':''}${isNow&&!isCur?' now-m':''}" onclick="pickMonth(${i})">${m}</div>`;
+      document.getElementById('pickerYearNum').textContent=pickerYear;
+      const curM=calView.getMonth(), curY=calView.getFullYear(), nowM=new Date().getMonth(), nowY=new Date().getFullYear();
+      let html='';
+      MONTHS_SHORT.forEach((m,i)=>{
+        const isCur=i===curM&&pickerYear===curY, isNow=i===nowM&&pickerYear===nowY;
+        html+=`<div class="cal-m-opt${isCur?' cur-m':''}${isNow&&!isCur?' now-m':''}" onclick="pickMonth(${i})">${m}</div>`;
       });
-      document.getElementById('calMonthsGrid').innerHTML = html;
+      document.getElementById('calMonthsGrid').innerHTML=html;
     }
-    function changePickerYear(dir) { pickerYear += dir; drawMonthPicker(); }
+    function changePickerYear(dir) { pickerYear+=dir; drawMonthPicker(); }
     function pickMonth(m) { calView.setFullYear(pickerYear); calView.setMonth(m); showDayView(); drawCal(); }
     function drawCal() {
-      const y = calView.getFullYear(), m = calView.getMonth();
-      document.getElementById('calTitleText').textContent = MONTHS[m] + ' ' + y;
-      const first = new Date(y,m,1).getDay();
-      const dim = new Date(y,m+1,0).getDate();
-      const prevDim = new Date(y,m,0).getDate();
-      const now = new Date();
-      let html = '';
-      for (let i = first-1; i >= 0; i--) html += `<div class="cal-d other">${prevDim-i}</div>`;
-      for (let d = 1; d <= dim; d++) {
-        const isT = now.getDate()===d && now.getMonth()===m && now.getFullYear()===y;
-        const isS = calPicked && calPicked.getDate()===d && calPicked.getMonth()===m && calPicked.getFullYear()===y;
-        html += `<div class="cal-d${isT?' tod':''}${isS?' sel':''}" onclick="pickDay(${d})">${d}</div>`;
+      const y=calView.getFullYear(), m=calView.getMonth();
+      document.getElementById('calTitleText').textContent=MONTHS[m]+' '+y;
+      const first=new Date(y,m,1).getDay(), dim=new Date(y,m+1,0).getDate(), prevDim=new Date(y,m,0).getDate(), now=new Date();
+      let html='';
+      for (let i=first-1;i>=0;i--) html+=`<div class="cal-d other">${prevDim-i}</div>`;
+      for (let d=1;d<=dim;d++) {
+        const isT=now.getDate()===d&&now.getMonth()===m&&now.getFullYear()===y;
+        const isS=calPicked&&calPicked.getDate()===d&&calPicked.getMonth()===m&&calPicked.getFullYear()===y;
+        html+=`<div class="cal-d${isT?' tod':''}${isS?' sel':''}" onclick="pickDay(${d})">${d}</div>`;
       }
-      const total = Math.ceil((first+dim)/7)*7;
-      for (let n = 1; n <= total-first-dim; n++) html += `<div class="cal-d other">${n}</div>`;
-      document.getElementById('calGrid').innerHTML = html;
+      const total=Math.ceil((first+dim)/7)*7;
+      for (let n=1;n<=total-first-dim;n++) html+=`<div class="cal-d other">${n}</div>`;
+      document.getElementById('calGrid').innerHTML=html;
     }
-    function pickDay(d) { calPicked = new Date(calView.getFullYear(),calView.getMonth(),d); drawCal(); }
+    function pickDay(d) { calPicked=new Date(calView.getFullYear(),calView.getMonth(),d); drawCal(); }
     function calMove(dir) { calView.setMonth(calView.getMonth()+dir); drawCal(); }
     function confirmCal() {
       if (!calPicked) { closePop('cal'); return; }
-      const y = calPicked.getFullYear();
-      const m = String(calPicked.getMonth()+1).padStart(2,'0');
-      const d = String(calPicked.getDate()).padStart(2,'0');
-      document.getElementById(calField+'Val').value = `${y}-${m}-${d}`;
-      const lbl = document.getElementById(calField+'Lbl');
-      lbl.textContent = `${MONTHS[calPicked.getMonth()]} ${d}, ${y}`;
-      lbl.style.color = '#fff';
+      const y=calPicked.getFullYear(), m=String(calPicked.getMonth()+1).padStart(2,'0'), d=String(calPicked.getDate()).padStart(2,'0');
+      document.getElementById(calField+'Val').value=`${y}-${m}-${d}`;
+      const lbl=document.getElementById(calField+'Lbl');
+      lbl.textContent=`${MONTHS[calPicked.getMonth()]} ${d}, ${y}`; lbl.style.color='#fff';
       document.getElementById(calField+'Trig').classList.add('filled');
-      setFieldError(calField, false);
-      closePop('cal');
+      setFieldError(calField,false); closePop('cal');
     }
 
-    /* ════════════════════════════════════════
-       OTP DEDUPLICATION — track sent emails
-    ════════════════════════════════════════ */
-    const otpSentEmails = new Set(
-      JSON.parse(sessionStorage.getItem('_levzaOtpSent') || '[]')
-    );
-    function markOtpSent(email) {
-      otpSentEmails.add(email.toLowerCase().trim());
-      sessionStorage.setItem('_levzaOtpSent', JSON.stringify([...otpSentEmails]));
-    }
-    function wasOtpSent(email) {
-      return otpSentEmails.has(email.toLowerCase().trim());
-    }
+    /* OTP */
+    const otpSentEmails=new Set(JSON.parse(sessionStorage.getItem('_levzaOtpSent')||'[]'));
+    function markOtpSent(email) { otpSentEmails.add(email.toLowerCase().trim()); sessionStorage.setItem('_levzaOtpSent',JSON.stringify([...otpSentEmails])); }
+    function wasOtpSent(email) { return otpSentEmails.has(email.toLowerCase().trim()); }
 
-    /* ════════════════════════════════════════
-       DUPLICATE CHECK (email / CNIC / contact)
-       NOTE: Your Google Apps Script must handle
-       action="checkExists" and return:
-       { result:"exists", field:"Email"/"CNIC"/"Contact" }
-       or { result:"ok" }
-    ════════════════════════════════════════ */
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec';
+    const scriptURL='https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec';
 
-    async function checkDuplicate(email, cnic, contact) {
+    async function checkDuplicate(email,cnic,contact) {
       try {
-        const fd = new FormData();
-        fd.append('action', 'checkExists');
-        fd.append('Email', email);
-        fd.append('CNIC', cnic);
-        fd.append('Contact', contact);
-        const res = await fetch(scriptURL, { method: 'POST', body: fd });
-        const data = await res.json();
-        return data; // { result: 'ok' } or { result: 'exists', field: 'Email' }
-      } catch {
-        return { result: 'ok' }; // fail-open: if check fails, allow submission
-      }
+        const fd=new FormData(); fd.append('action','checkExists'); fd.append('Email',email); fd.append('CNIC',cnic); fd.append('Contact',contact);
+        const res=await fetch(scriptURL,{method:'POST',body:fd}); return await res.json();
+      } catch { return {result:'ok'}; }
     }
 
-    /* ════════════════════════════════════════
-       SEND OTP
-    ════════════════════════════════════════ */
-    let isEmailVerified = false;
+    let isEmailVerified=false;
 
     document.getElementById('sendCodeBtn').addEventListener('click', async function() {
-      const emailEl = document.getElementById('email');
-      const btn = this;
-      const email = emailEl.value.trim();
-
-      if (!email || !emailEl.checkValidity()) {
-        setFieldError('Email', true);
-        showToast('Please enter a valid email address.', 'error');
-        emailEl.focus();
-        return;
-      }
-
-      // OTP deduplication check
+      const emailEl=document.getElementById('email'), btn=this, email=emailEl.value.trim();
+      if (!email||!emailEl.checkValidity()) { setFieldError('Email',true); showToast('Please enter a valid email address.','error'); emailEl.focus(); return; }
       if (wasOtpSent(email)) {
-        showToast('OTP was already sent to this email. Please check your inbox or spam folder.', 'warn');
-        document.getElementById('modalEmailText').innerText = email;
-        document.getElementById('otpModalOverlay').classList.add('active');
-        return;
+        showToast('OTP already sent. Check your inbox.','warn');
+        document.getElementById('modalEmailText').innerText=email;
+        document.getElementById('otpModalOverlay').classList.add('active'); return;
       }
-
-      // Check if email already exists in sheet
-      btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-      btn.disabled = true;
-
-      const dupCheck = await checkDuplicate(email, '', '');
-      if (dupCheck.result === 'exists' && dupCheck.field === 'Email') {
-        showToast('This email address is already registered. Please use a different email.', 'error');
-        setFieldError('Email', true);
-        btn.textContent = 'Send OTP'; btn.disabled = false;
-        return;
+      btn.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>'; btn.disabled=true;
+      const dupCheck=await checkDuplicate(email,'','');
+      if (dupCheck.result==='exists'&&dupCheck.field==='Email') {
+        showToast('Email already registered.','error'); setFieldError('Email',true); btn.textContent='Send OTP'; btn.disabled=false; return;
       }
-
-      // Send OTP
-      const fd = new FormData();
-      fd.append('action', 'sendOTP');
-      fd.append('Email', email);
-
-      fetch(scriptURL, { method: 'POST', body: fd })
-        .then(r => r.json())
-        .then(data => {
-          if (data.result === 'success') {
-            markOtpSent(email);
-            document.getElementById('modalEmailText').innerText = email;
-            document.getElementById('otpModalOverlay').classList.add('active');
-            document.getElementById('verificationCode').value = '';
-            document.getElementById('otpMessage').textContent = '';
-            btn.innerHTML = '<i class="fas fa-check" style="margin-right:4px;"></i>Sent';
-            btn.disabled = false;
-            showToast('OTP sent! Check your inbox.', 'success');
-          } else {
-            showToast('Failed to send OTP. Please try again.', 'error');
-            btn.textContent = 'Send OTP'; btn.disabled = false;
-          }
-        })
-        .catch(() => {
-          showToast('Network error. Please check your connection.', 'error');
-          btn.textContent = 'Send OTP'; btn.disabled = false;
-        });
+      const fd=new FormData(); fd.append('action','sendOTP'); fd.append('Email',email);
+      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{
+        if (data.result==='success') {
+          markOtpSent(email);
+          document.getElementById('modalEmailText').innerText=email;
+          document.getElementById('otpModalOverlay').classList.add('active');
+          document.getElementById('verificationCode').value=''; document.getElementById('otpMessage').textContent='';
+          btn.innerHTML='<i class="fas fa-check" style="margin-right:4px;"></i>Sent'; btn.disabled=false;
+          showToast('OTP sent! Check your inbox.','success');
+        } else { showToast('Failed to send OTP.','error'); btn.textContent='Send OTP'; btn.disabled=false; }
+      }).catch(()=>{ showToast('Network error.','error'); btn.textContent='Send OTP'; btn.disabled=false; });
     });
 
-    document.getElementById('closeModalBtn').addEventListener('click', () => {
-      document.getElementById('otpModalOverlay').classList.remove('active');
-    });
+    document.getElementById('closeModalBtn').addEventListener('click',()=>document.getElementById('otpModalOverlay').classList.remove('active'));
 
     document.getElementById('verifyCodeBtn').addEventListener('click', function() {
-      const code = document.getElementById('verificationCode').value.trim();
-      const msg = document.getElementById('otpMessage');
-      if (code.length < 6) { msg.textContent = 'Please enter all 6 digits.'; return; }
-      this.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-      this.disabled = true;
-      const fd = new FormData();
-      fd.append('action', 'verifyOTP');
-      fd.append('Email', document.getElementById('email').value);
-      fd.append('otp', code);
-      fetch(scriptURL, { method: 'POST', body: fd })
-        .then(r => r.json())
-        .then(data => {
-          if (data.result === 'success') {
-            isEmailVerified = true;
-            document.getElementById('otpModalOverlay').classList.remove('active');
-            setFieldError('Email', false);
-
-            // Update send button to verified state
-            const btn = document.getElementById('sendCodeBtn');
-            btn.className = 'btn btn-success-custom w-100';
-            btn.innerHTML = '<i class="fas fa-shield-check"></i> Verified';
-
-            // Style the email field as verified
-            document.getElementById('email').classList.add('verified-field');
-            document.getElementById('email').readOnly = true;
-
-            showToast('Email verified successfully!', 'success');
-          } else {
-            msg.textContent = 'Invalid OTP. Please try again.';
-            msg.style.color = '#f87171';
-            this.innerHTML = '<i class="fas fa-shield-check" style="margin-right:8px;"></i>Verify Now';
-            this.disabled = false;
-          }
-        })
-        .catch(() => {
-          msg.textContent = 'Verification failed. Please retry.';
-          this.innerHTML = '<i class="fas fa-shield-check" style="margin-right:8px;"></i>Verify Now';
-          this.disabled = false;
-        });
+      const code=document.getElementById('verificationCode').value.trim(), msg=document.getElementById('otpMessage');
+      if (code.length<6) { msg.textContent='Please enter all 6 digits.'; return; }
+      this.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>'; this.disabled=true;
+      const fd=new FormData(); fd.append('action','verifyOTP'); fd.append('Email',document.getElementById('email').value); fd.append('otp',code);
+      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{
+        if (data.result==='success') {
+          isEmailVerified=true;
+          document.getElementById('otpModalOverlay').classList.remove('active');
+          setFieldError('Email',false);
+          const btn=document.getElementById('sendCodeBtn'); btn.className='btn btn-success-custom w-100'; btn.innerHTML='<i class="fas fa-shield-check"></i> Verified';
+          document.getElementById('email').classList.add('verified-field'); document.getElementById('email').readOnly=true;
+          showToast('Email verified!','success');
+        } else {
+          msg.textContent='Invalid OTP. Please try again.'; msg.style.color='#f87171';
+          this.innerHTML='<i class="fas fa-shield-check" style="margin-right:8px;"></i>Verify Now'; this.disabled=false;
+        }
+      }).catch(()=>{ msg.textContent='Verification failed.'; this.innerHTML='<i class="fas fa-shield-check" style="margin-right:8px;"></i>Verify Now'; this.disabled=false; });
     });
 
-    // OTP input — numeric only, auto-format
     document.getElementById('verificationCode').addEventListener('input', function() {
-      this.value = this.value.replace(/\D/g, '').slice(0, 6);
-      document.getElementById('otpMessage').textContent = '';
+      this.value=this.value.replace(/\D/g,'').slice(0,6); document.getElementById('otpMessage').textContent='';
     });
 
-    /* ════════════════════════════════════════
-       FORM SUBMIT
-    ════════════════════════════════════════ */
+    /* SUBMIT */
     document.getElementById('form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      clearAllErrors();
-
+      e.preventDefault(); clearAllErrors();
       if (!isEmailVerified) {
-        showToast('Please verify your email address before submitting.', 'warn');
+        showToast('Please verify your email before submitting.','warn');
         document.getElementById('sendCodeBtn').classList.add('shake');
-        setTimeout(() => document.getElementById('sendCodeBtn').classList.remove('shake'), 500);
-        document.getElementById('email').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
+        setTimeout(()=>document.getElementById('sendCodeBtn').classList.remove('shake'),500);
+        document.getElementById('email').scrollIntoView({behavior:'smooth',block:'center'}); return;
       }
-
-      // Validate all fields
-      let hasError = false;
-      const textFields = [
-        ['FirstName', 'First Name'],
-        ['LastName', 'Last Name'],
-        ['CNIC', 'CNIC'],
-        ['Contact', 'Contact Number'],
-        ['Postal', 'Postal Code'],
-        ['Address', 'Street Address'],
-        ['GreatFit', 'Why you\'re a great fit']
-      ];
-
-      textFields.forEach(([name]) => {
-        const el = this[name];
-        if (!el || !el.value.trim()) { setFieldError(name, true); hasError = true; }
+      let hasError=false;
+      ['FirstName','LastName','CNIC','Contact','Postal','Address','GreatFit'].forEach(name=>{
+        const el=this[name]; if (!el||!el.value.trim()) { setFieldError(name,true); hasError=true; }
       });
-
-      // Validate CNIC format (basic)
-      const cnicVal = (this['CNIC'].value || '').replace(/-/g,'');
-      if (cnicVal.length !== 13) { setFieldError('CNIC', true); hasError = true; }
-
-      // Dropdown fields
-      if (!document.getElementById('dobVal').value)      { setFieldError('dob', true); hasError = true; }
-      if (!document.getElementById('genderVal').value)   { setFieldError('gender', true); hasError = true; }
-      if (!document.getElementById('countryVal').value)  { setFieldError('country', true); hasError = true; }
-      const stEl = document.getElementById('stateVal');
-      if (!stEl || !stEl.value.trim()) { setFieldError('state', true); hasError = true; }
-      const ctEl = document.getElementById('cityVal');
-      if (!ctEl || !ctEl.value.trim()) { setFieldError('city', true); hasError = true; }
-      if (!document.getElementById('positionVal').value) { setFieldError('position', true); hasError = true; }
-      if (!document.getElementById('investorVal').value) { setFieldError('investor', true); hasError = true; }
-      if (!document.getElementById('joiningVal').value)  { setFieldError('joining', true); hasError = true; }
-
+      const cnicVal=(this['CNIC'].value||'').replace(/-/g,'');
+      if (cnicVal.length!==13) { setFieldError('CNIC',true); hasError=true; }
+      if (!document.getElementById('dobVal').value)     { setFieldError('dob',true); hasError=true; }
+      if (!document.getElementById('genderVal').value)  { setFieldError('gender',true); hasError=true; }
+      if (!document.getElementById('countryVal').value) { setFieldError('country',true); hasError=true; }
+      const stEl=document.getElementById('stateVal'); if (!stEl||!stEl.value.trim()) { setFieldError('state',true); hasError=true; }
+      const ctEl=document.getElementById('cityVal');  if (!ctEl||!ctEl.value.trim()) { setFieldError('city',true); hasError=true; }
+      if (!document.getElementById('positionVal').value){ setFieldError('position',true); hasError=true; }
+      if (!document.getElementById('investorVal').value){ setFieldError('investor',true); hasError=true; }
+      if (!document.getElementById('joiningVal').value) { setFieldError('joining',true); hasError=true; }
       if (!document.getElementById('declaration').checked) {
-        showToast('Please confirm the declaration to proceed.', 'warn');
+        showToast('Please confirm the declaration.','warn');
         document.querySelector('.liquid-footer').classList.add('shake');
-        setTimeout(() => document.querySelector('.liquid-footer').classList.remove('shake'), 500);
-        hasError = true;
+        setTimeout(()=>document.querySelector('.liquid-footer').classList.remove('shake'),500); hasError=true;
+      }
+      if (hasError) { scrollToFirstError(); showToast('Please fill in all required fields.','error'); return; }
+
+      const sBtn=document.getElementById('submitBtn');
+      sBtn.innerHTML='<div class="loading-dots" style="margin-right:10px;"><span></span><span></span><span></span></div>Checking...'; sBtn.disabled=true;
+
+      const email=document.getElementById('email').value, cnic=document.getElementById('cnicInput').value, contact=this['Contact'].value;
+      const dupCheck=await checkDuplicate(email,cnic,contact);
+      if (dupCheck.result==='exists') {
+        const f=dupCheck.field||'record';
+        showToast(`This ${f} is already registered.`,'error');
+        if(dupCheck.field==='CNIC')    setFieldError('CNIC',true);
+        if(dupCheck.field==='Contact') setFieldError('Contact',true);
+        if(dupCheck.field==='Email')   setFieldError('Email',true);
+        scrollToFirstError(); sBtn.innerHTML='<i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application'; sBtn.disabled=false; return;
       }
 
-      if (hasError) {
-        scrollToFirstError();
-        showToast('Please fill in all required fields.', 'error');
-        return;
-      }
-
-      // Duplicate check (CNIC + Contact) before submission
-      const sBtn = document.getElementById('submitBtn');
-      sBtn.innerHTML = '<div class="loading-dots" style="margin-right:10px;"><span></span><span></span><span></span></div>Checking...';
-      sBtn.disabled = true;
-
-      const email = document.getElementById('email').value;
-      const cnic  = document.getElementById('cnicInput').value;
-      const contact = this['Contact'].value;
-
-      const dupCheck = await checkDuplicate(email, cnic, contact);
-      if (dupCheck.result === 'exists') {
-        const fieldLabel = dupCheck.field || 'record';
-        showToast(`This ${fieldLabel} is already registered. Duplicate applications are not allowed.`, 'error');
-        if (dupCheck.field === 'CNIC')    setFieldError('CNIC', true);
-        if (dupCheck.field === 'Contact') setFieldError('Contact', true);
-        if (dupCheck.field === 'Email')   setFieldError('Email', true);
-        scrollToFirstError();
-        sBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application';
-        sBtn.disabled = false;
-        return;
-      }
-
-      // Submit
-      sBtn.innerHTML = '<div class="loading-dots" style="margin-right:10px;"><span></span><span></span><span></span></div>Submitting...';
-
-      const fd = new FormData(this);
-      fd.append('action', 'submitForm');
-
-      fetch(scriptURL, { method: 'POST', body: fd })
-        .then(r => r.json())
-        .then(data => {
-          if (data.result === 'success') {
-            document.getElementById('thankYouModalOverlay').classList.add('active');
-          } else {
-            showToast('Submission failed. Please try again.', 'error');
-            sBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application';
-            sBtn.disabled = false;
-          }
-        })
-        .catch(() => {
-          showToast('Network error. Please check your connection and retry.', 'error');
-          sBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application';
-          sBtn.disabled = false;
-        });
+      sBtn.innerHTML='<div class="loading-dots" style="margin-right:10px;"><span></span><span></span><span></span></div>Submitting...';
+      const fd=new FormData(this); fd.append('action','submitForm');
+      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{
+        if (data.result==='success') { document.getElementById('thankYouModalOverlay').classList.add('active'); }
+        else { showToast('Submission failed. Please try again.','error'); sBtn.innerHTML='<i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application'; sBtn.disabled=false; }
+      }).catch(()=>{ showToast('Network error. Please retry.','error'); sBtn.innerHTML='<i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application'; sBtn.disabled=false; });
     });
   </script>
 </body>
