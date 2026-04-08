@@ -43,7 +43,6 @@
       background-position: center;
       z-index: -1;
     }
-    /* Subtle noise texture overlay */
     .bg-layer::after {
       content: '';
       position: absolute; inset: 0;
@@ -52,7 +51,7 @@
       pointer-events: none;
     }
 
-    .logo-container { position: absolute; top: 25px; left: 30px; }
+    .logo-container { position: absolute; top: 25px; left: 30px; z-index: 10; }
     .logo { width: 230px; }
 
     .page-container {
@@ -62,12 +61,14 @@
     }
 
     /* ══════════════════════════════════════════
-       HEADER — refined, elegant
+       HEADER — with animated shimmer
     ══════════════════════════════════════════ */
     .form-header-text {
       text-align: center; margin-bottom: 36px; width: 100%;
       opacity: 0; animation: fadeInUp 0.8s ease forwards; animation-delay: 0.1s;
     }
+
+    /* Eyebrow with animated dots */
     .header-eyebrow {
       display: inline-flex; align-items: center; gap: 10px;
       font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase;
@@ -82,11 +83,50 @@
     }
     .header-eyebrow::after { background: linear-gradient(270deg, transparent, var(--amber)); }
 
+    /* Animated badge below eyebrow */
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.22);
+      border-radius: 20px; padding: 4px 14px;
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(245,158,11,0.85); font-weight: 500;
+      margin-bottom: 16px;
+      animation: badgePulse 3s ease infinite;
+    }
+    @keyframes badgePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); border-color: rgba(245,158,11,0.22); }
+      50% { box-shadow: 0 0 14px rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.4); }
+    }
+    .badge-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--amber);
+      animation: dotBlink 1.5s ease infinite;
+    }
+    @keyframes dotBlink {
+      0%, 100% { opacity: 0.4; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 6px rgba(245,158,11,0.6); }
+    }
+
     .form-title {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 600; font-size: 3rem; line-height: 1.1;
       color: #fff; letter-spacing: -0.01em;
       margin-bottom: 10px;
+      position: relative; display: inline-block;
+    }
+    /* Shimmer light streak across the title */
+    .form-title::after {
+      content: '';
+      position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.07) 50%, transparent 100%);
+      transform: skewX(-20deg);
+      animation: titleShimmer 5s ease infinite;
+      pointer-events: none;
+    }
+    @keyframes titleShimmer {
+      0%, 30% { left: -100%; }
+      60%, 100% { left: 160%; }
     }
     .form-title em {
       font-style: italic; color: var(--amber);
@@ -100,6 +140,11 @@
       width: 48px; height: 1px;
       background: linear-gradient(90deg, transparent, var(--amber), transparent);
       margin: 16px auto 0;
+      animation: dividerGlow 3s ease infinite;
+    }
+    @keyframes dividerGlow {
+      0%, 100% { width: 48px; opacity: 0.6; }
+      50% { width: 80px; opacity: 1; }
     }
 
     /* ══════════════════════════════════════════
@@ -135,12 +180,21 @@
     }
 
     /* ══════════════════════════════════════════
-       FADE-IN-UP ANIMATIONS
+       ANIMATIONS
     ══════════════════════════════════════════ */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(32px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    .shake { animation: shake 0.4s ease; }
+
     .section-block { opacity: 0; animation: fadeInUp 0.65s ease forwards; }
     .section-block:nth-child(1) { animation-delay: 0.52s; }
     .section-block:nth-child(2) { animation-delay: 0.72s; }
@@ -148,7 +202,26 @@
     .form-footer-block { opacity: 0; animation: fadeInUp 0.65s ease forwards; animation-delay: 1.12s; }
 
     /* ══════════════════════════════════════════
-       INPUTS — base
+       FIELD ERROR STATES (replaces alert)
+    ══════════════════════════════════════════ */
+    .field-error .form-control {
+      border-color: rgba(239,68,68,0.55) !important;
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.1) !important;
+    }
+    .field-error .custom-trigger,
+    .field-error .beam-wrap {
+      border-radius: 12px;
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.12);
+    }
+    .err-msg {
+      font-size: 0.74rem; color: #f87171;
+      margin-top: 5px; display: none;
+      padding-left: 4px; letter-spacing: 0.01em;
+    }
+    .field-error .err-msg { display: block; }
+
+    /* ══════════════════════════════════════════
+       INPUTS
     ══════════════════════════════════════════ */
     .form-control {
       background-color: rgba(255,255,255,0.055) !important;
@@ -156,7 +229,7 @@
       color: #ffffff !important;
       border-radius: 10px; height: 48px; padding-left: 16px;
       -webkit-text-fill-color: #ffffff !important;
-      transition: border-color 0.4s, background-color 0.4s;
+      transition: border-color 0.4s, background-color 0.4s, box-shadow 0.3s;
       font-family: 'DM Sans', sans-serif;
       font-size: 0.9rem;
     }
@@ -169,7 +242,7 @@
     .form-control:focus, .form-control:not(:placeholder-shown) {
       background-color: rgba(255,255,255,0.08) !important;
       border-color: rgba(245,158,11,0.4) !important;
-      box-shadow: none !important;
+      box-shadow: 0 0 0 3px rgba(245,158,11,0.08) !important;
       color: #fff !important; outline: none !important;
     }
     .form-control::placeholder { color: rgba(255,255,255,0.28) !important; -webkit-text-fill-color: rgba(255,255,255,0.28) !important; }
@@ -180,9 +253,16 @@
     }
     textarea.form-control { height: auto !important; resize: none; padding-top: 14px; }
 
+    /* Verified email field */
+    #email.verified-field {
+      border-color: rgba(34,197,94,0.45) !important;
+      background-color: rgba(34,197,94,0.06) !important;
+      -webkit-text-fill-color: #4ade80 !important;
+      color: #4ade80 !important;
+    }
+
     /* ══════════════════════════════════════════
-       LIQUID BORDER BEAM — lighter, slower, premium
-       Opacity reduced, speed 3.5s (was 1.6s)
+       BEAM — lighter, slower
     ══════════════════════════════════════════ */
     @property --beam-angle {
       syntax: '<angle>';
@@ -221,29 +301,7 @@
       animation: spinBeam 3.5s linear infinite;
     }
 
-    /* ══════════════════════════════════════════
-       LIQUID TRIGGER (dropdowns / calendar)
-    ══════════════════════════════════════════ */
-    .custom-trigger {
-      background-color: rgba(255,255,255,0.055);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.32);
-      border-radius: 10px; height: 48px; padding: 0 16px;
-      width: 100%; display: flex; align-items: center;
-      justify-content: space-between; cursor: pointer;
-      transition: all 0.35s; font-size: 0.9rem;
-      font-family: 'DM Sans', sans-serif;
-      user-select: none; -webkit-tap-highlight-color: transparent;
-      position: relative;
-    }
-    .custom-trigger.filled {
-      color: #fff;
-      background-color: rgba(255,255,255,0.08);
-      border-color: rgba(245,158,11,0.38);
-    }
-    .custom-trigger .trig-icon { color: var(--amber); font-size: 0.8rem; flex-shrink: 0; }
-    .custom-trigger.dimmed { opacity: 0.38; pointer-events: none; }
-
+    /* TRIG BEAM */
     .trig-beam { position: relative; border-radius: 12px; }
     .trig-beam::before {
       content: ''; position: absolute; inset: -1.5px; border-radius: 12px;
@@ -255,27 +313,68 @@
     .trig-beam.beam-flash::before { opacity: 1; animation: spinBeam 3.5s linear infinite; }
 
     /* ══════════════════════════════════════════
-       BUTTON SHIMMER
+       SUBMIT BUTTON — premium redesign
     ══════════════════════════════════════════ */
     .btn-submit {
       position: relative; overflow: hidden;
-      background: linear-gradient(135deg, #d97706, #b45309);
-      border: 1px solid rgba(245,158,11,0.3);
-      border-radius: 12px; height: 52px;
-      font-weight: 500; color: #fff;
-      transition: box-shadow 0.4s, transform 0.3s, border-color 0.3s;
+      background: linear-gradient(110deg, #92400e 0%, #d97706 28%, #f59e0b 50%, #d97706 72%, #92400e 100%);
+      background-size: 300% 100%;
+      animation: btnPulse 4s ease infinite;
+      border: 1px solid rgba(245,158,11,0.35);
+      border-radius: 14px; height: 56px;
+      font-weight: 600; color: #fff;
       font-size: 1rem; font-family: 'DM Sans', sans-serif;
-      letter-spacing: 0.04em; cursor: pointer; width: 100%;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      cursor: pointer; width: 100%;
+      box-shadow:
+        0 6px 28px rgba(217,119,6,0.35),
+        0 1px 0 rgba(255,255,255,0.12) inset,
+        0 -1px 0 rgba(0,0,0,0.2) inset;
+      transition: box-shadow 0.4s, transform 0.3s, border-color 0.3s;
     }
+    @keyframes btnPulse {
+      0%   { background-position: 100% 0; box-shadow: 0 6px 28px rgba(217,119,6,0.35), 0 1px 0 rgba(255,255,255,0.12) inset; }
+      50%  { background-position: 0% 0;   box-shadow: 0 8px 38px rgba(245,158,11,0.55), 0 1px 0 rgba(255,255,255,0.18) inset; }
+      100% { background-position: 100% 0; box-shadow: 0 6px 28px rgba(217,119,6,0.35), 0 1px 0 rgba(255,255,255,0.12) inset; }
+    }
+    /* Continuous shimmer sweep */
+    .btn-submit::before {
+      content: '';
+      position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
+      transform: skewX(-22deg);
+      animation: btnShimmer 4s ease infinite;
+    }
+    @keyframes btnShimmer {
+      0%, 20%  { left: -100%; }
+      60%, 100% { left: 170%; }
+    }
+    /* Top gloss line */
     .btn-submit::after {
-      content: ''; position: absolute; top: 0; left: -100%;
-      width: 55%; height: 100%;
-      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
-      transform: skewX(-18deg); pointer-events: none;
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      border-radius: 14px 14px 0 0;
     }
-    .btn-submit:hover { box-shadow: 0 8px 28px rgba(217,119,6,0.45); transform: translateY(-2px); border-color: rgba(245,158,11,0.6); }
-    .btn-submit:hover::after { left: 160%; transition: left 0.6s ease; }
-    .btn-submit:disabled { cursor: not-allowed; opacity: 0.65; transform: none; }
+    .btn-submit:hover {
+      box-shadow: 0 12px 45px rgba(245,158,11,0.6), 0 1px 0 rgba(255,255,255,0.18) inset;
+      transform: translateY(-3px);
+      border-color: rgba(245,158,11,0.65);
+    }
+    .btn-submit:active { transform: translateY(-1px); }
+    .btn-submit:disabled { cursor: not-allowed; opacity: 0.6; transform: none; animation: none; }
+
+    /* Click ripple on submit */
+    .btn-submit .submit-ripple {
+      position: absolute; border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: scale(0);
+      animation: submitRipple 0.7s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes submitRipple {
+      to { transform: scale(5); opacity: 0; }
+    }
 
     .btn-code {
       height: 48px; border-radius: 10px;
@@ -285,7 +384,15 @@
       font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
     }
     .btn-code:hover { background-color: var(--amber-dim); border-color: rgba(245,158,11,0.4); color: #fff; }
-    .btn-success-custom { background: rgba(34,197,94,0.15) !important; color: #4ade80 !important; border: 1px solid rgba(34,197,94,0.3) !important; pointer-events: none; }
+    .btn-success-custom {
+      background: rgba(34,197,94,0.12) !important;
+      color: #4ade80 !important;
+      border: 1px solid rgba(34,197,94,0.3) !important;
+      pointer-events: none; height: 48px; border-radius: 10px;
+      font-size: 0.82rem; font-family: 'DM Sans', sans-serif;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+      gap: 6px;
+    }
 
     /* ══════════════════════════════════════════
        TEXTAREA PROGRESS RING
@@ -312,7 +419,7 @@
     textarea[name="GreatFit"] { padding-right: 50px; }
 
     /* ══════════════════════════════════════════
-       LIQUID CHECKBOX SECTION
+       LIQUID CHECKBOX — with ripple
     ══════════════════════════════════════════ */
     .liquid-footer {
       position: relative; overflow: hidden;
@@ -321,15 +428,10 @@
       background: rgba(245,158,11,0.04);
       border: 1px solid rgba(245,158,11,0.14);
     }
-    /* Animated liquid shimmer behind footer */
     .liquid-footer::before {
       content: '';
       position: absolute; inset: 0;
-      background: linear-gradient(110deg,
-        transparent 30%,
-        rgba(245,158,11,0.06) 50%,
-        transparent 70%
-      );
+      background: linear-gradient(110deg, transparent 30%, rgba(245,158,11,0.06) 50%, transparent 70%);
       background-size: 200% 100%;
       animation: liquidShimmer 5s ease infinite;
       pointer-events: none;
@@ -338,7 +440,6 @@
       0%   { background-position: 200% 0; }
       100% { background-position: -200% 0; }
     }
-    /* Liquid beam on footer border */
     .liquid-footer::after {
       content: '';
       position: absolute; inset: 0; border-radius: 14px;
@@ -358,19 +459,25 @@
     .liquid-footer > * { position: relative; z-index: 1; }
 
     .liquid-check-row { display: flex; align-items: center; gap: 14px; }
-    /* Custom checkbox */
+
+    /* Checkbox ripple wrapper */
+    .checkbox-ripple-wrap {
+      position: relative; flex-shrink: 0;
+      width: 20px; height: 20px;
+    }
     .liq-checkbox {
       appearance: none; -webkit-appearance: none;
-      width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+      width: 20px; height: 20px; border-radius: 6px;
       background: rgba(255,255,255,0.06);
       border: 1.5px solid rgba(245,158,11,0.35);
       cursor: pointer; position: relative;
       transition: all 0.35s; outline: none;
+      display: block;
     }
     .liq-checkbox:checked {
       background: linear-gradient(135deg, #d97706, #b45309);
       border-color: #d97706;
-      box-shadow: 0 0 16px rgba(217,119,6,0.4);
+      box-shadow: 0 0 20px rgba(217,119,6,0.45);
     }
     .liq-checkbox:checked::after {
       content: '';
@@ -379,6 +486,29 @@
       border: 2px solid white; border-top: none; border-left: none;
       transform: rotate(42deg);
     }
+    /* Liquid ripple rings on check */
+    .check-ripple {
+      position: absolute; inset: 0; border-radius: 50%;
+      pointer-events: none;
+    }
+    .check-ripple::before,
+    .check-ripple::after {
+      content: '';
+      position: absolute; inset: -2px; border-radius: 50%;
+      border: 1.5px solid rgba(245,158,11,0.7);
+      opacity: 0; transform: scale(1);
+    }
+    .liq-checkbox:checked ~ .check-ripple::before {
+      animation: rippleRing 0.6s ease-out forwards;
+    }
+    .liq-checkbox:checked ~ .check-ripple::after {
+      animation: rippleRing 0.6s ease-out 0.15s forwards;
+    }
+    @keyframes rippleRing {
+      0%   { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(3.5); opacity: 0; }
+    }
+    /* Liquid burst particles */
     .liq-check-label {
       font-size: 0.88rem; color: rgba(255,255,255,0.65);
       cursor: pointer; font-weight: 300; letter-spacing: 0.01em;
@@ -386,7 +516,34 @@
     }
 
     /* ══════════════════════════════════════════
-       LIQUID CALENDAR POPUP
+       CUSTOM TRIGGER (dropdowns / calendar)
+    ══════════════════════════════════════════ */
+    .custom-trigger {
+      background-color: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.32);
+      border-radius: 10px; height: 48px; padding: 0 16px;
+      width: 100%; display: flex; align-items: center;
+      justify-content: space-between; cursor: pointer;
+      transition: all 0.35s; font-size: 0.9rem;
+      font-family: 'DM Sans', sans-serif;
+      user-select: none; -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+    .custom-trigger:hover {
+      background-color: rgba(255,255,255,0.08);
+      border-color: rgba(245,158,11,0.25);
+    }
+    .custom-trigger.filled {
+      color: #fff;
+      background-color: rgba(255,255,255,0.08);
+      border-color: rgba(245,158,11,0.38);
+    }
+    .custom-trigger .trig-icon { color: var(--amber); font-size: 0.8rem; flex-shrink: 0; transition: transform 0.3s; }
+    .custom-trigger.dimmed { opacity: 0.38; pointer-events: none; }
+
+    /* ══════════════════════════════════════════
+       POPUPS — SELECT & CALENDAR
     ══════════════════════════════════════════ */
     .pop-overlay {
       position: fixed; inset: 0;
@@ -399,7 +556,6 @@
     .pop-overlay.on { opacity: 1; visibility: visible; }
     @media(min-width: 600px) { .pop-overlay { align-items: center; } }
 
-    /* SELECT card — liquid glass */
     .sel-card {
       position: relative; overflow: hidden;
       background: linear-gradient(160deg, rgba(13,26,52,0.98) 0%, rgba(8,16,36,0.99) 100%);
@@ -413,7 +569,6 @@
       box-shadow: 0 -8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
     }
     .pop-overlay.on .sel-card { transform: translateY(0); }
-    /* Liquid shimmer inside select card */
     .sel-card::before {
       content: ''; position: absolute; inset: 0;
       background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.07) 0%, transparent 65%);
@@ -424,7 +579,6 @@
       .pop-overlay.on .sel-card { transform: scale(1); }
     }
 
-    /* CALENDAR card — liquid glass */
     .cal-card {
       position: relative; overflow: hidden;
       background: linear-gradient(160deg, rgba(13,26,52,0.98) 0%, rgba(8,16,36,0.99) 100%);
@@ -437,7 +591,6 @@
       box-shadow: 0 -8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
     }
     .pop-overlay.on .cal-card { transform: translateY(0); }
-    /* Liquid amber glow at top of calendar */
     .cal-card::before {
       content: ''; position: absolute;
       top: 0; left: 0; right: 0; height: 120px;
@@ -456,7 +609,6 @@
       border-radius: 2px; margin: 14px auto 0;
     }
 
-    /* Select head */
     .sel-head { padding: 14px 18px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
     .sel-title { font-size: 0.95rem; font-weight: 500; color: rgba(255,255,255,0.9); text-align: center; margin-bottom: 12px; letter-spacing: 0.04em; }
     .sel-search {
@@ -467,7 +619,9 @@
       font-size: 0.88rem; outline: none;
       -webkit-text-fill-color: #fff !important;
       font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.3s;
     }
+    .sel-search:focus { border-color: rgba(245,158,11,0.4) !important; }
     .sel-search::placeholder { color: rgba(255,255,255,0.3); }
     .sel-list { overflow-y: auto; padding: 8px; flex: 1; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
     .sel-list::-webkit-scrollbar { width: 2px; }
@@ -478,11 +632,12 @@
       font-size: 0.88rem; display: flex; align-items: center;
       justify-content: space-between; font-family: 'DM Sans', sans-serif;
     }
+    .sel-opt:hover { background: rgba(255,255,255,0.05); }
     .sel-opt:active { background: rgba(245,158,11,0.12); }
     .sel-opt.chosen { background: rgba(245,158,11,0.12); color: var(--amber-light); font-weight: 500; }
     .sel-opt .chk { color: var(--amber); font-size: 0.85rem; }
 
-    /* ── Calendar interior ── */
+    /* CALENDAR */
     .cal-head { padding: 0 16px 8px; }
     .cal-nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 10px; }
     .cal-nav-btn {
@@ -507,11 +662,11 @@
     .cal-d {
       text-align: center; padding: 8px 2px; border-radius: 50%;
       cursor: pointer; color: rgba(255,255,255,0.75);
-      font-size: 0.84rem; transition: background 0.18s, color 0.18s;
+      font-size: 0.84rem; transition: background 0.18s, color 0.18s, transform 0.15s;
       aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
       font-family: 'DM Sans', sans-serif;
     }
-    .cal-d:hover { background: rgba(245,158,11,0.1); color: #fff; }
+    .cal-d:hover { background: rgba(245,158,11,0.1); color: #fff; transform: scale(1.1); }
     .cal-d:active { background: rgba(245,158,11,0.2); }
     .cal-d.sel { background: linear-gradient(135deg, #d97706, #b45309) !important; color: #fff; font-weight: 600; box-shadow: 0 0 12px rgba(217,119,6,0.4); }
     .cal-d.tod { border: 1px solid rgba(245,158,11,0.4); color: var(--amber-light); }
@@ -526,8 +681,6 @@
       box-shadow: 0 4px 16px rgba(217,119,6,0.3);
     }
     .cal-confirm:active { transform: scale(0.98); }
-
-    /* Month-Year Picker */
     .cal-picker-view { display: none; padding: 8px 14px 16px; }
     .cal-picker-view.show { display: block; }
     .cal-year-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px; }
@@ -560,10 +713,10 @@
       border: 1px solid rgba(255,255,255,0.1);
       border-top: 1px solid rgba(255,255,255,0.18);
       border-radius: 20px; padding: 2.4rem; width: 90%; max-width: 400px;
-      text-align: center; transform: translateY(28px); transition: all 0.4s;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+      text-align: center; transform: translateY(28px) scale(0.97); transition: all 0.4s;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
     }
-    .modal-overlay.active .modal-card { transform: translateY(0); }
+    .modal-overlay.active .modal-card { transform: translateY(0) scale(1); }
     .otp-input-large {
       background: rgba(0,0,0,0.3) !important; font-size: 1.7rem !important;
       letter-spacing: 14px; text-align: center;
@@ -573,8 +726,36 @@
     }
 
     /* ══════════════════════════════════════════
-       SVG CHECKMARK
+       THANK YOU MODAL — premium
     ══════════════════════════════════════════ */
+    .thankyou-stars {
+      display: flex; justify-content: center; gap: 6px;
+      margin-bottom: 1rem;
+    }
+    .thankyou-stars i {
+      color: var(--amber); font-size: 0.85rem;
+      animation: starPop 0.4s ease backwards;
+    }
+    .thankyou-stars i:nth-child(1) { animation-delay: 0.7s; }
+    .thankyou-stars i:nth-child(2) { animation-delay: 0.85s; }
+    .thankyou-stars i:nth-child(3) { animation-delay: 1.0s; }
+    .thankyou-stars i:nth-child(4) { animation-delay: 1.15s; }
+    .thankyou-stars i:nth-child(5) { animation-delay: 1.3s; }
+    @keyframes starPop {
+      0%   { transform: scale(0) rotate(-30deg); opacity: 0; }
+      70%  { transform: scale(1.3) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .thankyou-tag {
+      display: inline-block;
+      background: rgba(245,158,11,0.1);
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 20px; padding: 3px 12px;
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 0.8rem;
+    }
+
+    /* SVG checkmark */
     .check-circle-wrap { width: 86px; height: 86px; margin: 0 auto 1.2rem; }
     .check-circle-wrap svg { width: 100%; height: 100%; }
     .check-circle { fill: none; stroke: #22c55e; stroke-width: 2.5; stroke-dasharray: 283; stroke-dashoffset: 283; }
@@ -584,8 +765,66 @@
     @keyframes drawCircle { to { stroke-dashoffset: 0; } }
     @keyframes drawTick   { to { stroke-dashoffset: 0; } }
 
-    /* form-check-label fallback */
-    .form-check-label { font-size: 0.88rem; color: rgba(255,255,255,0.65) !important; cursor: pointer; }
+    /* ══════════════════════════════════════════
+       TOAST NOTIFICATION (replaces alerts)
+    ══════════════════════════════════════════ */
+    .toast-wrap {
+      position: fixed; top: 24px; right: 24px;
+      z-index: 99999;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .toast-item {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(13,26,52,0.97);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 14px 18px;
+      max-width: 320px; min-width: 260px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+      overflow: hidden; position: relative;
+    }
+    .toast-item.toast-error { border-left: 3px solid #f87171; }
+    .toast-item.toast-success { border-left: 3px solid #4ade80; }
+    .toast-item.toast-warn { border-left: 3px solid var(--amber); }
+    .toast-item.toast-out { animation: toastOut 0.3s ease forwards; }
+    .toast-icon { font-size: 1rem; flex-shrink: 0; }
+    .toast-error .toast-icon { color: #f87171; }
+    .toast-success .toast-icon { color: #4ade80; }
+    .toast-warn .toast-icon { color: var(--amber); }
+    .toast-text { font-size: 0.85rem; color: rgba(255,255,255,0.85); line-height: 1.4; flex: 1; }
+    .toast-bar {
+      position: absolute; bottom: 0; left: 0;
+      height: 2px; background: currentColor; opacity: 0.4;
+      animation: toastBar 4s linear forwards;
+    }
+    .toast-error .toast-bar { color: #f87171; }
+    .toast-success .toast-bar { color: #4ade80; }
+    .toast-warn .toast-bar { color: var(--amber); }
+    @keyframes toastIn {
+      from { transform: translateX(120%); opacity: 0; }
+      to   { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes toastOut {
+      to { transform: translateX(120%); opacity: 0; }
+    }
+    @keyframes toastBar {
+      from { width: 100%; }
+      to   { width: 0%; }
+    }
+
+    /* Loading dots */
+    .loading-dots { display: inline-flex; gap: 4px; align-items: center; }
+    .loading-dots span {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,0.8);
+      animation: dotBounce 1.2s ease infinite;
+    }
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotBounce {
+      0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
 
     /* section spacing */
     .section-block + .section-block { margin-top: 1.8rem; }
@@ -594,19 +833,29 @@
 <body>
   <div class="bg-layer"></div>
 
+  <!-- Toast container -->
+  <div class="toast-wrap" id="toastWrap"></div>
+
   <div class="logo-container">
     <img src="https://i.postimg.cc/MKh5pB49/Gemini-Generated-Image-f1z1rjf1z1rjf1z1-removebg-preview.png" class="logo" alt="LEVZA Logo">
   </div>
 
   <div class="page-container">
 
-    <!-- ══ REFINED HEADER ══ -->
+    <!-- ══ HEADER ══ -->
     <div class="form-header-text">
       <div class="header-eyebrow">
         <span></span>LEVZA Careers<span></span>
       </div>
-      <h2 class="form-title">Employee <em>Application</em></h2>
-      <p class="form-subtitle">We're delighted to learn more about you — please fill in your details below.</p>
+      <!-- Animated badge -->
+      <div>
+        <span class="header-badge">
+          <span class="badge-dot"></span>
+          Employee Application
+        </span>
+      </div>
+      <h2 class="form-title">Join the <em>Team</em></h2>
+      <p class="form-subtitle">We're delighted to learn more about you — please fill in your details carefully.</p>
       <div class="header-divider"></div>
     </div>
 
@@ -619,39 +868,46 @@
             <span class="icon-dot"><i class="fas fa-user"></i></span>
             Personal Information
           </h5>
-          <div class="row g-3 align-items-center">
+          <div class="row g-3 align-items-start">
             <div class="col-md-6">
-              <div class="beam-wrap"><input type="text" name="FirstName" class="form-control" placeholder="First Name" required></div>
+              <div class="beam-wrap" id="wrap-FirstName"><input type="text" name="FirstName" class="form-control" placeholder="First Name" required></div>
+              <div class="err-msg" id="err-FirstName"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>First name is required</div>
             </div>
             <div class="col-md-6">
-              <div class="beam-wrap"><input type="text" name="LastName" class="form-control" placeholder="Last Name" required></div>
+              <div class="beam-wrap" id="wrap-LastName"><input type="text" name="LastName" class="form-control" placeholder="Last Name" required></div>
+              <div class="err-msg" id="err-LastName"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Last name is required</div>
             </div>
             <div class="col-md-4">
-              <div class="beam-wrap"><input type="text" name="CNIC" class="form-control" placeholder="CNIC  xxxxx-xxxxxxx-x" required></div>
+              <div class="beam-wrap" id="wrap-CNIC"><input type="text" name="CNIC" id="cnicInput" class="form-control" placeholder="CNIC  xxxxx-xxxxxxx-x" maxlength="15" required></div>
+              <div class="err-msg" id="err-CNIC"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Enter a valid CNIC</div>
             </div>
             <div class="col-md-4">
               <input type="hidden" name="DOB" id="dobVal">
-              <div class="trig-beam">
+              <div class="trig-beam" id="wrap-dob">
                 <div class="custom-trigger" id="dobTrig" onclick="openCal('dob');flashTrigBeam(this)">
                   <span id="dobLbl">Date of Birth</span>
                   <i class="fas fa-calendar-alt trig-icon"></i>
                 </div>
               </div>
+              <div class="err-msg" id="err-dob"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Date of birth is required</div>
             </div>
             <div class="col-md-4">
               <input type="hidden" name="Gender" id="genderVal">
-              <div class="trig-beam">
+              <div class="trig-beam" id="wrap-gender">
                 <div class="custom-trigger" id="genderTrig" onclick="openSel('gender','Select Gender',['Male','Female','Other']);flashTrigBeam(this)">
                   <span id="genderLbl">Select Gender</span>
                   <i class="fas fa-chevron-down trig-icon"></i>
                 </div>
               </div>
+              <div class="err-msg" id="err-gender"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select gender</div>
             </div>
             <div class="col-md-5">
-              <div class="beam-wrap"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number" required></div>
+              <div class="beam-wrap" id="wrap-Contact"><input type="tel" name="Contact" id="contactInput" class="form-control" placeholder="Contact Number  +92 3xx xxxxxxx" required></div>
+              <div class="err-msg" id="err-Contact"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Contact number is required</div>
             </div>
             <div class="col-md-5">
-              <div class="beam-wrap"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
+              <div class="beam-wrap" id="wrap-Email"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
+              <div class="err-msg" id="err-Email"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Valid email is required</div>
             </div>
             <div class="col-md-2">
               <button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button>
@@ -668,36 +924,41 @@
           <div class="row g-3">
             <div class="col-md-12">
               <input type="hidden" name="Country" id="countryVal">
-              <div class="trig-beam">
+              <div class="trig-beam" id="wrap-country">
                 <div class="custom-trigger" id="countryTrig" onclick="openCountryPop();flashTrigBeam(this)">
                   <span id="countryLbl">Select Country</span>
                   <i class="fas fa-chevron-down trig-icon"></i>
                 </div>
               </div>
+              <div class="err-msg" id="err-country"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a country</div>
             </div>
             <div class="col-md-4" id="stateDiv">
               <input type="hidden" name="State" id="stateVal">
-              <div class="trig-beam">
+              <div class="trig-beam" id="wrap-state">
                 <div class="custom-trigger dimmed" id="stateTrig" onclick="openStatePop();flashTrigBeam(this)">
                   <span id="stateLbl">Select State</span>
                   <i class="fas fa-chevron-down trig-icon"></i>
                 </div>
               </div>
+              <div class="err-msg" id="err-state"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a state</div>
             </div>
             <div class="col-md-4" id="cityDiv">
               <input type="hidden" name="City" id="cityVal">
-              <div class="trig-beam">
+              <div class="trig-beam" id="wrap-city">
                 <div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop();flashTrigBeam(this)">
                   <span id="cityLbl">Select City</span>
                   <i class="fas fa-chevron-down trig-icon"></i>
                 </div>
               </div>
+              <div class="err-msg" id="err-city"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a city</div>
             </div>
             <div class="col-md-4">
-              <div class="beam-wrap"><input type="text" name="Postal" class="form-control" placeholder="Postal Code" required></div>
+              <div class="beam-wrap" id="wrap-Postal"><input type="text" name="Postal" class="form-control" placeholder="Postal Code" required></div>
+              <div class="err-msg" id="err-Postal"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Postal code is required</div>
             </div>
             <div class="col-md-12">
-              <div class="beam-wrap"><input type="text" name="Address" class="form-control" placeholder="Street Address" required></div>
+              <div class="beam-wrap" id="wrap-Address"><input type="text" name="Address" class="form-control" placeholder="Street Address" required></div>
+              <div class="err-msg" id="err-Address"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Street address is required</div>
             </div>
           </div>
         </div>
@@ -711,38 +972,41 @@
           <div class="row g-3">
             <div class="col-md-6">
               <input type="hidden" name="Position" id="positionVal">
-              <div class="trig-beam">
+              <div class="trig-beam" id="wrap-position">
                 <div class="custom-trigger" id="positionTrig" onclick="openSel('position','Position Applied For',['Account Provider PK','Account Provider UK','Manager','Developer']);flashTrigBeam(this)">
                   <span id="positionLbl">Position Applied For</span>
                   <i class="fas fa-chevron-down trig-icon"></i>
                 </div>
               </div>
+              <div class="err-msg" id="err-position"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a position</div>
             </div>
             <div class="col-md-6">
               <input type="hidden" name="Investor" id="investorVal">
-              <div class="trig-beam">
+              <div class="trig-beam" id="wrap-investor">
                 <div class="custom-trigger" id="investorTrig" onclick="openSel('investor','Are you an investor?',['No','Yes']);flashTrigBeam(this)">
                   <span id="investorLbl">Are you an investor?</span>
                   <i class="fas fa-chevron-down trig-icon"></i>
                 </div>
               </div>
+              <div class="err-msg" id="err-investor"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select investor status</div>
             </div>
             <div class="col-md-6">
               <input type="hidden" name="JoiningDate" id="joiningVal">
-              <div class="trig-beam">
+              <div class="trig-beam" id="wrap-joining">
                 <div class="custom-trigger" id="joiningTrig" onclick="openCal('joining');flashTrigBeam(this)">
                   <span id="joiningLbl">Available Joining Date</span>
                   <i class="fas fa-calendar-alt trig-icon"></i>
                 </div>
               </div>
+              <div class="err-msg" id="err-joining"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a joining date</div>
             </div>
             <div class="col-md-6" id="amountDiv" style="display:none">
-              <div class="beam-wrap"><input type="number" name="InvestmentAmount" class="form-control" placeholder="Investment Amount"></div>
+              <div class="beam-wrap"><input type="number" name="InvestmentAmount" class="form-control" placeholder="Investment Amount (PKR)"></div>
             </div>
             <div class="col-md-12">
-              <div class="beam-wrap textarea-counter-wrap">
+              <div class="beam-wrap textarea-counter-wrap" id="wrap-GreatFit">
                 <textarea name="GreatFit" id="greatFitTA" class="form-control" rows="4"
-                  placeholder="Tell us why you're a great fit..." required maxlength="300"></textarea>
+                  placeholder="Tell us why you're a great fit for LEVZA..." required maxlength="300"></textarea>
                 <div class="progress-ring-wrap">
                   <svg viewBox="0 0 36 36" width="36" height="36">
                     <circle class="ring-bg" cx="18" cy="18" r="14"/>
@@ -751,6 +1015,7 @@
                   <div class="ring-text" id="ringText">0</div>
                 </div>
               </div>
+              <div class="err-msg" id="err-GreatFit"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please tell us why you're a great fit</div>
             </div>
           </div>
         </div>
@@ -759,14 +1024,19 @@
         <div class="form-footer-block">
           <div class="liquid-footer">
             <div class="liquid-check-row">
-              <input class="liq-checkbox" type="checkbox" id="declaration" required>
+              <!-- Checkbox with ripple wrapper -->
+              <div class="checkbox-ripple-wrap">
+                <input class="liq-checkbox" type="checkbox" id="declaration" required>
+                <div class="check-ripple" id="checkRipple"></div>
+              </div>
               <label class="liq-check-label" for="declaration">
-                I confirm that all information provided is accurate and my email has been verified.
+                I confirm that all information provided is accurate, complete, and my email has been verified. I understand that false information may result in disqualification.
               </label>
             </div>
           </div>
+
           <button id="submitBtn" class="btn-submit" type="submit" style="margin-top:1.2rem;">
-            <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Application
+            <i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application
           </button>
         </div>
 
@@ -828,15 +1098,17 @@
     <div class="modal-card">
       <div style="font-size:2.6rem;color:var(--amber);margin-bottom:1rem;opacity:0.9;"><i class="fas fa-envelope-open-text"></i></div>
       <h4 style="color:#fff;font-weight:500;margin-bottom:8px;font-family:'DM Sans',sans-serif;">Verify your Email</h4>
-      <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-bottom:1.2rem;">OTP sent to <span id="modalEmailText" style="color:var(--amber);"></span></p>
-      <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="——————" maxlength="6" autocomplete="off">
-      <small id="otpMessage" class="d-block text-warning mt-2"></small>
-      <button type="button" id="verifyCodeBtn" class="btn-submit" style="margin-top:1.4rem;">Verify Now</button>
-      <button type="button" id="closeModalBtn" style="background:transparent;border:none;color:rgba(255,255,255,0.35);text-decoration:underline;margin-top:1rem;cursor:pointer;display:block;margin-left:auto;margin-right:auto;font-family:'DM Sans',sans-serif;font-size:0.82rem;">Cancel</button>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;margin-bottom:1.2rem;">OTP sent to <span id="modalEmailText" style="color:var(--amber);font-weight:500;"></span></p>
+      <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="——————" maxlength="6" autocomplete="off" inputmode="numeric">
+      <small id="otpMessage" class="d-block mt-2" style="color:#f59e0b;min-height:18px;"></small>
+      <button type="button" id="verifyCodeBtn" class="btn-submit" style="margin-top:1.4rem;height:48px;font-size:0.9rem;">
+        <i class="fas fa-shield-check" style="margin-right:8px;"></i>Verify Now
+      </button>
+      <button type="button" id="closeModalBtn" style="background:transparent;border:none;color:rgba(255,255,255,0.3);text-decoration:underline;margin-top:1rem;cursor:pointer;display:block;margin-left:auto;margin-right:auto;font-family:'DM Sans',sans-serif;font-size:0.82rem;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.6)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Cancel</button>
     </div>
   </div>
 
-  <!-- ── Thank You Modal ── -->
+  <!-- ── Thank You Modal — premium ── -->
   <div id="thankYouModalOverlay" class="modal-overlay">
     <div class="modal-card">
       <div class="check-circle-wrap">
@@ -846,19 +1118,64 @@
           <polyline class="check-tick" points="28,52 43,67 72,35"/>
         </svg>
       </div>
-      <h3 style="color:#fff;font-weight:600;font-family:'Cormorant Garamond',serif;font-size:1.8rem;margin-bottom:10px;">Thank You</h3>
-      <p style="color:rgba(255,255,255,0.45);line-height:1.65;font-size:0.87rem;">Your application has been submitted to <strong style="color:rgba(255,255,255,0.75);">LEVZA</strong>.<br>A confirmation has been sent to your inbox.</p>
-      <button type="button" onclick="location.reload()" class="btn-submit" style="margin-top:1.6rem;">Return Home</button>
+      <div class="thankyou-stars">
+        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        <i class="fas fa-star"></i><i class="fas fa-star"></i>
+      </div>
+      <div class="thankyou-tag">Application Received</div>
+      <h3 style="color:#fff;font-weight:600;font-family:'Cormorant Garamond',serif;font-size:2rem;margin-bottom:12px;line-height:1.1;">Welcome to<br><em style="color:var(--amber);font-style:italic;">LEVZA</em></h3>
+      <p style="color:rgba(255,255,255,0.5);line-height:1.7;font-size:0.87rem;margin-bottom:0.4rem;">Your journey with us begins here. We've received your application and our team will review it with great care.</p>
+      <p style="color:rgba(255,255,255,0.3);font-size:0.78rem;margin-bottom:1.6rem;">A confirmation has been sent to your inbox. Please check your spam folder too.</p>
+      <button type="button" onclick="location.reload()" class="btn-submit" style="height:48px;font-size:0.9rem;">
+        <i class="fas fa-arrow-left" style="margin-right:8px;"></i>Back to Home
+      </button>
     </div>
   </div>
 
   <script>
-    /* ════════════════════════════
+    /* ════════════════════════════════════════
+       TOAST NOTIFICATIONS
+    ════════════════════════════════════════ */
+    function showToast(msg, type = 'error', duration = 4000) {
+      const wrap = document.getElementById('toastWrap');
+      const icons = { error: 'fa-circle-xmark', success: 'fa-circle-check', warn: 'fa-triangle-exclamation' };
+      const t = document.createElement('div');
+      t.className = `toast-item toast-${type}`;
+      t.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span class="toast-text">${msg}</span><div class="toast-bar"></div>`;
+      wrap.appendChild(t);
+      setTimeout(() => {
+        t.classList.add('toast-out');
+        setTimeout(() => t.remove(), 300);
+      }, duration);
+    }
+
+    /* ════════════════════════════════════════
+       FIELD ERROR HELPERS
+    ════════════════════════════════════════ */
+    function setFieldError(id, show) {
+      const wrap = document.getElementById('wrap-' + id);
+      const err  = document.getElementById('err-' + id);
+      if (wrap) wrap.classList.toggle('field-error', show);
+      if (err)  err.style.display = show ? 'block' : 'none';
+    }
+    function clearAllErrors() {
+      document.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
+      document.querySelectorAll('.err-msg').forEach(el => el.style.display = 'none');
+    }
+    function scrollToFirstError() {
+      const first = document.querySelector('.field-error');
+      if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    /* ════════════════════════════════════════
        BEAM — input focus
-    ════════════════════════════ */
+    ════════════════════════════════════════ */
     function initBeams() {
       document.querySelectorAll('.beam-wrap input, .beam-wrap textarea').forEach(el => {
-        el.addEventListener('focus', function() { this.closest('.beam-wrap').classList.add('beam-on'); });
+        el.addEventListener('focus', function() {
+          this.closest('.beam-wrap').classList.add('beam-on');
+          setFieldError(this.name, false);
+        });
         el.addEventListener('blur',  function() { this.closest('.beam-wrap').classList.remove('beam-on'); });
       });
     }
@@ -871,9 +1188,9 @@
       setTimeout(() => wrap.classList.remove('beam-flash'), 1200);
     }
 
-    /* ════════════════════════════
+    /* ════════════════════════════════════════
        TEXTAREA RING
-    ════════════════════════════ */
+    ════════════════════════════════════════ */
     const MAX_CHARS = 300, CIRC = 88;
     const ringFill = document.getElementById('ringFill');
     const ringText = document.getElementById('ringText');
@@ -882,19 +1199,76 @@
       const pct = len / MAX_CHARS;
       ringFill.style.strokeDashoffset = Math.max(0, CIRC - pct * CIRC);
       ringText.textContent = len;
-      const col = pct >= 0.9 ? '#ef4444' : pct >= 0.7 ? '#f59e0b' : '#f59e0b';
+      const col = pct >= 0.9 ? '#ef4444' : '#f59e0b';
       ringFill.style.stroke = col; ringText.style.color = col;
     });
 
-    /* ════════════════════════════
+    /* ════════════════════════════════════════
+       CNIC AUTO-FORMAT  xxxxx-xxxxxxx-x
+    ════════════════════════════════════════ */
+    document.getElementById('cnicInput').addEventListener('input', function(e) {
+      let v = this.value.replace(/\D/g, '').slice(0, 13);
+      let f = v;
+      if (v.length > 5)  f = v.slice(0,5) + '-' + v.slice(5);
+      if (v.length > 12) f = v.slice(0,5) + '-' + v.slice(5,12) + '-' + v.slice(12);
+      this.value = f;
+    });
+
+    /* ════════════════════════════════════════
+       CHECKBOX LIQUID RIPPLE
+    ════════════════════════════════════════ */
+    document.getElementById('declaration').addEventListener('change', function() {
+      const rippleWrap = document.getElementById('checkRipple');
+      // Remove and re-add to retrigger animation
+      rippleWrap.style.animation = 'none';
+      rippleWrap.offsetHeight; // reflow
+      rippleWrap.style.animation = '';
+
+      // Create floating particles
+      if (this.checked) {
+        const rect = this.getBoundingClientRect();
+        for (let i = 0; i < 6; i++) {
+          const p = document.createElement('div');
+          const angle = (i / 6) * Math.PI * 2;
+          const dist = 28 + Math.random() * 18;
+          p.style.cssText = `
+            position:fixed; width:4px; height:4px; border-radius:50%;
+            background:rgba(245,158,11,${0.5 + Math.random()*0.5});
+            left:${rect.left + 10}px; top:${rect.top + 10}px;
+            pointer-events:none; z-index:99999;
+            animation: particleFly${i} 0.6s ease-out forwards;
+          `;
+          document.body.appendChild(p);
+          p.animate([
+            { transform: 'translate(0,0) scale(1)', opacity: 1 },
+            { transform: `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px) scale(0)`, opacity: 0 }
+          ], { duration: 600, easing: 'ease-out', fill: 'forwards' }).onfinish = () => p.remove();
+        }
+      }
+    });
+
+    /* ════════════════════════════════════════
+       SUBMIT BUTTON RIPPLE
+    ════════════════════════════════════════ */
+    document.getElementById('submitBtn').addEventListener('mousedown', function(e) {
+      const rect = this.getBoundingClientRect();
+      const r = document.createElement('span');
+      r.className = 'submit-ripple';
+      const size = Math.max(rect.width, rect.height);
+      r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px;`;
+      this.appendChild(r);
+      setTimeout(() => r.remove(), 700);
+    });
+
+    /* ════════════════════════════════════════
        LOCATION DATA
-    ════════════════════════════ */
-    const locationData = {"Pakistan":{"Punjab":["Lahore","Faisalabad","Rawalpindi","Multan","Gujranwala"],"Sindh":["Karachi","Hyderabad","Sukkur","Larkana"],"KPK":["Peshawar","Abbottabad","Mardan","Swat"],"Balochistan":["Quetta","Gwadar","Khuzdar"],"Islamabad":["Islamabad City"]},"United Kingdom":{"England":["London","Manchester","Birmingham","Leeds","Liverpool"],"Scotland":["Edinburgh","Glasgow","Aberdeen"],"Wales":["Cardiff","Swansea","Newport"],"Northern Ireland":["Belfast","Derry"]}};
+    ════════════════════════════════════════ */
+    const locationData = {"Pakistan":{"Punjab":["Lahore","Faisalabad","Rawalpindi","Multan","Gujranwala","Sialkot","Bahawalpur","Sargodha","Sheikhupura","Jhang"],"Sindh":["Karachi","Hyderabad","Sukkur","Larkana","Nawabshah"],"KPK":["Peshawar","Abbottabad","Mardan","Swat","Kohat"],"Balochistan":["Quetta","Gwadar","Khuzdar","Turbat"],"Islamabad":["Islamabad City"]},"United Kingdom":{"England":["London","Manchester","Birmingham","Leeds","Liverpool","Sheffield","Bristol","Newcastle"],"Scotland":["Edinburgh","Glasgow","Aberdeen","Dundee"],"Wales":["Cardiff","Swansea","Newport"],"Northern Ireland":["Belfast","Derry"]}};
     const allCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
-    /* ════════════════════════════
+    /* ════════════════════════════════════════
        SELECT POPUP
-    ════════════════════════════ */
+    ════════════════════════════════════════ */
     let curSelField = '', curSelAll = [];
     function openSel(field, title, opts) {
       curSelField = field; curSelAll = opts;
@@ -919,7 +1293,7 @@
       const c = document.getElementById('countryVal').value;
       if (!c || !locationData[c]) return;
       curSelField = 'state'; curSelAll = Object.keys(locationData[c]);
-      document.getElementById('selTitle').textContent = 'Select State';
+      document.getElementById('selTitle').textContent = 'Select State / Province';
       document.getElementById('selSearch').style.display = 'none';
       document.getElementById('selSearch').value = '';
       renderOpts(curSelAll);
@@ -946,7 +1320,7 @@
       opts.forEach(o => {
         const d = document.createElement('div');
         d.className = 'sel-opt' + (o === cur ? ' chosen' : '');
-        d.innerHTML = o + (o === cur ? '<i class="fas fa-check-circle chk"></i>' : '');
+        d.innerHTML = `<span>${o}</span>` + (o === cur ? '<i class="fas fa-check-circle chk"></i>' : '');
         d.onclick = () => pickOpt(o);
         list.appendChild(d);
       });
@@ -960,32 +1334,37 @@
       if (curSelField === 'country') {
         document.getElementById('countryVal').value = val;
         setTrig('country', val);
-        document.getElementById('stateVal').value = '';
-        document.getElementById('cityVal').value = '';
+        setFieldError('country', false);
+        document.getElementById('stateVal') && (document.getElementById('stateVal').value = '');
+        document.getElementById('cityVal') && (document.getElementById('cityVal').value = '');
         setTrig('state', ''); setTrig('city', '');
         const sDiv = document.getElementById('stateDiv');
         const cDiv = document.getElementById('cityDiv');
         if (locationData[val]) {
-          sDiv.innerHTML = '<input type="hidden" name="State" id="stateVal"><div class="trig-beam"><div class="custom-trigger" id="stateTrig" onclick="openStatePop();flashTrigBeam(this)"><span id="stateLbl">Select State</span><i class="fas fa-chevron-down trig-icon"></i></div></div>';
-          cDiv.innerHTML = '<input type="hidden" name="City" id="cityVal"><div class="trig-beam"><div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop();flashTrigBeam(this)"><span id="cityLbl">Select City</span><i class="fas fa-chevron-down trig-icon"></i></div></div>';
+          sDiv.innerHTML = '<input type="hidden" name="State" id="stateVal"><div class="trig-beam" id="wrap-state"><div class="custom-trigger" id="stateTrig" onclick="openStatePop();flashTrigBeam(this)"><span id="stateLbl">Select State</span><i class="fas fa-chevron-down trig-icon"></i></div></div><div class="err-msg" id="err-state"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a state</div>';
+          cDiv.innerHTML = '<input type="hidden" name="City" id="cityVal"><div class="trig-beam" id="wrap-city"><div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop();flashTrigBeam(this)"><span id="cityLbl">Select City</span><i class="fas fa-chevron-down trig-icon"></i></div></div><div class="err-msg" id="err-city"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>Please select a city</div>';
         } else {
-          sDiv.innerHTML = '<div class="beam-wrap"><input type="text" name="State" id="stateVal" class="form-control" placeholder="State / Province" required></div>';
-          cDiv.innerHTML = '<div class="beam-wrap"><input type="text" name="City" id="cityVal" class="form-control" placeholder="City" required></div>';
+          sDiv.innerHTML = '<div class="beam-wrap" id="wrap-state"><input type="text" name="State" id="stateVal" class="form-control" placeholder="State / Province" required></div><div class="err-msg" id="err-state"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>State is required</div>';
+          cDiv.innerHTML = '<div class="beam-wrap" id="wrap-city"><input type="text" name="City" id="cityVal" class="form-control" placeholder="City" required></div><div class="err-msg" id="err-city"><i class="fas fa-circle-exclamation" style="margin-right:4px;font-size:0.65rem;"></i>City is required</div>';
           initBeams();
         }
       } else if (curSelField === 'state') {
         document.getElementById('stateVal').value = val; setTrig('state', val);
+        setFieldError('state', false);
         document.getElementById('cityVal').value = ''; setTrig('city', '');
         const ct = document.getElementById('cityTrig');
         if (ct) ct.classList.remove('dimmed');
       } else if (curSelField === 'city') {
         document.getElementById('cityVal').value = val; setTrig('city', val);
+        setFieldError('city', false);
       } else if (curSelField === 'investor') {
         document.getElementById('investorVal').value = val; setTrig('investor', val);
+        setFieldError('investor', false);
         document.getElementById('amountDiv').style.display = val === 'Yes' ? 'block' : 'none';
         if (val === 'Yes') setTimeout(initBeams, 60);
       } else {
         document.getElementById(curSelField + 'Val').value = val; setTrig(curSelField, val);
+        setFieldError(curSelField, false);
       }
       closePop('sel');
     }
@@ -1005,9 +1384,9 @@
       if (type === 'cal') showDayView();
     }
 
-    /* ════════════════════════════
+    /* ════════════════════════════════════════
        CALENDAR
-    ════════════════════════════ */
+    ════════════════════════════════════════ */
     const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     let calField = '', calView = new Date(), calPicked = null;
@@ -1035,8 +1414,7 @@
       const dv = document.getElementById('calDayView');
       const arr = document.getElementById('calTitleArrow');
       if (pickerOpen) {
-        pickerYear = calView.getFullYear();
-        pv.classList.add('show'); dv.style.display = 'none';
+        pickerYear = calView.getFullYear(); pv.classList.add('show'); dv.style.display = 'none';
         if (arr) arr.style.transform = 'rotate(180deg)';
         drawMonthPicker();
       } else { showDayView(); drawCal(); }
@@ -1085,93 +1463,271 @@
       lbl.textContent = `${MONTHS[calPicked.getMonth()]} ${d}, ${y}`;
       lbl.style.color = '#fff';
       document.getElementById(calField+'Trig').classList.add('filled');
+      setFieldError(calField, false);
       closePop('cal');
     }
 
-    /* ════════════════════════════
-       OTP + SUBMIT
-    ════════════════════════════ */
+    /* ════════════════════════════════════════
+       OTP DEDUPLICATION — track sent emails
+    ════════════════════════════════════════ */
+    const otpSentEmails = new Set(
+      JSON.parse(sessionStorage.getItem('_levzaOtpSent') || '[]')
+    );
+    function markOtpSent(email) {
+      otpSentEmails.add(email.toLowerCase().trim());
+      sessionStorage.setItem('_levzaOtpSent', JSON.stringify([...otpSentEmails]));
+    }
+    function wasOtpSent(email) {
+      return otpSentEmails.has(email.toLowerCase().trim());
+    }
+
+    /* ════════════════════════════════════════
+       DUPLICATE CHECK (email / CNIC / contact)
+       NOTE: Your Google Apps Script must handle
+       action="checkExists" and return:
+       { result:"exists", field:"Email"/"CNIC"/"Contact" }
+       or { result:"ok" }
+    ════════════════════════════════════════ */
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec';
+
+    async function checkDuplicate(email, cnic, contact) {
+      try {
+        const fd = new FormData();
+        fd.append('action', 'checkExists');
+        fd.append('Email', email);
+        fd.append('CNIC', cnic);
+        fd.append('Contact', contact);
+        const res = await fetch(scriptURL, { method: 'POST', body: fd });
+        const data = await res.json();
+        return data; // { result: 'ok' } or { result: 'exists', field: 'Email' }
+      } catch {
+        return { result: 'ok' }; // fail-open: if check fails, allow submission
+      }
+    }
+
+    /* ════════════════════════════════════════
+       SEND OTP
+    ════════════════════════════════════════ */
     let isEmailVerified = false;
 
-    document.getElementById('sendCodeBtn').onclick = function() {
-      const email = document.getElementById('email'), btn = this;
-      if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
-      let fd = new FormData(); fd.append("action","sendOTP"); fd.append("Email",email.value);
-      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{
-        if(data.result==="success"){
-          document.getElementById('modalEmailText').innerText=email.value;
-          document.getElementById('otpModalOverlay').classList.add('active');
-          btn.textContent='Sent'; btn.disabled=false;
-        } else { alert("Error: "+data.error); btn.textContent='Send OTP'; btn.disabled=false; }
-      }).catch(()=>{ alert("Script Error!"); btn.textContent='Send OTP'; btn.disabled=false; });
-    };
+    document.getElementById('sendCodeBtn').addEventListener('click', async function() {
+      const emailEl = document.getElementById('email');
+      const btn = this;
+      const email = emailEl.value.trim();
 
-    document.getElementById('closeModalBtn').onclick = () => {
-      document.getElementById('otpModalOverlay').classList.remove('active');
-      document.getElementById('sendCodeBtn').textContent='Send OTP';
-    };
-
-    document.getElementById('verifyCodeBtn').onclick = function() {
-      const code = document.getElementById('verificationCode').value;
-      const msg = document.getElementById('otpMessage');
-      if (code.length < 6) { msg.innerText = "Enter 6 digits"; return; }
-      this.disabled = true;
-      let fd = new FormData();
-      fd.append("action","verifyOTP");
-      fd.append("Email",document.getElementById('email').value);
-      fd.append("otp",code);
-      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{
-        if(data.result==="success"){
-          isEmailVerified=true;
-          document.getElementById('otpModalOverlay').classList.remove('active');
-          const btn=document.getElementById('sendCodeBtn');
-          btn.innerHTML='<i class="fas fa-check-circle"></i> Verified';
-          btn.className="btn btn-success-custom w-100";
-          document.getElementById('email').readOnly=true;
-        } else { msg.innerText="Invalid OTP!"; this.disabled=false; }
-      });
-    };
-
-    document.getElementById('form').onsubmit = function(e) {
-      e.preventDefault();
-      if (!isEmailVerified) { alert("Please verify your email first."); return; }
-      const checks = [['FirstName','First Name'],['LastName','Last Name'],['CNIC','CNIC'],['Contact','Contact Number'],['Postal','Postal Code'],['Address','Street Address'],['GreatFit','Why you\'re a great fit']];
-      for (const [n,label] of checks) {
-        const el = this[n];
-        if (!el || !el.value.trim()) { alert(`Please fill in: ${label}`); if(el) el.focus(); return; }
+      if (!email || !emailEl.checkValidity()) {
+        setFieldError('Email', true);
+        showToast('Please enter a valid email address.', 'error');
+        emailEl.focus();
+        return;
       }
-      if (!document.getElementById('dobVal').value) { alert("Please select Date of Birth."); return; }
-      if (!document.getElementById('genderVal').value) { alert("Please select Gender."); return; }
-      if (!document.getElementById('countryVal').value) { alert("Please select Country."); return; }
-      const stEl = document.getElementById('stateVal');
-      if (!stEl || !stEl.value.trim()) { alert("Please select/enter State."); return; }
-      const ctEl = document.getElementById('cityVal');
-      if (!ctEl || !ctEl.value.trim()) { alert("Please select/enter City."); return; }
-      if (!document.getElementById('positionVal').value) { alert("Please select Position."); return; }
-      if (!document.getElementById('investorVal').value) { alert("Please select Investor status."); return; }
-      if (!document.getElementById('joiningVal').value) { alert("Please select Joining Date."); return; }
-      if (!document.getElementById('declaration').checked) { alert("Please confirm the declaration."); return; }
 
-      const sBtn = document.getElementById('submitBtn');
-      sBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Submitting...';
-      sBtn.disabled = true;
-      let fd = new FormData(this); fd.append("action","submitForm");
-      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{
-        if(data.result==="success"){
-          document.getElementById('thankYouModalOverlay').classList.add('active');
-        } else {
-          alert("Submission Error!");
-          sBtn.innerHTML='<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Application';
-          sBtn.disabled=false;
-        }
-      }).catch(()=>{
-        alert("Network Error!");
-        sBtn.innerHTML='<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Application';
-        sBtn.disabled=false;
+      // OTP deduplication check
+      if (wasOtpSent(email)) {
+        showToast('OTP was already sent to this email. Please check your inbox or spam folder.', 'warn');
+        document.getElementById('modalEmailText').innerText = email;
+        document.getElementById('otpModalOverlay').classList.add('active');
+        return;
+      }
+
+      // Check if email already exists in sheet
+      btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+      btn.disabled = true;
+
+      const dupCheck = await checkDuplicate(email, '', '');
+      if (dupCheck.result === 'exists' && dupCheck.field === 'Email') {
+        showToast('This email address is already registered. Please use a different email.', 'error');
+        setFieldError('Email', true);
+        btn.textContent = 'Send OTP'; btn.disabled = false;
+        return;
+      }
+
+      // Send OTP
+      const fd = new FormData();
+      fd.append('action', 'sendOTP');
+      fd.append('Email', email);
+
+      fetch(scriptURL, { method: 'POST', body: fd })
+        .then(r => r.json())
+        .then(data => {
+          if (data.result === 'success') {
+            markOtpSent(email);
+            document.getElementById('modalEmailText').innerText = email;
+            document.getElementById('otpModalOverlay').classList.add('active');
+            document.getElementById('verificationCode').value = '';
+            document.getElementById('otpMessage').textContent = '';
+            btn.innerHTML = '<i class="fas fa-check" style="margin-right:4px;"></i>Sent';
+            btn.disabled = false;
+            showToast('OTP sent! Check your inbox.', 'success');
+          } else {
+            showToast('Failed to send OTP. Please try again.', 'error');
+            btn.textContent = 'Send OTP'; btn.disabled = false;
+          }
+        })
+        .catch(() => {
+          showToast('Network error. Please check your connection.', 'error');
+          btn.textContent = 'Send OTP'; btn.disabled = false;
+        });
+    });
+
+    document.getElementById('closeModalBtn').addEventListener('click', () => {
+      document.getElementById('otpModalOverlay').classList.remove('active');
+    });
+
+    document.getElementById('verifyCodeBtn').addEventListener('click', function() {
+      const code = document.getElementById('verificationCode').value.trim();
+      const msg = document.getElementById('otpMessage');
+      if (code.length < 6) { msg.textContent = 'Please enter all 6 digits.'; return; }
+      this.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+      this.disabled = true;
+      const fd = new FormData();
+      fd.append('action', 'verifyOTP');
+      fd.append('Email', document.getElementById('email').value);
+      fd.append('otp', code);
+      fetch(scriptURL, { method: 'POST', body: fd })
+        .then(r => r.json())
+        .then(data => {
+          if (data.result === 'success') {
+            isEmailVerified = true;
+            document.getElementById('otpModalOverlay').classList.remove('active');
+            setFieldError('Email', false);
+
+            // Update send button to verified state
+            const btn = document.getElementById('sendCodeBtn');
+            btn.className = 'btn btn-success-custom w-100';
+            btn.innerHTML = '<i class="fas fa-shield-check"></i> Verified';
+
+            // Style the email field as verified
+            document.getElementById('email').classList.add('verified-field');
+            document.getElementById('email').readOnly = true;
+
+            showToast('Email verified successfully!', 'success');
+          } else {
+            msg.textContent = 'Invalid OTP. Please try again.';
+            msg.style.color = '#f87171';
+            this.innerHTML = '<i class="fas fa-shield-check" style="margin-right:8px;"></i>Verify Now';
+            this.disabled = false;
+          }
+        })
+        .catch(() => {
+          msg.textContent = 'Verification failed. Please retry.';
+          this.innerHTML = '<i class="fas fa-shield-check" style="margin-right:8px;"></i>Verify Now';
+          this.disabled = false;
+        });
+    });
+
+    // OTP input — numeric only, auto-format
+    document.getElementById('verificationCode').addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 6);
+      document.getElementById('otpMessage').textContent = '';
+    });
+
+    /* ════════════════════════════════════════
+       FORM SUBMIT
+    ════════════════════════════════════════ */
+    document.getElementById('form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      clearAllErrors();
+
+      if (!isEmailVerified) {
+        showToast('Please verify your email address before submitting.', 'warn');
+        document.getElementById('sendCodeBtn').classList.add('shake');
+        setTimeout(() => document.getElementById('sendCodeBtn').classList.remove('shake'), 500);
+        document.getElementById('email').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Validate all fields
+      let hasError = false;
+      const textFields = [
+        ['FirstName', 'First Name'],
+        ['LastName', 'Last Name'],
+        ['CNIC', 'CNIC'],
+        ['Contact', 'Contact Number'],
+        ['Postal', 'Postal Code'],
+        ['Address', 'Street Address'],
+        ['GreatFit', 'Why you\'re a great fit']
+      ];
+
+      textFields.forEach(([name]) => {
+        const el = this[name];
+        if (!el || !el.value.trim()) { setFieldError(name, true); hasError = true; }
       });
-    };
+
+      // Validate CNIC format (basic)
+      const cnicVal = (this['CNIC'].value || '').replace(/-/g,'');
+      if (cnicVal.length !== 13) { setFieldError('CNIC', true); hasError = true; }
+
+      // Dropdown fields
+      if (!document.getElementById('dobVal').value)      { setFieldError('dob', true); hasError = true; }
+      if (!document.getElementById('genderVal').value)   { setFieldError('gender', true); hasError = true; }
+      if (!document.getElementById('countryVal').value)  { setFieldError('country', true); hasError = true; }
+      const stEl = document.getElementById('stateVal');
+      if (!stEl || !stEl.value.trim()) { setFieldError('state', true); hasError = true; }
+      const ctEl = document.getElementById('cityVal');
+      if (!ctEl || !ctEl.value.trim()) { setFieldError('city', true); hasError = true; }
+      if (!document.getElementById('positionVal').value) { setFieldError('position', true); hasError = true; }
+      if (!document.getElementById('investorVal').value) { setFieldError('investor', true); hasError = true; }
+      if (!document.getElementById('joiningVal').value)  { setFieldError('joining', true); hasError = true; }
+
+      if (!document.getElementById('declaration').checked) {
+        showToast('Please confirm the declaration to proceed.', 'warn');
+        document.querySelector('.liquid-footer').classList.add('shake');
+        setTimeout(() => document.querySelector('.liquid-footer').classList.remove('shake'), 500);
+        hasError = true;
+      }
+
+      if (hasError) {
+        scrollToFirstError();
+        showToast('Please fill in all required fields.', 'error');
+        return;
+      }
+
+      // Duplicate check (CNIC + Contact) before submission
+      const sBtn = document.getElementById('submitBtn');
+      sBtn.innerHTML = '<div class="loading-dots" style="margin-right:10px;"><span></span><span></span><span></span></div>Checking...';
+      sBtn.disabled = true;
+
+      const email = document.getElementById('email').value;
+      const cnic  = document.getElementById('cnicInput').value;
+      const contact = this['Contact'].value;
+
+      const dupCheck = await checkDuplicate(email, cnic, contact);
+      if (dupCheck.result === 'exists') {
+        const fieldLabel = dupCheck.field || 'record';
+        showToast(`This ${fieldLabel} is already registered. Duplicate applications are not allowed.`, 'error');
+        if (dupCheck.field === 'CNIC')    setFieldError('CNIC', true);
+        if (dupCheck.field === 'Contact') setFieldError('Contact', true);
+        if (dupCheck.field === 'Email')   setFieldError('Email', true);
+        scrollToFirstError();
+        sBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application';
+        sBtn.disabled = false;
+        return;
+      }
+
+      // Submit
+      sBtn.innerHTML = '<div class="loading-dots" style="margin-right:10px;"><span></span><span></span><span></span></div>Submitting...';
+
+      const fd = new FormData(this);
+      fd.append('action', 'submitForm');
+
+      fetch(scriptURL, { method: 'POST', body: fd })
+        .then(r => r.json())
+        .then(data => {
+          if (data.result === 'success') {
+            document.getElementById('thankYouModalOverlay').classList.add('active');
+          } else {
+            showToast('Submission failed. Please try again.', 'error');
+            sBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application';
+            sBtn.disabled = false;
+          }
+        })
+        .catch(() => {
+          showToast('Network error. Please check your connection and retry.', 'error');
+          sBtn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:10px;"></i>Submit Application';
+          sBtn.disabled = false;
+        });
+    });
   </script>
 </body>
 </html>
