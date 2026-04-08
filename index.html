@@ -6,11 +6,19 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
+    /* ══════════════════════════════════════════
+       BASE
+    ══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; }
     body { font-family: 'Segoe UI', sans-serif; color: #fff; min-height: 100vh; position: relative; overflow-x: hidden; background: #0b1f3a; }
     .bg-layer { position: fixed; inset: 0; background-image: linear-gradient(135deg, rgba(11,31,58,0.7), rgba(20,47,85,0.7)), url('https://i.postimg.cc/4yfdVF95/Chat-GPT-Image-Apr-5-2026-04-46-20-PM.png'); background-size: cover; background-position: center; z-index: -1; }
     .logo-container { position: absolute; top: 25px; left: 30px; }
     .logo { width: 250px; }
     .page-container { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 100vh; padding: 100px 20px 40px 20px; }
+
+    /* ══════════════════════════════════════════
+       FORM HEADER + CARD
+    ══════════════════════════════════════════ */
     .form-header-text { text-align: center; margin-bottom: 25px; width: 100%; }
     .form-title { font-weight: 600; color: #ffffff; font-size: 2.2rem; }
     .form-title span { color: #ff9900; }
@@ -18,22 +26,237 @@
     .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 18px; padding: 2.5rem; border: 1px solid rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.3); border-left: 1px solid rgba(255,255,255,0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.4); max-width: 900px; width: 100%; }
     .section-title { font-weight: 600; margin-top: 1.5rem; margin-bottom: 1.5rem; color: #fff; display: flex; align-items: center; gap: 10px; }
     .section-title i { color: #ff9900; }
-    .form-control { background-color: rgba(255,255,255,0.08) !important; border: 1px solid rgba(255,255,255,0.2) !important; color: #ffffff !important; border-radius: 10px; height: 48px; padding-left: 15px; -webkit-text-fill-color: #ffffff !important; }
-    input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active { -webkit-box-shadow: 0 0 0 1000px #132a4a inset !important; -webkit-text-fill-color: white !important; transition: background-color 5000s ease-in-out 0s; }
-    .form-control:focus, .form-control:not(:placeholder-shown) { background-color: rgba(255,255,255,0.12) !important; border-color: rgba(255,153,0,0.6) !important; box-shadow: 0 0 15px rgba(255,153,0,0.2) !important; color: #fff !important; }
+
+    /* ══════════════════════════════════════════
+       INPUTS — anti-autofill white glitch fix
+    ══════════════════════════════════════════ */
+    .form-control {
+      background-color: rgba(255,255,255,0.08) !important;
+      border: 1px solid rgba(255,255,255,0.2) !important;
+      color: #ffffff !important;
+      border-radius: 10px;
+      height: 48px;
+      padding-left: 15px;
+      -webkit-text-fill-color: #ffffff !important;
+      transition: border-color 0.3s, background-color 0.3s;
+    }
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 1000px #132a4a inset !important;
+      -webkit-text-fill-color: white !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+    .form-control:focus,
+    .form-control:not(:placeholder-shown) {
+      background-color: rgba(255,255,255,0.12) !important;
+      border-color: rgba(255,153,0,0.5) !important;
+      box-shadow: none !important;
+      color: #fff !important;
+      outline: none !important;
+    }
     .form-control::placeholder { color: #bbb !important; -webkit-text-fill-color: #bbb !important; }
     .form-control:disabled, .form-control[readonly] { background-color: rgba(255,255,255,0.05) !important; color: #fff !important; opacity: 1 !important; -webkit-text-fill-color: #fff !important; cursor: pointer !important; }
-    textarea.form-control { height: auto !important; }
+    textarea.form-control { height: auto !important; resize: none; }
 
+    /* ══════════════════════════════════════════
+       1. FADE-IN-UP SECTION ANIMATIONS
+    ══════════════════════════════════════════ */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(38px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .form-header-text {
+      opacity: 0;
+      animation: fadeInUp 0.7s ease forwards;
+      animation-delay: 0.1s;
+    }
+    .card {
+      opacity: 0;
+      animation: fadeInUp 0.7s ease forwards;
+      animation-delay: 0.3s;
+    }
+    .section-block {
+      opacity: 0;
+      animation: fadeInUp 0.65s ease forwards;
+    }
+    .section-block:nth-child(1) { animation-delay: 0.55s; }
+    .section-block:nth-child(2) { animation-delay: 0.80s; }
+    .section-block:nth-child(3) { animation-delay: 1.05s; }
+    .form-footer-block {
+      opacity: 0;
+      animation: fadeInUp 0.65s ease forwards;
+      animation-delay: 1.3s;
+    }
+
+    /* ══════════════════════════════════════════
+       2. LIQUID BORDER BEAM (input focus)
+    ══════════════════════════════════════════ */
+    .beam-wrap {
+      position: relative;
+      border-radius: 12px;
+    }
+    /* The spinning conic-gradient ring */
+    .beam-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 12px;
+      background: conic-gradient(
+        from var(--beam-angle, 0deg),
+        transparent 0deg,
+        #ff9900 50deg,
+        #ffcc55 80deg,
+        #ff6600 110deg,
+        transparent 160deg
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* Mask so only border shows */
+    .beam-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border-radius: 11px;
+      background: #0d2040;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .beam-wrap > * { position: relative; z-index: 2; }
+    .beam-wrap.beam-on::before {
+      opacity: 1;
+      animation: spinBeam 1.6s linear infinite;
+    }
+    @property --beam-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+    @keyframes spinBeam {
+      from { --beam-angle: 0deg; }
+      to   { --beam-angle: 360deg; }
+    }
+    /* Fallback for browsers that don't support @property */
+    @supports not (background: conic-gradient(from 0deg, red, blue)) {
+      .beam-wrap::before { display: none; }
+    }
+
+    /* ══════════════════════════════════════════
+       CUSTOM TRIGGER (dropdowns / calendar)
+    ══════════════════════════════════════════ */
     .custom-trigger { background-color: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #bbb; border-radius: 10px; height: 48px; padding: 0 15px; width: 100%; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.3s; font-size: 1rem; font-family: 'Segoe UI', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
-    .custom-trigger.filled { color: #fff; background-color: rgba(255,255,255,0.12); border-color: rgba(255,153,0,0.6); box-shadow: 0 0 15px rgba(255,153,0,0.2); }
+    .custom-trigger.filled { color: #fff; background-color: rgba(255,255,255,0.12); border-color: rgba(255,153,0,0.6); box-shadow: 0 0 14px rgba(255,153,0,0.2); }
     .custom-trigger .trig-icon { color: #ff9900; font-size: 0.85rem; flex-shrink: 0; }
     .custom-trigger.dimmed { opacity: 0.45; pointer-events: none; }
+    /* Beam wrapper for triggers */
+    .trig-beam { position: relative; border-radius: 12px; }
+    .trig-beam::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 12px;
+      background: conic-gradient(from var(--beam-angle, 0deg), transparent 0deg, #ff9900 50deg, #ffcc55 80deg, #ff6600 110deg, transparent 160deg);
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .trig-beam::after { content: ''; position: absolute; inset: 1px; border-radius: 11px; background: #0d2040; pointer-events: none; z-index: 1; }
+    .trig-beam > * { position: relative; z-index: 2; }
+    .trig-beam.beam-flash::before { opacity: 1; animation: spinBeam 1.6s linear infinite; }
 
+    /* ══════════════════════════════════════════
+       3. SUBMIT BUTTON SHIMMER (Liquid Fill)
+    ══════════════════════════════════════════ */
+    .btn-submit {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ff9900, #ff7a00);
+      border: none;
+      border-radius: 12px;
+      height: 52px;
+      font-weight: 600;
+      color: #fff;
+      transition: box-shadow 0.3s, transform 0.3s;
+      font-size: 1.1rem;
+      margin-top: 2rem;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn-submit::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.38) 50%, transparent 100%);
+      transform: skewX(-20deg);
+      transition: none;
+      pointer-events: none;
+    }
+    .btn-submit:hover {
+      box-shadow: 0 6px 20px rgba(255,153,0,0.55);
+      transform: translateY(-2px);
+    }
+    .btn-submit:hover::after {
+      left: 160%;
+      transition: left 0.55s ease;
+    }
+    .btn-submit:disabled { cursor: not-allowed; opacity: 0.75; transform: none; }
+
+    /* Other buttons */
+    .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s; cursor: pointer; }
+    .btn-code:hover { background-color: rgba(255,153,0,0.2); border-color: #ff9900; }
+    .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
+    .form-check-label { font-size: 0.95rem; color: #ffffff !important; cursor: pointer; }
+
+    /* ══════════════════════════════════════════
+       5. TEXTAREA PROGRESS RING
+    ══════════════════════════════════════════ */
+    .textarea-counter-wrap { position: relative; }
+    .progress-ring-wrap {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      pointer-events: none;
+    }
+    .progress-ring-wrap svg { transform: rotate(-90deg); }
+    .ring-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 3; }
+    .ring-fill {
+      fill: none;
+      stroke: #ff9900;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 88;
+      stroke-dashoffset: 88;
+      transition: stroke-dashoffset 0.3s ease, stroke 0.3s;
+    }
+    .ring-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: 700;
+      color: #ff9900;
+      letter-spacing: -0.3px;
+    }
+    textarea[name="GreatFit"] { padding-right: 52px; }
+
+    /* ══════════════════════════════════════════
+       SELECT / CALENDAR POPUP
+    ══════════════════════════════════════════ */
     .pop-overlay { position: fixed; inset: 0; background: rgba(4,15,33,0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: flex-end; justify-content: center; z-index: 99999; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
     .pop-overlay.on { opacity: 1; visibility: visible; }
     @media(min-width: 600px) { .pop-overlay { align-items: center; } }
-
     .sel-card { background: rgba(8,22,48,0.98); border: 1px solid rgba(255,153,0,0.35); border-radius: 26px 26px 0 0; width: 100%; max-width: 580px; max-height: 78vh; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94); overflow: hidden; }
     .pop-overlay.on .sel-card { transform: translateY(0); }
     @media(min-width: 600px) { .sel-card { border-radius: 22px; transform: scale(0.92) translateY(0); max-height: 72vh; } .pop-overlay.on .sel-card { transform: scale(1); } }
@@ -42,7 +265,7 @@
     .sel-title { font-size: 1.05rem; font-weight: 600; color: #fff; text-align: center; margin-bottom: 12px; }
     .sel-search { background: rgba(255,255,255,0.1) !important; border: 1px solid rgba(255,255,255,0.2) !important; border-radius: 10px; color: #fff !important; height: 40px; padding: 0 14px; width: 100%; font-size: 0.95rem; outline: none; -webkit-text-fill-color: #fff !important; }
     .sel-search::placeholder { color: #999; }
-    .sel-list { overflow-y: auto; padding: 8px; flex: 1; overscroll-behavior: contain; }
+    .sel-list { overflow-y: auto; padding: 8px; flex: 1; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
     .sel-list::-webkit-scrollbar { width: 3px; }
     .sel-list::-webkit-scrollbar-thumb { background: rgba(255,153,0,0.4); border-radius: 3px; }
     .sel-opt { padding: 12px 14px; border-radius: 10px; color: #fff; cursor: pointer; transition: background 0.18s; font-size: 0.95rem; display: flex; align-items: center; justify-content: space-between; }
@@ -50,13 +273,10 @@
     .sel-opt.chosen { background: rgba(255,153,0,0.2); color: #ffb84d; font-weight: 600; }
     .sel-opt .chk { color: #ff9900; font-size: 0.9rem; }
 
-    /* ── Calendar Card ── */
+    /* ── Calendar ── */
     .cal-card { background: rgba(8,22,48,0.98); border: 1px solid rgba(255,153,0,0.35); border-radius: 26px 26px 0 0; width: 100%; max-width: 420px; transform: translateY(100%); transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94); overflow: hidden; }
     .pop-overlay.on .cal-card { transform: translateY(0); }
     @media(min-width: 600px) { .cal-card { border-radius: 22px; transform: scale(0.92); } .pop-overlay.on .cal-card { transform: scale(1); } }
-
-    /* Day view */
-    .cal-day-view { }
     .cal-head { padding: 0 18px 8px; }
     .cal-nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 12px; }
     .cal-nav-btn { background: rgba(255,153,0,0.15); border: 1px solid rgba(255,153,0,0.3); color: #ff9900; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; flex-shrink: 0; }
@@ -71,11 +291,9 @@
     .cal-d:active { background: rgba(255,153,0,0.25); }
     .cal-d.sel { background: #ff9900 !important; color: #fff; font-weight: 700; }
     .cal-d.tod { border: 1px solid rgba(255,153,0,0.55); }
-    .cal-d.other { color: rgba(255,255,255,0.22); cursor: default; }
+    .cal-d.other { color: rgba(255,255,255,0.22); cursor: default; pointer-events: none; }
     .cal-confirm { background: linear-gradient(135deg,#ff9900,#ff7a00); border: none; border-radius: 12px; height: 48px; font-weight: 600; color: #fff; width: calc(100% - 30px); margin: 8px 15px 18px; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
     .cal-confirm:active { transform: scale(0.98); }
-
-    /* Month-Year Picker View */
     .cal-picker-view { display: none; padding: 10px 15px 18px; }
     .cal-picker-view.show { display: block; }
     .cal-year-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 0 4px; }
@@ -88,19 +306,52 @@
     .cal-m-opt.cur-m { background: rgba(255,153,0,0.25); border-color: rgba(255,153,0,0.5); color: #ffb84d; font-weight: 700; }
     .cal-m-opt.now-m { border-color: rgba(255,255,255,0.2); }
 
-    .btn-submit { background: linear-gradient(135deg,#ff9900,#ff7a00); border: none; border-radius: 12px; height: 52px; font-weight: 600; color: #fff; transition: all 0.3s; font-size: 1.1rem; margin-top: 2rem; }
-    .btn-submit:hover { box-shadow: 0 5px 15px rgba(255,153,0,0.5); transform: translateY(-2px); }
-    .btn-code { height: 48px; border-radius: 10px; background-color: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s; }
-    .btn-code:hover { background-color: rgba(255,153,0,0.2); border-color: #ff9900; }
-    .btn-success-custom { background-color: #198754 !important; color: white !important; border: none !important; pointer-events: none; }
-    .form-check-label { font-size: 0.95rem; color: #ffffff !important; cursor: pointer; }
+    /* ══════════════════════════════════════════
+       MODALS
+    ══════════════════════════════════════════ */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4,15,33,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.4s; }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 2.5rem; width: 90%; max-width: 420px; text-align: center; transform: translateY(30px); transition: all 0.4s; }
     .modal-overlay.active .modal-card { transform: translateY(0); }
     .otp-input-large { background: rgba(0,0,0,0.3) !important; font-size: 1.8rem !important; letter-spacing: 12px; text-align: center; border: 2px solid rgba(255,153,0,0.5) !important; color: #fff !important; height: 65px; border-radius: 12px; font-weight: bold; }
-    .success-icon { font-size: 4rem; color: #198754; margin-bottom: 1rem; animation: bounce 1s ease; }
-    @keyframes bounce { 0%,100%{transform:scale(1);}50%{transform:scale(1.2);} }
+
+    /* ══════════════════════════════════════════
+       4. ANIMATED SVG CHECKMARK
+    ══════════════════════════════════════════ */
+    .check-circle-wrap {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 1rem;
+    }
+    .check-circle-wrap svg { width: 100%; height: 100%; }
+    .check-circle {
+      fill: none;
+      stroke: #22c55e;
+      stroke-width: 3;
+      stroke-dasharray: 283;
+      stroke-dashoffset: 283;
+    }
+    .check-tick {
+      fill: none;
+      stroke: #22c55e;
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 80;
+      stroke-dashoffset: 80;
+    }
+    .modal-overlay.active .check-circle {
+      animation: drawCircle 0.55s ease forwards 0.1s;
+    }
+    .modal-overlay.active .check-tick {
+      animation: drawTick 0.45s ease forwards 0.6s;
+    }
+    @keyframes drawCircle {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes drawTick {
+      to { stroke-dashoffset: 0; }
+    }
   </style>
 </head>
 <body>
@@ -118,96 +369,175 @@
 
     <div class="card">
       <form id="form" novalidate>
-        <h5 class="section-title" style="margin-top:0;"><i class="fas fa-user"></i>Personal Information</h5>
-        <div class="row g-3 align-items-center">
-          <div class="col-md-6"><input type="text" name="FirstName" class="form-control" placeholder="First Name" required></div>
-          <div class="col-md-6"><input type="text" name="LastName" class="form-control" placeholder="Last Name" required></div>
-          <div class="col-md-4"><input type="text" name="CNIC" class="form-control" placeholder="CNIC Number (xxxxx-xxxxxxx-x)" required></div>
-          <div class="col-md-4">
-            <input type="hidden" name="DOB" id="dobVal">
-            <div class="custom-trigger" id="dobTrig" onclick="openCal('dob')">
-              <span id="dobLbl" style="color:#bbb">Date of Birth</span>
-              <i class="fas fa-calendar-alt trig-icon"></i>
+
+        <!-- ── SECTION 1: Personal Information ── -->
+        <div class="section-block">
+          <h5 class="section-title" style="margin-top:0;"><i class="fas fa-user"></i>Personal Information</h5>
+          <div class="row g-3 align-items-center">
+            <div class="col-md-6">
+              <div class="beam-wrap">
+                <input type="text" name="FirstName" class="form-control" placeholder="First Name" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="beam-wrap">
+                <input type="text" name="LastName" class="form-control" placeholder="Last Name" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="beam-wrap">
+                <input type="text" name="CNIC" class="form-control" placeholder="CNIC Number (xxxxx-xxxxxxx-x)" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="hidden" name="DOB" id="dobVal">
+              <div class="trig-beam">
+                <div class="custom-trigger" id="dobTrig" onclick="openCal('dob')">
+                  <span id="dobLbl" style="color:#bbb">Date of Birth</span>
+                  <i class="fas fa-calendar-alt trig-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <input type="hidden" name="Gender" id="genderVal">
+              <div class="trig-beam">
+                <div class="custom-trigger" id="genderTrig" onclick="openSel('gender','Select Gender',['Male','Female','Other'])">
+                  <span id="genderLbl" style="color:#bbb">Select Gender</span>
+                  <i class="fas fa-chevron-down trig-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="beam-wrap">
+                <input type="tel" name="Contact" class="form-control" placeholder="Contact Number" required>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="beam-wrap">
+                <input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button>
             </div>
           </div>
-          <div class="col-md-4">
-            <input type="hidden" name="Gender" id="genderVal">
-            <div class="custom-trigger" id="genderTrig" onclick="openSel('gender','Select Gender',['Male','Female','Other'])">
-              <span id="genderLbl" style="color:#bbb">Select Gender</span>
-              <i class="fas fa-chevron-down trig-icon"></i>
-            </div>
-          </div>
-          <div class="col-md-5"><input type="tel" name="Contact" class="form-control" placeholder="Contact Number" required></div>
-          <div class="col-md-5"><input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" required></div>
-          <div class="col-md-2"><button type="button" id="sendCodeBtn" class="btn btn-code w-100">Send OTP</button></div>
         </div>
 
-        <h5 class="section-title"><i class="fas fa-map-marker-alt"></i>Address</h5>
-        <div class="row g-3">
-          <div class="col-md-12">
-            <input type="hidden" name="Country" id="countryVal">
-            <div class="custom-trigger" id="countryTrig" onclick="openCountryPop()">
-              <span id="countryLbl" style="color:#bbb">Select Country</span>
-              <i class="fas fa-chevron-down trig-icon"></i>
+        <!-- ── SECTION 2: Address ── -->
+        <div class="section-block">
+          <h5 class="section-title"><i class="fas fa-map-marker-alt"></i>Address</h5>
+          <div class="row g-3">
+            <div class="col-md-12">
+              <input type="hidden" name="Country" id="countryVal">
+              <div class="trig-beam">
+                <div class="custom-trigger" id="countryTrig" onclick="openCountryPop()">
+                  <span id="countryLbl" style="color:#bbb">Select Country</span>
+                  <i class="fas fa-chevron-down trig-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" id="stateDiv">
+              <input type="hidden" name="State" id="stateVal">
+              <div class="trig-beam">
+                <div class="custom-trigger dimmed" id="stateTrig" onclick="openStatePop()">
+                  <span id="stateLbl" style="color:#bbb">Select State</span>
+                  <i class="fas fa-chevron-down trig-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" id="cityDiv">
+              <input type="hidden" name="City" id="cityVal">
+              <div class="trig-beam">
+                <div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop()">
+                  <span id="cityLbl" style="color:#bbb">Select City</span>
+                  <i class="fas fa-chevron-down trig-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="beam-wrap">
+                <input type="text" name="Postal" class="form-control" placeholder="Postal Code" required>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="beam-wrap">
+                <input type="text" name="Address" class="form-control" placeholder="Street Address" required>
+              </div>
             </div>
           </div>
-          <div class="col-md-4" id="stateDiv">
-            <input type="hidden" name="State" id="stateVal">
-            <div class="custom-trigger dimmed" id="stateTrig" onclick="openStatePop()">
-              <span id="stateLbl" style="color:#bbb">Select State</span>
-              <i class="fas fa-chevron-down trig-icon"></i>
-            </div>
-          </div>
-          <div class="col-md-4" id="cityDiv">
-            <input type="hidden" name="City" id="cityVal">
-            <div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop()">
-              <span id="cityLbl" style="color:#bbb">Select City</span>
-              <i class="fas fa-chevron-down trig-icon"></i>
-            </div>
-          </div>
-          <div class="col-md-4"><input type="text" name="Postal" class="form-control" placeholder="Postal Code" required></div>
-          <div class="col-md-12"><input type="text" name="Address" class="form-control" placeholder="Street Address" required></div>
         </div>
 
-        <h5 class="section-title"><i class="fas fa-briefcase"></i>Employee Details</h5>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <input type="hidden" name="Position" id="positionVal">
-            <div class="custom-trigger" id="positionTrig" onclick="openSel('position','Position Applied For',['Account Provider PK','Account Provider UK','Manager','Developer'])">
-              <span id="positionLbl" style="color:#bbb">Position Applied For</span>
-              <i class="fas fa-chevron-down trig-icon"></i>
+        <!-- ── SECTION 3: Employee Details ── -->
+        <div class="section-block">
+          <h5 class="section-title"><i class="fas fa-briefcase"></i>Employee Details</h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <input type="hidden" name="Position" id="positionVal">
+              <div class="trig-beam">
+                <div class="custom-trigger" id="positionTrig" onclick="openSel('position','Position Applied For',['Account Provider PK','Account Provider UK','Manager','Developer'])">
+                  <span id="positionLbl" style="color:#bbb">Position Applied For</span>
+                  <i class="fas fa-chevron-down trig-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <input type="hidden" name="Investor" id="investorVal">
+              <div class="trig-beam">
+                <div class="custom-trigger" id="investorTrig" onclick="openSel('investor','Are you an investor?',['No','Yes'])">
+                  <span id="investorLbl" style="color:#bbb">Are you an investor?</span>
+                  <i class="fas fa-chevron-down trig-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <input type="hidden" name="JoiningDate" id="joiningVal">
+              <div class="trig-beam">
+                <div class="custom-trigger" id="joiningTrig" onclick="openCal('joining')">
+                  <span id="joiningLbl" style="color:#bbb">Available joining date</span>
+                  <i class="fas fa-calendar-alt trig-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" id="amountDiv" style="display:none">
+              <div class="beam-wrap">
+                <input type="number" name="InvestmentAmount" class="form-control" placeholder="Investment Amount">
+              </div>
+            </div>
+            <!-- Textarea with progress ring -->
+            <div class="col-md-12">
+              <div class="beam-wrap textarea-counter-wrap">
+                <textarea name="GreatFit" id="greatFitTA" class="form-control" rows="4"
+                  placeholder="Tell us why you're a great fit..." required maxlength="300"></textarea>
+                <!-- Progress Ring -->
+                <div class="progress-ring-wrap">
+                  <svg viewBox="0 0 36 36" width="36" height="36">
+                    <circle class="ring-bg" cx="18" cy="18" r="14"/>
+                    <circle class="ring-fill" id="ringFill" cx="18" cy="18" r="14"/>
+                  </svg>
+                  <div class="ring-text" id="ringText">0</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <input type="hidden" name="Investor" id="investorVal">
-            <div class="custom-trigger" id="investorTrig" onclick="openSel('investor','Are you an investor?',['No','Yes'])">
-              <span id="investorLbl" style="color:#bbb">Are you an investor?</span>
-              <i class="fas fa-chevron-down trig-icon"></i>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <input type="hidden" name="JoiningDate" id="joiningVal">
-            <div class="custom-trigger" id="joiningTrig" onclick="openCal('joining')">
-              <span id="joiningLbl" style="color:#bbb">Available joining date</span>
-              <i class="fas fa-calendar-alt trig-icon"></i>
-            </div>
-          </div>
-          <div class="col-md-6" id="amountDiv" style="display:none">
-            <input type="number" name="InvestmentAmount" class="form-control" placeholder="Amount">
-          </div>
-          <div class="col-md-12"><textarea name="GreatFit" class="form-control" rows="3" placeholder="Tell us why you're a great fit..." required></textarea></div>
         </div>
 
-        <div class="form-check mt-4 d-flex align-items-center">
-          <input class="form-check-input me-2" type="checkbox" id="declaration" required style="width:1.2rem;height:1.2rem;cursor:pointer;">
-          <label class="form-check-label" for="declaration">I have filled all sections and verified my email.</label>
+        <!-- ── Footer ── -->
+        <div class="form-footer-block">
+          <div class="form-check mt-4 d-flex align-items-center">
+            <input class="form-check-input me-2" type="checkbox" id="declaration" required
+              style="width:1.2rem;height:1.2rem;cursor:pointer;">
+            <label class="form-check-label" for="declaration">I have filled all sections and verified my email.</label>
+          </div>
+          <button id="submitBtn" class="btn-submit" type="submit">
+            <i class="fas fa-paper-plane"></i> Submit Application
+          </button>
         </div>
-        <button id="submitBtn" class="btn-submit w-100" type="submit"><i class="fas fa-paper-plane"></i> Submit Application</button>
+
       </form>
     </div>
   </div>
 
-  <!-- Select Popup -->
+  <!-- ── Select Popup ── -->
   <div id="selOverlay" class="pop-overlay" onclick="closePop('sel',event)">
     <div class="sel-card">
       <div class="drag-bar"></div>
@@ -219,11 +549,9 @@
     </div>
   </div>
 
-  <!-- Calendar Popup -->
+  <!-- ── Calendar Popup ── -->
   <div id="calOverlay" class="pop-overlay" onclick="closePop('cal',event)">
     <div class="cal-card">
-
-      <!-- Day View -->
       <div class="cal-day-view" id="calDayView">
         <div class="cal-head">
           <div class="drag-bar"></div>
@@ -243,8 +571,6 @@
         <div class="cal-days-grid" id="calGrid"></div>
         <button class="cal-confirm" onclick="confirmCal()">Confirm Date</button>
       </div>
-
-      <!-- Month-Year Picker View -->
       <div class="cal-picker-view" id="calPickerView">
         <div class="drag-bar" style="margin-bottom:16px;"></div>
         <div class="cal-year-nav">
@@ -257,11 +583,10 @@
           <i class="fas fa-calendar-days"></i> Back to Days
         </button>
       </div>
-
     </div>
   </div>
 
-  <!-- OTP Modal -->
+  <!-- ── OTP Modal ── -->
   <div id="otpModalOverlay" class="modal-overlay">
     <div class="modal-card">
       <div style="font-size:3rem;color:#ff9900;margin-bottom:1rem;"><i class="fas fa-envelope-open-text"></i></div>
@@ -269,26 +594,99 @@
       <p style="color:#bbb;">Sent to: <span id="modalEmailText" style="color:#ff9900;"></span></p>
       <input type="text" id="verificationCode" class="form-control otp-input-large" placeholder="------" maxlength="6" autocomplete="off">
       <small id="otpMessage" class="d-block text-warning mt-2"></small>
-      <button type="button" id="verifyCodeBtn" class="btn-submit w-100" style="margin-top:1.5rem;">Verify Now</button>
-      <button type="button" id="closeModalBtn" style="background:transparent;border:none;color:#aaa;text-decoration:underline;margin-top:1rem;">Cancel</button>
+      <button type="button" id="verifyCodeBtn" class="btn-submit" style="margin-top:1.5rem;">Verify Now</button>
+      <button type="button" id="closeModalBtn" style="background:transparent;border:none;color:#aaa;text-decoration:underline;margin-top:1rem;cursor:pointer;display:block;margin-left:auto;margin-right:auto;">Cancel</button>
     </div>
   </div>
 
+  <!-- ── Thank You Modal (with animated SVG checkmark) ── -->
   <div id="thankYouModalOverlay" class="modal-overlay">
     <div class="modal-card">
-      <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+      <!-- 4. SVG Animated Checkmark -->
+      <div class="check-circle-wrap">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Glow circle background -->
+          <circle cx="50" cy="50" r="44" fill="rgba(34,197,94,0.08)" stroke="rgba(34,197,94,0.15)" stroke-width="1"/>
+          <!-- Animated circle outline -->
+          <circle class="check-circle" cx="50" cy="50" r="45"
+            transform="rotate(-90 50 50)"
+            style="transform-origin:50% 50%;"/>
+          <!-- Animated tick -->
+          <polyline class="check-tick" points="28,52 43,67 72,35"/>
+        </svg>
+      </div>
       <h3 style="color:#fff;font-weight:700;">Thank You!</h3>
       <p style="color:#ccc;line-height:1.6;">Your application has been successfully submitted to <strong>LEVZA</strong>.<br><br>We've sent a confirmation email to your inbox.</p>
-      <button type="button" onclick="location.reload()" class="btn-submit w-100" style="margin-top:1.5rem;">Back to Home</button>
+      <button type="button" onclick="location.reload()" class="btn-submit" style="margin-top:1.5rem;">Back to Home</button>
     </div>
   </div>
 
   <script>
+    /* ════════════════════════════════════════
+       2. LIQUID BORDER BEAM — input focus
+    ════════════════════════════════════════ */
+    function initBeams() {
+      document.querySelectorAll('.beam-wrap input, .beam-wrap textarea').forEach(el => {
+        el.addEventListener('focus', function() {
+          this.closest('.beam-wrap').classList.add('beam-on');
+        });
+        el.addEventListener('blur', function() {
+          this.closest('.beam-wrap').classList.remove('beam-on');
+        });
+      });
+    }
+    initBeams();
+
+    /* Trigger beam flash on click */
+    function flashTrigBeam(trigEl) {
+      const wrap = trigEl.closest('.trig-beam');
+      if (!wrap) return;
+      wrap.classList.add('beam-flash');
+      setTimeout(() => wrap.classList.remove('beam-flash'), 900);
+    }
+    document.querySelectorAll('.trig-beam .custom-trigger').forEach(t => {
+      t.addEventListener('click', function() { flashTrigBeam(this); });
+    });
+
+    /* ════════════════════════════════════════
+       5. TEXTAREA PROGRESS RING
+    ════════════════════════════════════════ */
+    const MAX_CHARS = 300;
+    const CIRCUMFERENCE = 88; // 2*PI*14 ≈ 87.96
+    const ringFill = document.getElementById('ringFill');
+    const ringText = document.getElementById('ringText');
+    const ta = document.getElementById('greatFitTA');
+
+    ta.addEventListener('input', function() {
+      const len = this.value.length;
+      const pct = len / MAX_CHARS;
+      const offset = CIRCUMFERENCE - (pct * CIRCUMFERENCE);
+      ringFill.style.strokeDashoffset = Math.max(0, offset);
+      ringText.textContent = len > 0 ? len : '0';
+      // Color shift near limit
+      if (pct >= 0.9) {
+        ringFill.style.stroke = '#ef4444';
+        ringText.style.color = '#ef4444';
+      } else if (pct >= 0.7) {
+        ringFill.style.stroke = '#f59e0b';
+        ringText.style.color = '#f59e0b';
+      } else {
+        ringFill.style.stroke = '#ff9900';
+        ringText.style.color = '#ff9900';
+      }
+    });
+
+    /* ════════════════════════════════════════
+       LOCATION DATA
+    ════════════════════════════════════════ */
     const locationData = {"Pakistan":{"Punjab":["Lahore","Faisalabad","Rawalpindi","Multan","Gujranwala"],"Sindh":["Karachi","Hyderabad","Sukkur","Larkana"],"KPK":["Peshawar","Abbottabad","Mardan","Swat"],"Balochistan":["Quetta","Gwadar","Khuzdar"],"Islamabad":["Islamabad City"]},"United Kingdom":{"England":["London","Manchester","Birmingham","Leeds","Liverpool"],"Scotland":["Edinburgh","Glasgow","Aberdeen"],"Wales":["Cardiff","Swansea","Newport"],"Northern Ireland":["Belfast","Derry"]}};
     const allCountries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
-    // ── Select Popup ──
+    /* ════════════════════════════════════════
+       SELECT POPUP
+    ════════════════════════════════════════ */
     let curSelField = '', curSelAll = [];
+
     function openSel(field, title, opts) {
       curSelField = field; curSelAll = opts;
       document.getElementById('selTitle').textContent = title;
@@ -311,12 +709,11 @@
     function openStatePop() {
       const c = document.getElementById('countryVal').value;
       if (!c || !locationData[c]) return;
-      const states = Object.keys(locationData[c]);
-      curSelField = 'state'; curSelAll = states;
+      curSelField = 'state'; curSelAll = Object.keys(locationData[c]);
       document.getElementById('selTitle').textContent = 'Select State';
       document.getElementById('selSearch').style.display = 'none';
       document.getElementById('selSearch').value = '';
-      renderOpts(states);
+      renderOpts(curSelAll);
       document.getElementById('selOverlay').classList.add('on');
       document.body.style.overflow = 'hidden';
     }
@@ -324,17 +721,17 @@
       const c = document.getElementById('countryVal').value;
       const st = document.getElementById('stateVal').value;
       if (!c || !st || !locationData[c] || !locationData[c][st]) return;
-      const cities = locationData[c][st];
-      curSelField = 'city'; curSelAll = cities;
+      curSelField = 'city'; curSelAll = locationData[c][st];
       document.getElementById('selTitle').textContent = 'Select City';
       document.getElementById('selSearch').style.display = 'none';
       document.getElementById('selSearch').value = '';
-      renderOpts(cities);
+      renderOpts(curSelAll);
       document.getElementById('selOverlay').classList.add('on');
       document.body.style.overflow = 'hidden';
     }
     function renderOpts(opts) {
-      const cur = document.getElementById(curSelField + 'Val') ? document.getElementById(curSelField + 'Val').value : '';
+      const curEl = document.getElementById(curSelField + 'Val');
+      const cur = curEl ? curEl.value : '';
       const list = document.getElementById('selList');
       list.innerHTML = '';
       opts.forEach(o => {
@@ -360,11 +757,12 @@
         const sDiv = document.getElementById('stateDiv');
         const cDiv = document.getElementById('cityDiv');
         if (locationData[val]) {
-          sDiv.innerHTML = '<input type="hidden" name="State" id="stateVal"><div class="custom-trigger" id="stateTrig" onclick="openStatePop()"><span id="stateLbl" style="color:#bbb">Select State</span><i class="fas fa-chevron-down trig-icon"></i></div>';
-          cDiv.innerHTML = '<input type="hidden" name="City" id="cityVal"><div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop()"><span id="cityLbl" style="color:#bbb">Select City</span><i class="fas fa-chevron-down trig-icon"></i></div>';
+          sDiv.innerHTML = '<input type="hidden" name="State" id="stateVal"><div class="trig-beam"><div class="custom-trigger" id="stateTrig" onclick="openStatePop();flashTrigBeam(this)"><span id="stateLbl" style="color:#bbb">Select State</span><i class="fas fa-chevron-down trig-icon"></i></div></div>';
+          cDiv.innerHTML = '<input type="hidden" name="City" id="cityVal"><div class="trig-beam"><div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop();flashTrigBeam(this)"><span id="cityLbl" style="color:#bbb">Select City</span><i class="fas fa-chevron-down trig-icon"></i></div></div>';
         } else {
-          sDiv.innerHTML = '<input type="text" name="State" id="stateVal" class="form-control" placeholder="State" required>';
-          cDiv.innerHTML = '<input type="text" name="City" id="cityVal" class="form-control" placeholder="City" required>';
+          sDiv.innerHTML = '<div class="beam-wrap"><input type="text" name="State" id="stateVal" class="form-control" placeholder="State" required></div>';
+          cDiv.innerHTML = '<div class="beam-wrap"><input type="text" name="City" id="cityVal" class="form-control" placeholder="City" required></div>';
+          initBeams();
         }
       } else if (curSelField === 'state') {
         document.getElementById('stateVal').value = val;
@@ -380,6 +778,7 @@
         document.getElementById('investorVal').value = val;
         setTrig('investor', val);
         document.getElementById('amountDiv').style.display = val === 'Yes' ? 'block' : 'none';
+        if (val === 'Yes') { setTimeout(initBeams, 50); }
       } else {
         document.getElementById(curSelField + 'Val').value = val;
         setTrig(curSelField, val);
@@ -402,7 +801,9 @@
       if (type === 'cal') showDayView();
     }
 
-    // ── Calendar ──
+    /* ════════════════════════════════════════
+       CALENDAR
+    ════════════════════════════════════════ */
     const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     let calField = '', calView = new Date(), calPicked = null;
@@ -418,7 +819,6 @@
       document.getElementById('calOverlay').classList.add('on');
       document.body.style.overflow = 'hidden';
     }
-
     function showDayView() {
       pickerOpen = false;
       document.getElementById('calDayView').style.display = 'block';
@@ -426,7 +826,6 @@
       const arr = document.getElementById('calTitleArrow');
       if (arr) arr.style.transform = '';
     }
-
     function togglePicker() {
       pickerOpen = !pickerOpen;
       const pv = document.getElementById('calPickerView');
@@ -443,75 +842,56 @@
         drawCal();
       }
     }
-
     function drawMonthPicker() {
       document.getElementById('pickerYearNum').textContent = pickerYear;
-      const curM = calView.getMonth();
-      const curY = calView.getFullYear();
-      const nowM = new Date().getMonth();
-      const nowY = new Date().getFullYear();
+      const curM = calView.getMonth(), curY = calView.getFullYear();
+      const nowM = new Date().getMonth(), nowY = new Date().getFullYear();
       let html = '';
       MONTHS_SHORT.forEach((m, i) => {
         const isCur = i === curM && pickerYear === curY;
         const isNow = i === nowM && pickerYear === nowY;
-        html += `<div class="cal-m-opt${isCur ? ' cur-m' : ''}${isNow && !isCur ? ' now-m' : ''}" onclick="pickMonth(${i})">${m}</div>`;
+        html += `<div class="cal-m-opt${isCur?' cur-m':''}${isNow&&!isCur?' now-m':''}" onclick="pickMonth(${i})">${m}</div>`;
       });
       document.getElementById('calMonthsGrid').innerHTML = html;
     }
-
-    function changePickerYear(dir) {
-      pickerYear += dir;
-      drawMonthPicker();
-    }
-
-    function pickMonth(m) {
-      calView.setFullYear(pickerYear);
-      calView.setMonth(m);
-      showDayView();
-      drawCal();
-    }
-
+    function changePickerYear(dir) { pickerYear += dir; drawMonthPicker(); }
+    function pickMonth(m) { calView.setFullYear(pickerYear); calView.setMonth(m); showDayView(); drawCal(); }
     function drawCal() {
       const y = calView.getFullYear(), m = calView.getMonth();
       document.getElementById('calTitleText').textContent = MONTHS[m] + ' ' + y;
-      const first = new Date(y, m, 1).getDay();
-      const dim = new Date(y, m + 1, 0).getDate();
-      const prevDim = new Date(y, m, 0).getDate();
+      const first = new Date(y,m,1).getDay();
+      const dim = new Date(y,m+1,0).getDate();
+      const prevDim = new Date(y,m,0).getDate();
       const now = new Date();
       let html = '';
-      for (let i = first - 1; i >= 0; i--) html += `<div class="cal-d other">${prevDim - i}</div>`;
+      for (let i = first-1; i >= 0; i--) html += `<div class="cal-d other">${prevDim-i}</div>`;
       for (let d = 1; d <= dim; d++) {
         const isT = now.getDate()===d && now.getMonth()===m && now.getFullYear()===y;
         const isS = calPicked && calPicked.getDate()===d && calPicked.getMonth()===m && calPicked.getFullYear()===y;
         html += `<div class="cal-d${isT?' tod':''}${isS?' sel':''}" onclick="pickDay(${d})">${d}</div>`;
       }
-      const total = Math.ceil((first + dim) / 7) * 7;
-      for (let n = 1; n <= total - first - dim; n++) html += `<div class="cal-d other">${n}</div>`;
+      const total = Math.ceil((first+dim)/7)*7;
+      for (let n = 1; n <= total-first-dim; n++) html += `<div class="cal-d other">${n}</div>`;
       document.getElementById('calGrid').innerHTML = html;
     }
-
-    function pickDay(d) {
-      calPicked = new Date(calView.getFullYear(), calView.getMonth(), d);
-      drawCal();
-    }
-    function calMove(dir) {
-      calView.setMonth(calView.getMonth() + dir);
-      drawCal();
-    }
+    function pickDay(d) { calPicked = new Date(calView.getFullYear(),calView.getMonth(),d); drawCal(); }
+    function calMove(dir) { calView.setMonth(calView.getMonth()+dir); drawCal(); }
     function confirmCal() {
       if (!calPicked) { closePop('cal'); return; }
       const y = calPicked.getFullYear();
       const m = String(calPicked.getMonth()+1).padStart(2,'0');
       const d = String(calPicked.getDate()).padStart(2,'0');
-      document.getElementById(calField + 'Val').value = `${y}-${m}-${d}`;
-      const lbl = document.getElementById(calField + 'Lbl');
+      document.getElementById(calField+'Val').value = `${y}-${m}-${d}`;
+      const lbl = document.getElementById(calField+'Lbl');
       lbl.textContent = `${MONTHS[calPicked.getMonth()]} ${d}, ${y}`;
       lbl.style.color = '#fff';
-      document.getElementById(calField + 'Trig').classList.add('filled');
+      document.getElementById(calField+'Trig').classList.add('filled');
       closePop('cal');
     }
 
-    // ── OTP + Submit ──
+    /* ════════════════════════════════════════
+       OTP + SUBMIT
+    ════════════════════════════════════════ */
     const scriptURL = 'https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec';
     let isEmailVerified = false;
 
@@ -520,34 +900,89 @@
       if (!email.value || !email.checkValidity()) { alert("Enter valid email."); return; }
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
       let fd = new FormData(); fd.append("action","sendOTP"); fd.append("Email",email.value);
-      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{if(data.result==="success"){document.getElementById('modalEmailText').innerText=email.value;document.getElementById('otpModalOverlay').classList.add('active');btn.textContent='Sent';btn.disabled=false;}else{alert("Error: "+data.error);btn.textContent='Send OTP';btn.disabled=false;}}).catch(()=>{alert("Script Error! Check Permissions.");btn.textContent='Send OTP';btn.disabled=false;});
+      fetch(scriptURL,{method:'POST',body:fd})
+        .then(r=>r.json())
+        .then(data=>{
+          if(data.result==="success"){
+            document.getElementById('modalEmailText').innerText=email.value;
+            document.getElementById('otpModalOverlay').classList.add('active');
+            btn.textContent='Sent'; btn.disabled=false;
+          } else {
+            alert("Error: "+data.error); btn.textContent='Send OTP'; btn.disabled=false;
+          }
+        })
+        .catch(()=>{alert("Script Error! Check Permissions."); btn.textContent='Send OTP'; btn.disabled=false;});
     };
-    document.getElementById('closeModalBtn').onclick = () => { document.getElementById('otpModalOverlay').classList.remove('active'); document.getElementById('sendCodeBtn').textContent='Send OTP'; };
+
+    document.getElementById('closeModalBtn').onclick = () => {
+      document.getElementById('otpModalOverlay').classList.remove('active');
+      document.getElementById('sendCodeBtn').textContent='Send OTP';
+    };
+
     document.getElementById('verifyCodeBtn').onclick = function() {
-      const code = document.getElementById('verificationCode').value, msg = document.getElementById('otpMessage');
+      const code = document.getElementById('verificationCode').value;
+      const msg = document.getElementById('otpMessage');
       if (code.length < 6) { msg.innerText = "Enter 6 digits"; return; }
       this.disabled = true;
-      let fd = new FormData(); fd.append("action","verifyOTP"); fd.append("Email",document.getElementById('email').value); fd.append("otp",code);
-      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{if(data.result==="success"){isEmailVerified=true;document.getElementById('otpModalOverlay').classList.remove('active');const btn=document.getElementById('sendCodeBtn');btn.innerHTML='<i class="fas fa-check-circle"></i> Verified';btn.className="btn btn-success-custom w-100";document.getElementById('email').readOnly=true;}else{msg.innerText="Invalid OTP!";this.disabled=false;}});
+      let fd = new FormData();
+      fd.append("action","verifyOTP");
+      fd.append("Email",document.getElementById('email').value);
+      fd.append("otp",code);
+      fetch(scriptURL,{method:'POST',body:fd})
+        .then(r=>r.json())
+        .then(data=>{
+          if(data.result==="success"){
+            isEmailVerified=true;
+            document.getElementById('otpModalOverlay').classList.remove('active');
+            const btn=document.getElementById('sendCodeBtn');
+            btn.innerHTML='<i class="fas fa-check-circle"></i> Verified';
+            btn.className="btn btn-success-custom w-100";
+            document.getElementById('email').readOnly=true;
+          } else {
+            msg.innerText="Invalid OTP!"; this.disabled=false;
+          }
+        });
     };
+
     document.getElementById('form').onsubmit = function(e) {
       e.preventDefault();
       if (!isEmailVerified) { alert("Verify email first!"); return; }
       const checks = [['FirstName','First Name'],['LastName','Last Name'],['CNIC','CNIC'],['Contact','Contact Number'],['Postal','Postal Code'],['Address','Street Address'],['GreatFit','Why you\'re a great fit']];
-      for (const [n,label] of checks) { const el = this[n]; if (!el || !el.value.trim()) { alert(`Please fill: ${label}`); if(el) el.focus(); return; } }
+      for (const [n,label] of checks) {
+        const el = this[n];
+        if (!el || !el.value.trim()) { alert(`Please fill: ${label}`); if(el) el.focus(); return; }
+      }
       if (!document.getElementById('dobVal').value) { alert("Please select Date of Birth."); return; }
       if (!document.getElementById('genderVal').value) { alert("Please select Gender."); return; }
       if (!document.getElementById('countryVal').value) { alert("Please select Country."); return; }
-      const stEl = document.getElementById('stateVal'); if (!stEl || !stEl.value.trim()) { alert("Please select/enter State."); return; }
-      const ctEl = document.getElementById('cityVal'); if (!ctEl || !ctEl.value.trim()) { alert("Please select/enter City."); return; }
+      const stEl = document.getElementById('stateVal');
+      if (!stEl || !stEl.value.trim()) { alert("Please select/enter State."); return; }
+      const ctEl = document.getElementById('cityVal');
+      if (!ctEl || !ctEl.value.trim()) { alert("Please select/enter City."); return; }
       if (!document.getElementById('positionVal').value) { alert("Please select Position."); return; }
       if (!document.getElementById('investorVal').value) { alert("Please select Investor status."); return; }
       if (!document.getElementById('joiningVal').value) { alert("Please select Joining Date."); return; }
       if (!document.getElementById('declaration').checked) { alert("Please check the declaration."); return; }
+
       const sBtn = document.getElementById('submitBtn');
       sBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...'; sBtn.disabled = true;
       let fd = new FormData(this); fd.append("action","submitForm");
-      fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(data=>{if(data.result==="success"){document.getElementById('thankYouModalOverlay').classList.add('active');}else{alert("Submission Error!");sBtn.innerHTML='<i class="fas fa-paper-plane"></i> Submit Application';sBtn.disabled=false;}}).catch(()=>{alert("Error!");sBtn.innerHTML='<i class="fas fa-paper-plane"></i> Submit Application';sBtn.disabled=false;});
+      fetch(scriptURL,{method:'POST',body:fd})
+        .then(r=>r.json())
+        .then(data=>{
+          if(data.result==="success"){
+            document.getElementById('thankYouModalOverlay').classList.add('active');
+          } else {
+            alert("Submission Error!");
+            sBtn.innerHTML='<i class="fas fa-paper-plane"></i> Submit Application';
+            sBtn.disabled=false;
+          }
+        })
+        .catch(()=>{
+          alert("Error!");
+          sBtn.innerHTML='<i class="fas fa-paper-plane"></i> Submit Application';
+          sBtn.disabled=false;
+        });
     };
   </script>
 </body>
