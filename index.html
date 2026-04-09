@@ -59,36 +59,22 @@
 
     /* ── LOGO + TAGLINE ── */
     .logo-container {
-      position: absolute; top: 22px; left: 28px; z-index: 10;
-      display: flex; flex-direction: column; align-items: center;
+      position: fixed; top: 18px; left: 24px; z-index: 100;
+      display: flex; flex-direction: column; align-items: flex-start;
     }
-    .logo { width: 210px; display: block; }
+    .logo { width: 200px; display: block; }
     .logo-tagline {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 0.7rem;
-      letter-spacing: 0.22em;
-      color: var(--amber);
-      opacity: 0.82;
-      margin-top: 3px;
-      text-align: center;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      color: rgba(245,158,11,0.72);
+      margin-top: 2px;
+      margin-left: 2px;
       white-space: nowrap;
-      position: relative;
-      animation: fadeInUp 1s ease forwards;
-      animation-delay: 0.6s;
       opacity: 0;
-    }
-    .logo-tagline::before,
-    .logo-tagline::after {
-      content: '';
-      display: inline-block;
-      width: 18px; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(245,158,11,0.6));
-      vertical-align: middle;
-      margin: 0 7px;
-    }
-    .logo-tagline::after {
-      background: linear-gradient(270deg, transparent, rgba(245,158,11,0.6));
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.7s;
     }
 
     .page-container {
@@ -648,20 +634,19 @@
         background-position: center center;
       }
 
-      /* Logo */
-      .logo-container { top: 16px; left: 50%; transform: translateX(-50%); }
-      .logo { width: 170px; }
-      .logo-tagline { font-size: 0.62rem; letter-spacing: 0.16em; }
-      .logo-tagline::before, .logo-tagline::after { width: 14px; }
+      /* Logo stays top-left, smaller */
+      .logo-container { top: 14px; left: 16px; }
+      .logo { width: 140px; }
+      .logo-tagline { font-size: 0.56rem; letter-spacing: 0.13em; }
 
-      /* Page container */
-      .page-container { padding: 100px 12px 40px; }
+      /* Page container — more top padding so logo doesn't overlap header */
+      .page-container { padding: 116px 12px 40px; }
 
       /* Header */
-      .form-header-text { margin-bottom: 22px; }
+      .form-header-text { margin-bottom: 20px; }
       .form-title { font-size: 2rem; }
       .form-subtitle { font-size: 0.8rem; padding: 0 8px; }
-      .header-eyebrow { font-size: 0.62rem; }
+      .header-eyebrow { font-size: 0.6rem; }
 
       /* Card */
       .card {
@@ -679,7 +664,7 @@
       .row.g-3 > [class*="col-"] { padding-left: 6px; padding-right: 6px; }
       .row.g-3 { --bs-gutter-x: 0.6rem; --bs-gutter-y: 0.6rem; }
 
-      /* Email + OTP row — stack email full width, OTP button below */
+      /* Email + OTP row */
       .col-md-5 { width: 100%; }
       .col-md-2 { width: 100%; }
 
@@ -726,7 +711,7 @@
   <div class="toast-wrap" id="toastWrap"></div>
 
   <div class="logo-container">
-    <img src="https://i.postimg.cc/MKh5pB49/Gemini-Generated-Image-f1z1rjf1z1rjf1z1-removebg-preview.png" class="logo" alt="LEVZA Logo">
+    <img src="https://i.postimg.cc/wvXdCnny/Gemini-Generated-Image-f1z1rjf1z1rjf1z1-removebg-preview.png" class="logo" alt="LEVZA Logo">
     <span class="logo-tagline">Just What You Needed</span>
   </div>
 
