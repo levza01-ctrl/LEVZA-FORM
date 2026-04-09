@@ -20,32 +20,27 @@
     html{height:100%;}
     body{font-family:'DM Sans',sans-serif;color:#fff;min-height:100%;overflow-x:hidden;background:var(--deep);-webkit-font-smoothing:antialiased;}
 
-    /* ── BACKGROUND (no zoom on mobile) ── */
     .bg-layer{position:fixed;inset:0;z-index:-1;}
-    .bg-layer-img{
-      position:absolute;inset:0;
-      background-image:url('https://i.postimg.cc/4yfdVF95/Chat-GPT-Image-Apr-5-2026-04-46-20-PM.png');
-      background-size:cover;background-position:center center;background-repeat:no-repeat;
-      transform:translateZ(0);will-change:transform;
-    }
+    .bg-layer-img{position:absolute;inset:0;background-image:url('https://i.postimg.cc/4yfdVF95/Chat-GPT-Image-Apr-5-2026-04-46-20-PM.png');background-size:cover;background-position:center center;background-repeat:no-repeat;transform:translateZ(0);will-change:transform;}
     .bg-layer-overlay{position:absolute;inset:0;background:linear-gradient(150deg,rgba(7,15,31,0.88) 0%,rgba(13,30,56,0.82) 60%,rgba(7,15,31,0.9) 100%);}
     .bg-layer-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;}
 
-    /* ── LOGO + TAGLINE ── */
+    /* ── LOGO ── */
     .logo-container{position:fixed;top:20px;left:22px;z-index:100;}
     .logo{width:195px;display:block;}
-    .tagline-rule{height:1px;background:linear-gradient(90deg,transparent,rgba(245,158,11,0.32),transparent);margin:4px 8px 3px;}
+    .tagline-rule{height:1px;background:linear-gradient(90deg,transparent,rgba(245,158,11,0.45),transparent);margin:5px 8px 4px;}
+    /* FIX: removed background-clip text trick — plain color now, fully readable */
     .logo-tagline{
-      font-family:'Cormorant Garamond',serif;font-style:italic;
-      font-size:0.64rem;letter-spacing:0.2em;text-align:center;
-      background:linear-gradient(90deg,rgba(245,158,11,0.45) 0%,rgba(253,211,100,0.9) 40%,rgba(245,158,11,0.9) 60%,rgba(245,158,11,0.45) 100%);
-      background-size:200% auto;
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-      animation:taglineShimmer 5s ease infinite;user-select:none;
+      font-family:'Cormorant Garamond',serif;
+      font-style:italic;
+      font-size:0.67rem;
+      letter-spacing:0.22em;
+      text-align:center;
+      color:rgba(245,158,11,0.88);
+      user-select:none;
+      text-shadow:0 0 18px rgba(245,158,11,0.35);
     }
-    @keyframes taglineShimmer{0%{background-position:200% center}100%{background-position:-200% center}}
 
-    /* ── PAGE ── */
     .page-container{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;min-height:100vh;padding:108px 16px 52px;}
 
     /* ── HEADER ── */
@@ -72,7 +67,6 @@
     .section-title .icon-dot i{color:var(--amber);font-size:0.6rem;}
     .section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,0.07),transparent);}
 
-    /* ── ANIMATIONS ── */
     @keyframes fadeInUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
     @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
     .shake{animation:shake .38s ease;}
@@ -81,7 +75,7 @@
     .form-footer-block{opacity:0;animation:fadeInUp .6s ease forwards .98s;}
     .section-block+.section-block{margin-top:1.5rem;}
 
-    /* ── BEAM (desktop only) ── */
+    /* ── BEAM ── */
     @property --beam-angle{syntax:'<angle>';initial-value:0deg;inherits:false;}
     @keyframes spinBeam{from{--beam-angle:0deg}to{--beam-angle:360deg}}
     .beam-wrap{position:relative;border-radius:12px;}
@@ -142,7 +136,7 @@
     .btn-code:active{background-color:var(--amber-dim);border-color:rgba(245,158,11,.4);color:#fff;}
     .btn-success-custom{height:46px;border-radius:10px;width:100%;background:rgba(34,197,94,.1)!important;color:#4ade80!important;border:1px solid rgba(34,197,94,.28)!important;pointer-events:none;display:flex;align-items:center;justify-content:center;gap:6px;font-size:.8rem;font-family:'DM Sans',sans-serif;}
 
-    /* ── COMPACT DECLARATION ── */
+    /* ── LIQUID FOOTER ── */
     .liquid-footer{position:relative;overflow:hidden;border-radius:11px;margin-top:1.4rem;padding:.8rem 1rem;background:rgba(245,158,11,.03);border:1px solid rgba(245,158,11,.12);}
     .liquid-footer::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(245,158,11,.045) 50%,transparent 70%);background-size:200% 100%;animation:liquidShimmer 5.5s ease infinite;pointer-events:none;}
     @keyframes liquidShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
@@ -165,25 +159,23 @@
     .pop-overlay.on{opacity:1;visibility:visible;}
     @media(min-width:600px){.pop-overlay{align-items:center;}}
 
-    /* Select card — liquid */
+    /* ── SHEET ROW CLICK RIPPLE ── */
+    @keyframes sheetRipple{0%{transform:scale(0);opacity:0.55;}100%{transform:scale(4);opacity:0;}}
+    .sel-opt{position:relative;overflow:hidden;}
+    .sel-opt .opt-ripple{position:absolute;border-radius:50%;width:50px;height:50px;background:rgba(245,158,11,0.25);transform:scale(0);pointer-events:none;animation:sheetRipple 0.5s ease-out forwards;}
+
     .sel-card{position:relative;overflow:hidden;background:linear-gradient(160deg,rgba(10,20,45,.99) 0%,rgba(6,13,28,.99) 100%);border:1px solid rgba(255,255,255,.07);border-top:1px solid rgba(255,255,255,.15);border-radius:22px 22px 0 0;width:100%;max-width:580px;max-height:83vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .4s cubic-bezier(.25,.46,.45,.94);box-shadow:0 -6px 34px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.09);}
     .pop-overlay.on .sel-card{transform:translateY(0);}
-    /* amber glow at top */
     .sel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:100px;background:radial-gradient(ellipse at 50% 0%,rgba(245,158,11,.1) 0%,transparent 70%);pointer-events:none;z-index:0;}
-    /* liquid border beam */
     .sel-card::after{content:'';position:absolute;inset:0;border-radius:22px 22px 0 0;background:conic-gradient(from var(--beam-angle,0deg),transparent 0deg,rgba(245,158,11,.18) 50deg,rgba(253,211,100,.3) 80deg,rgba(245,158,11,.18) 110deg,transparent 160deg);pointer-events:none;z-index:0;animation:spinBeam 5s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:1px;}
     .sel-card>*{position:relative;z-index:1;}
     @media(min-width:600px){.sel-card{border-radius:18px;transform:scale(.92);max-height:74vh;}.pop-overlay.on .sel-card{transform:scale(1);}}
 
-    /* Cal card — liquid */
     .cal-card{position:relative;overflow:hidden;background:linear-gradient(160deg,rgba(10,20,45,.99) 0%,rgba(6,13,28,.99) 100%);border:1px solid rgba(255,255,255,.07);border-top:1px solid rgba(255,255,255,.15);border-radius:22px 22px 0 0;width:100%;max-width:400px;transform:translateY(100%);transition:transform .4s cubic-bezier(.25,.46,.45,.94);box-shadow:0 -6px 34px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.09);}
     .pop-overlay.on .cal-card{transform:translateY(0);}
-    /* amber glow */
     .cal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:120px;background:radial-gradient(ellipse at 50% -10%,rgba(245,158,11,.14) 0%,transparent 70%);pointer-events:none;z-index:0;}
-    /* liquid border beam */
     .cal-card::after{content:'';position:absolute;inset:0;border-radius:22px 22px 0 0;background:conic-gradient(from var(--beam-angle,0deg),transparent 0deg,rgba(245,158,11,.22) 50deg,rgba(253,211,100,.36) 80deg,rgba(245,158,11,.22) 110deg,transparent 160deg);pointer-events:none;z-index:0;animation:spinBeam 4.5s linear infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:1px;}
     .cal-card>*{position:relative;z-index:1;}
-    /* inner sweep shimmer */
     .cal-inner-shimmer{position:absolute;top:0;left:-60%;width:50%;height:100%;background:linear-gradient(90deg,transparent 0%,rgba(245,158,11,.04) 50%,transparent 100%);animation:calSweep 6s ease infinite;pointer-events:none;z-index:0;}
     @keyframes calSweep{0%,20%{left:-60%}65%,100%{left:120%}}
     @media(min-width:600px){.cal-card{border-radius:18px;transform:scale(.92);}.pop-overlay.on .cal-card{transform:scale(1);}}
@@ -201,7 +193,6 @@
     .sel-opt.chosen{background:rgba(245,158,11,.12);color:var(--amber-light);font-weight:500;}
     .sel-opt .chk{color:var(--amber);font-size:.82rem;}
 
-    /* Calendar internals */
     .cal-head{padding:0 13px 5px;}
     .cal-nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px;}
     .cal-nav-btn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.22);color:var(--amber);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.74rem;transition:background .2s;-webkit-tap-highlight-color:transparent;}
@@ -226,7 +217,7 @@
     .cal-year-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;padding:0 2px;}
     .cal-year-num{font-size:1.05rem;font-weight:600;color:#fff;font-family:'DM Sans',sans-serif;}
     .cal-yr-btn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.22);color:var(--amber);width:35px;height:35px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.8rem;transition:background .2s;-webkit-tap-highlight-color:transparent;}
-    .cal-yr-btn:active{background:rgba(245,158,11,.28);}
+    .cal-yr-btn:active{background:rgba(245,158,68,.28);}
     .cal-months-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
     .cal-m-opt{padding:10px 4px;border-radius:9px;text-align:center;cursor:pointer;color:rgba(255,255,255,.68);font-size:.83rem;transition:background .16s,transform .12s;border:1px solid transparent;font-family:'DM Sans',sans-serif;-webkit-tap-highlight-color:transparent;}
     .cal-m-opt:active{background:rgba(245,158,11,.15);transform:scale(.95);}
@@ -272,74 +263,40 @@
     .loading-dots span:nth-child(2){animation-delay:.18s}.loading-dots span:nth-child(3){animation-delay:.36s}
     @keyframes dotBounce{0%,80%,100%{transform:scale(.7);opacity:.5}40%{transform:scale(1);opacity:1}}
 
-    /* ════════════════════════════════════════
-       MOBILE RESPONSIVE
-    ════════════════════════════════════════ */
+    /* ── MOBILE ── */
     @media(max-width:767px){
-      /* Logo */
       .logo-container{top:12px;left:12px;}
       .logo{width:140px;}
-      .logo-tagline{font-size:.56rem;letter-spacing:.15em;}
+      .logo-tagline{font-size:.58rem;letter-spacing:.15em;}
       .tagline-rule{margin:3px 6px 2px;}
-
-      /* Page padding */
       .page-container{padding:86px 10px 40px;}
-
-      /* Header */
       .form-header-text{margin-bottom:18px;}
       .header-eyebrow{font-size:.6rem;}
       .header-eyebrow::before,.header-eyebrow::after{width:18px;}
       .form-title{font-size:1.9rem;}
       .form-subtitle{font-size:.78rem;}
-
-      /* Card */
       .card{padding:1.1rem .85rem;border-radius:14px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
-
-      /* Sections */
       .section-title{font-size:.69rem;margin-bottom:.9rem;}
       .section-block+.section-block{margin-top:1.1rem;}
-
-      /* Inputs */
       .form-control{height:43px;font-size:.83rem;}
       .custom-trigger{height:43px;font-size:.83rem;}
-
-      /* Buttons */
       .btn-submit{height:50px;font-size:.85rem;}
       .btn-code{height:43px;font-size:.73rem;}
       .btn-success-custom{height:43px;font-size:.73rem;}
-
-      /* Declaration - compact on mobile */
       .liquid-footer{padding:.65rem .8rem;}
       .liq-check-label{font-size:.76rem;}
-
-      /* DISABLE heavy conic-gradient beams on mobile for performance */
       .beam-wrap::before,.beam-wrap::after,.trig-beam::before,.trig-beam::after{display:none;}
-      /* Simple focus ring replacement */
       .form-control:focus{border-color:rgba(245,158,11,.5)!important;box-shadow:none!important;}
-
-      /* Popups */
       .sel-card{max-height:86vh;}
       .cal-card{border-radius:20px 20px 0 0;}
-
-      /* Toast - full width on mobile */
       .toast-wrap{right:10px;left:10px;max-width:none;}
-
-      /* Modal */
       .modal-card{padding:1.7rem 1.3rem;}
       .otp-input-large{font-size:1.35rem!important;letter-spacing:9px;height:54px;}
-
-      /* Disable continuous btn gradient animation on mobile */
       .btn-submit{animation:btnPulseMobile 4s ease infinite;}
       @keyframes btnPulseMobile{0%,100%{box-shadow:0 5px 20px rgba(217,119,6,.35)}50%{box-shadow:0 6px 28px rgba(245,158,11,.5)}}
       .btn-submit::before{display:none;}
     }
-
-    @media(max-width:380px){
-      .form-title{font-size:1.7rem;}
-      .card{padding:1rem .75rem;}
-    }
-
-    /* Hover: only on pointer devices */
+    @media(max-width:380px){.form-title{font-size:1.7rem;}.card{padding:1rem .75rem;}}
     @media(hover:hover){
       .sel-opt:hover{background:rgba(255,255,255,.05);}
       .cal-d:hover{background:rgba(245,158,11,.1);color:#fff;transform:scale(1.1);}
@@ -355,10 +312,8 @@
     <div class="bg-layer-overlay"></div>
     <div class="bg-layer-noise"></div>
   </div>
-
   <div class="toast-wrap" id="toastWrap"></div>
 
-  <!-- LOGO + TAGLINE -->
   <div class="logo-container">
     <img src="https://i.postimg.cc/wvXdCnny/Gemini-Generated-Image-f1z1rjf1z1rjf1z1-removebg-preview.png" class="logo" alt="LEVZA">
     <div class="tagline-rule"></div>
@@ -366,7 +321,6 @@
   </div>
 
   <div class="page-container">
-    <!-- HEADER -->
     <div class="form-header-text">
       <div class="header-eyebrow"><span></span>LEVZA Careers<span></span></div>
       <div><span class="header-badge"><span class="badge-dot"></span>Employee Application</span></div>
@@ -619,7 +573,9 @@
   </div>
 
   <script>
-  /* ── TOAST ── */
+  /* ════════════════════════════════════════════
+     TOAST
+  ════════════════════════════════════════════ */
   function showToast(msg,type='error',dur=4000){
     const icons={error:'fa-circle-xmark',success:'fa-circle-check',warn:'fa-triangle-exclamation'};
     const t=document.createElement('div');
@@ -629,16 +585,26 @@
     setTimeout(()=>{t.classList.add('toast-out');setTimeout(()=>t.remove(),260);},dur);
   }
 
-  /* ── ERRORS ── */
+  /* ════════════════════════════════════════════
+     FIELD ERRORS
+  ════════════════════════════════════════════ */
   function setFieldError(id,show){
     const w=document.getElementById('wrap-'+id),e=document.getElementById('err-'+id);
     if(w)w.classList.toggle('field-error',show);
     if(e)e.style.display=show?'block':'none';
   }
-  function clearAllErrors(){document.querySelectorAll('.field-error').forEach(el=>el.classList.remove('field-error'));document.querySelectorAll('.err-msg').forEach(el=>el.style.display='none');}
-  function scrollToFirstError(){const f=document.querySelector('.field-error');if(f)f.scrollIntoView({behavior:'smooth',block:'center'});}
+  function clearAllErrors(){
+    document.querySelectorAll('.field-error').forEach(el=>el.classList.remove('field-error'));
+    document.querySelectorAll('.err-msg').forEach(el=>el.style.display='none');
+  }
+  function scrollToFirstError(){
+    const f=document.querySelector('.field-error');
+    if(f)f.scrollIntoView({behavior:'smooth',block:'center'});
+  }
 
-  /* ── BEAMS ── */
+  /* ════════════════════════════════════════════
+     BEAMS
+  ════════════════════════════════════════════ */
   function initBeams(){
     document.querySelectorAll('.beam-wrap input,.beam-wrap textarea').forEach(el=>{
       el.addEventListener('focus',function(){this.closest('.beam-wrap').classList.add('beam-on');setFieldError(this.name,false);});
@@ -646,9 +612,14 @@
     });
   }
   initBeams();
-  function flashTrigBeam(el){const w=el.closest('.trig-beam');if(!w)return;w.classList.add('beam-flash');setTimeout(()=>w.classList.remove('beam-flash'),1200);}
+  function flashTrigBeam(el){
+    const w=el.closest('.trig-beam');if(!w)return;
+    w.classList.add('beam-flash');setTimeout(()=>w.classList.remove('beam-flash'),1200);
+  }
 
-  /* ── RING ── */
+  /* ════════════════════════════════════════════
+     TEXTAREA RING
+  ════════════════════════════════════════════ */
   const ringFill=document.getElementById('ringFill'),ringText=document.getElementById('ringText');
   document.getElementById('greatFitTA').addEventListener('input',function(){
     const p=this.value.length/300;
@@ -658,7 +629,9 @@
     ringFill.style.stroke=c;ringText.style.color=c;
   });
 
-  /* ── CNIC FORMAT ── */
+  /* ════════════════════════════════════════════
+     CNIC FORMAT
+  ════════════════════════════════════════════ */
   document.getElementById('cnicInput').addEventListener('input',function(){
     let v=this.value.replace(/\D/g,'').slice(0,13),f=v;
     if(v.length>5)f=v.slice(0,5)+'-'+v.slice(5);
@@ -666,7 +639,9 @@
     this.value=f;
   });
 
-  /* ── CHECKBOX RIPPLE ── */
+  /* ════════════════════════════════════════════
+     CHECKBOX RIPPLE
+  ════════════════════════════════════════════ */
   document.getElementById('declaration').addEventListener('change',function(){
     if(!this.checked)return;
     const rect=this.getBoundingClientRect();
@@ -679,7 +654,9 @@
     }
   });
 
-  /* ── SUBMIT RIPPLE ── */
+  /* ════════════════════════════════════════════
+     SUBMIT RIPPLE
+  ════════════════════════════════════════════ */
   document.getElementById('submitBtn').addEventListener('mousedown',function(e){
     const rect=this.getBoundingClientRect(),r=document.createElement('span');
     r.className='submit-ripple';const sz=Math.max(rect.width,rect.height);
@@ -687,23 +664,56 @@
     this.appendChild(r);setTimeout(()=>r.remove(),650);
   });
 
-  /* ── DATA ── */
+  /* ════════════════════════════════════════════
+     SHEET (SELECT) ROW CLICK RIPPLE ANIMATION
+  ════════════════════════════════════════════ */
+  function addOptRipple(el, e) {
+    const existing = el.querySelector('.opt-ripple');
+    if(existing) existing.remove();
+    const r = document.createElement('span');
+    r.className = 'opt-ripple';
+    const rect = el.getBoundingClientRect();
+    const x = (e ? e.clientX - rect.left : rect.width/2) - 25;
+    const y = (e ? e.clientY - rect.top : rect.height/2) - 25;
+    r.style.cssText = `left:${x}px;top:${y}px;`;
+    el.appendChild(r);
+    setTimeout(() => r.remove(), 500);
+  }
+
+  /* ════════════════════════════════════════════
+     LOCATION DATA
+  ════════════════════════════════════════════ */
   const locationData={"Pakistan":{"Punjab":["Lahore","Faisalabad","Rawalpindi","Multan","Gujranwala","Sialkot","Bahawalpur","Sargodha","Sheikhupura"],"Sindh":["Karachi","Hyderabad","Sukkur","Larkana","Nawabshah"],"KPK":["Peshawar","Abbottabad","Mardan","Swat","Kohat"],"Balochistan":["Quetta","Gwadar","Khuzdar","Turbat"],"Islamabad":["Islamabad City"]},"United Kingdom":{"England":["London","Manchester","Birmingham","Leeds","Liverpool","Sheffield","Bristol"],"Scotland":["Edinburgh","Glasgow","Aberdeen"],"Wales":["Cardiff","Swansea"],"Northern Ireland":["Belfast","Derry"]}};
   const allCountries=["Afghanistan","Albania","Algeria","Andorra","Angola","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahrain","Bangladesh","Belgium","Bhutan","Bolivia","Brazil","Canada","China","Colombia","Croatia","Cuba","Cyprus","Czechia","Denmark","Egypt","Ethiopia","Finland","France","Georgia","Germany","Ghana","Greece","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kuwait","Lebanon","Libya","Malaysia","Maldives","Mexico","Morocco","Nepal","Netherlands","New Zealand","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Saudi Arabia","Senegal","Serbia","Singapore","Slovakia","Somalia","South Africa","Spain","Sri Lanka","Sudan","Sweden","Switzerland","Syria","Taiwan","Tanzania","Thailand","Tunisia","Turkey","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uzbekistan","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
-  /* ── SELECT ── */
+  /* ════════════════════════════════════════════
+     SELECT POPUP
+  ════════════════════════════════════════════ */
   let cSF='',cSA=[];
   function openSel(f,t,o){cSF=f;cSA=o;document.getElementById('selTitle').textContent=t;document.getElementById('selSearch').style.display='none';document.getElementById('selSearch').value='';renderOpts(o);document.getElementById('selOverlay').classList.add('on');document.body.style.overflow='hidden';}
   function openCountryPop(){cSF='country';cSA=allCountries;document.getElementById('selTitle').textContent='Select Country';const s=document.getElementById('selSearch');s.style.display='block';s.value='';renderOpts(allCountries);document.getElementById('selOverlay').classList.add('on');document.body.style.overflow='hidden';setTimeout(()=>s.focus(),420);}
   function openStatePop(){const c=document.getElementById('countryVal').value;if(!c||!locationData[c])return;cSF='state';cSA=Object.keys(locationData[c]);document.getElementById('selTitle').textContent='Select State / Province';document.getElementById('selSearch').style.display='none';renderOpts(cSA);document.getElementById('selOverlay').classList.add('on');document.body.style.overflow='hidden';}
   function openCityPop(){const c=document.getElementById('countryVal').value,st=document.getElementById('stateVal').value;if(!c||!st||!locationData[c]||!locationData[c][st])return;cSF='city';cSA=locationData[c][st];document.getElementById('selTitle').textContent='Select City';document.getElementById('selSearch').style.display='none';renderOpts(cSA);document.getElementById('selOverlay').classList.add('on');document.body.style.overflow='hidden';}
+
   function renderOpts(opts){
     const cur=(document.getElementById(cSF+'Val')||{}).value||'';
-    const list=document.getElementById('selList');list.innerHTML='';
-    opts.forEach(o=>{const d=document.createElement('div');d.className='sel-opt'+(o===cur?' chosen':'');d.innerHTML=`<span>${o}</span>`+(o===cur?'<i class="fas fa-check-circle chk"></i>':'');d.onclick=()=>pickOpt(o);list.appendChild(d);});
+    const list=document.getElementById('selList');
+    list.innerHTML='';
+    opts.forEach(o=>{
+      const d=document.createElement('div');
+      d.className='sel-opt'+(o===cur?' chosen':'');
+      d.innerHTML=`<span>${o}</span>`+(o===cur?'<i class="fas fa-check-circle chk"></i>':'');
+      d.addEventListener('click', function(e) {
+        addOptRipple(this, e);
+        setTimeout(()=>pickOpt(o), 80);
+      });
+      list.appendChild(d);
+    });
     list.scrollTop=0;
   }
+
   function filterSel(){const q=document.getElementById('selSearch').value.toLowerCase();renderOpts(cSA.filter(o=>o.toLowerCase().includes(q)));}
+
   function pickOpt(val){
     if(cSF==='country'){
       document.getElementById('countryVal').value=val;setTrig('country',val);setFieldError('country',false);
@@ -714,22 +724,34 @@
       if(locationData[val]){
         sD.innerHTML='<input type="hidden" name="State" id="stateVal"><div class="trig-beam" id="wrap-state"><div class="custom-trigger" id="stateTrig" onclick="openStatePop();flashTrigBeam(this)"><span id="stateLbl">State</span><i class="fas fa-chevron-down trig-icon"></i></div></div><div class="err-msg" id="err-state"><i class="fas fa-circle-exclamation" style="margin-right:3px;font-size:.6rem;"></i>Required</div>';
         cD.innerHTML='<input type="hidden" name="City" id="cityVal"><div class="trig-beam" id="wrap-city"><div class="custom-trigger dimmed" id="cityTrig" onclick="openCityPop();flashTrigBeam(this)"><span id="cityLbl">City</span><i class="fas fa-chevron-down trig-icon"></i></div></div><div class="err-msg" id="err-city"><i class="fas fa-circle-exclamation" style="margin-right:3px;font-size:.6rem;"></i>Required</div>';
-      }else{
+      } else {
         sD.innerHTML='<div class="beam-wrap" id="wrap-state"><input type="text" name="State" id="stateVal" class="form-control" placeholder="State / Province"></div><div class="err-msg" id="err-state"><i class="fas fa-circle-exclamation" style="margin-right:3px;font-size:.6rem;"></i>Required</div>';
         cD.innerHTML='<div class="beam-wrap" id="wrap-city"><input type="text" name="City" id="cityVal" class="form-control" placeholder="City"></div><div class="err-msg" id="err-city"><i class="fas fa-circle-exclamation" style="margin-right:3px;font-size:.6rem;"></i>Required</div>';
         initBeams();
       }
-    }else if(cSF==='state'){document.getElementById('stateVal').value=val;setTrig('state',val);setFieldError('state',false);document.getElementById('cityVal').value='';setTrig('city','');const ct=document.getElementById('cityTrig');if(ct)ct.classList.remove('dimmed');}
-    else if(cSF==='city'){document.getElementById('cityVal').value=val;setTrig('city',val);setFieldError('city',false);}
-    else if(cSF==='investor'){document.getElementById('investorVal').value=val;setTrig('investor',val);setFieldError('investor',false);document.getElementById('amountDiv').style.display=val==='Yes'?'block':'none';if(val==='Yes')setTimeout(initBeams,60);}
-    else{document.getElementById(cSF+'Val').value=val;setTrig(cSF,val);setFieldError(cSF,false);}
+    } else if(cSF==='state'){
+      document.getElementById('stateVal').value=val;setTrig('state',val);setFieldError('state',false);
+      document.getElementById('cityVal').value='';setTrig('city','');
+      const ct=document.getElementById('cityTrig');if(ct)ct.classList.remove('dimmed');
+    } else if(cSF==='city'){
+      document.getElementById('cityVal').value=val;setTrig('city',val);setFieldError('city',false);
+    } else if(cSF==='investor'){
+      document.getElementById('investorVal').value=val;setTrig('investor',val);setFieldError('investor',false);
+      document.getElementById('amountDiv').style.display=val==='Yes'?'block':'none';
+      if(val==='Yes')setTimeout(initBeams,60);
+    } else {
+      document.getElementById(cSF+'Val').value=val;setTrig(cSF,val);setFieldError(cSF,false);
+    }
     closePop('sel');
   }
+
   function setTrig(f,val){
     const l=document.getElementById(f+'Lbl'),t=document.getElementById(f+'Trig');if(!l||!t)return;
     const d={country:'Select Country',state:'State',city:'City',gender:'Gender',position:'Position Applied For',investor:'Are you an investor?',dob:'Date of Birth',joining:'Available Joining Date'};
-    if(val){l.textContent=val;l.style.color='#fff';t.classList.add('filled');}else{l.textContent=d[f]||'';l.style.color='';t.classList.remove('filled');}
+    if(val){l.textContent=val;l.style.color='#fff';t.classList.add('filled');}
+    else{l.textContent=d[f]||'';l.style.color='';t.classList.remove('filled');}
   }
+
   function closePop(type,e){
     const id=type==='sel'?'selOverlay':'calOverlay';
     if(e&&e.target!==document.getElementById(id))return;
@@ -737,7 +759,9 @@
     if(type==='cal')showDayView();
   }
 
-  /* ── CALENDAR ── */
+  /* ════════════════════════════════════════════
+     CALENDAR
+  ════════════════════════════════════════════ */
   const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
   const MS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   let cF='',cV=new Date(),cP=null,pO=false,pY=new Date().getFullYear();
@@ -768,51 +792,186 @@
     document.getElementById(cF+'Trig').classList.add('filled');setFieldError(cF,false);closePop('cal');
   }
 
-  /* ── OTP DEDUP ── */
-  const otpSet=new Set(JSON.parse(sessionStorage.getItem('_lOtp')||'[]'));
-  const markOtp=e=>{otpSet.add(e.toLowerCase().trim());sessionStorage.setItem('_lOtp',JSON.stringify([...otpSet]));};
-  const wasOtp=e=>otpSet.has(e.toLowerCase().trim());
-
-  /* ── API ── */
+  /* ════════════════════════════════════════════
+     API + DUPLICATE PREVENTION
+     
+     Strategy:
+     - sessionStorage mein submitted emails/CNICs/contacts store karo
+     - OTP send se pehle: sirf email check (local + server)
+     - Submit se pehle: CNIC+Contact local check, phir server — fire-and-continue
+       taake user ko zyada wait na karna pade
+     - checkDuplicate ab Promise.race + 3s timeout se kaam karta hai
+  ════════════════════════════════════════════ */
   const scriptURL='https://script.google.com/macros/s/AKfycbxvdZikt9uBzuBE5sCsUjStmD1ic2NXeaCdhrXf0nIR5k0mt5uT-5Pgw9ELhnYhrlgr/exec';
-  async function checkDuplicate(email,cnic,contact){
-    try{const fd=new FormData();fd.append('action','checkExists');fd.append('Email',email);fd.append('CNIC',cnic);fd.append('Contact',contact);return await(await fetch(scriptURL,{method:'POST',body:fd})).json();}catch{return{result:'ok'};}
+
+  /* Local session store — submitted records taake page reload par bhi duplicate nahi ho */
+  const _store = {
+    get: k => { try { return new Set(JSON.parse(sessionStorage.getItem(k)||'[]')); } catch{return new Set();} },
+    add: (k,v) => { const s=_store.get(k); s.add(v.toLowerCase().trim()); sessionStorage.setItem(k,JSON.stringify([...s])); },
+    has: (k,v) => _store.get(k).has(v.toLowerCase().trim())
+  };
+
+  /* Fast timeout wrapper — agar server slow ho to skip karo, local check pe rely karo */
+  async function checkDuplicateServer(email='', cnic='', contact='') {
+    const fd = new FormData();
+    fd.append('action','checkExists');
+    if(email)  fd.append('Email',email);
+    if(cnic)   fd.append('CNIC',cnic);
+    if(contact)fd.append('Contact',contact);
+    const timeout = new Promise((_,rej) => setTimeout(()=>rej(new Error('timeout')), 4000));
+    try {
+      const res = await Promise.race([
+        fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()),
+        timeout
+      ]);
+      return res;
+    } catch {
+      return {result:'ok'}; // server slow/offline → proceed, sheet side pe duplicate handle hoga
+    }
   }
 
-  /* ── SEND OTP ── */
-  let isVerified=false;
-  document.getElementById('sendCodeBtn').addEventListener('click',async function(){
-    const el=document.getElementById('email'),btn=this,email=el.value.trim();
-    if(!email||!el.checkValidity()){setFieldError('Email',true);showToast('Enter a valid email address.','error');el.focus();return;}
-    if(wasOtp(email)){showToast('OTP already sent — check your inbox.','warn',5000);document.getElementById('modalEmailText').innerText=email;document.getElementById('otpModalOverlay').classList.add('active');return;}
-    btn.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';btn.disabled=true;
-    const dup=await checkDuplicate(email,'','');
-    if(dup.result==='exists'&&dup.field==='Email'){showToast('This email is already registered.','error');setFieldError('Email',true);btn.textContent='Send OTP';btn.disabled=false;return;}
-    const fd=new FormData();fd.append('action','sendOTP');fd.append('Email',email);
-    fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(d=>{
-      if(d.result==='success'){markOtp(email);document.getElementById('modalEmailText').innerText=email;document.getElementById('verificationCode').value='';document.getElementById('otpMessage').textContent='';document.getElementById('otpModalOverlay').classList.add('active');btn.innerHTML='<i class="fas fa-check" style="margin-right:4px;"></i>Sent';btn.disabled=false;showToast('OTP sent! Check your inbox.','success');}
-      else{showToast('Failed to send OTP.','error');btn.textContent='Send OTP';btn.disabled=false;}
-    }).catch(()=>{showToast('Network error.','error');btn.textContent='Send OTP';btn.disabled=false;});
-  });
-  document.getElementById('closeModalBtn').addEventListener('click',()=>document.getElementById('otpModalOverlay').classList.remove('active'));
-  document.getElementById('verifyCodeBtn').addEventListener('click',function(){
-    const code=document.getElementById('verificationCode').value.trim(),msg=document.getElementById('otpMessage');
-    if(code.length<6){msg.textContent='Enter all 6 digits.';msg.style.color='#f87171';return;}
-    this.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';this.disabled=true;
-    const fd=new FormData();fd.append('action','verifyOTP');fd.append('Email',document.getElementById('email').value);fd.append('otp',code);
-    fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(d=>{
-      if(d.result==='success'){isVerified=true;document.getElementById('otpModalOverlay').classList.remove('active');setFieldError('Email',false);const b=document.getElementById('sendCodeBtn');b.className='btn btn-success-custom w-100';b.innerHTML='<i class="fas fa-shield-check"></i>Verified';document.getElementById('email').classList.add('verified-field');document.getElementById('email').readOnly=true;showToast('Email verified!','success');}
-      else{msg.textContent='Invalid OTP.';msg.style.color='#f87171';this.innerHTML='<i class="fas fa-shield-check" style="margin-right:7px;"></i>Verify Now';this.disabled=false;}
-    }).catch(()=>{this.innerHTML='<i class="fas fa-shield-check" style="margin-right:7px;"></i>Verify Now';this.disabled=false;});
-  });
-  document.getElementById('verificationCode').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,6);document.getElementById('otpMessage').textContent='';});
+  /* ── OTP SEND (fast: no duplicate check before sending, just email format) ── */
+  let isVerified = false;
 
-  /* ── SUBMIT ── */
-  document.getElementById('form').addEventListener('submit',async function(e){
-    e.preventDefault();clearAllErrors();
-    if(!isVerified){showToast('Please verify your email first.','warn');document.getElementById('sendCodeBtn').classList.add('shake');setTimeout(()=>document.getElementById('sendCodeBtn').classList.remove('shake'),400);document.getElementById('email').scrollIntoView({behavior:'smooth',block:'center'});return;}
-    let err=false;
-    [['FirstName'],['LastName'],['CNIC'],['Contact'],['Postal'],['Address'],['GreatFit']].forEach(([n])=>{const el=this[n];if(!el||!el.value.trim()){setFieldError(n,true);err=true;}});
+  document.getElementById('sendCodeBtn').addEventListener('click', async function() {
+    const el = document.getElementById('email');
+    const btn = this;
+    const email = el.value.trim();
+
+    if(!email || !el.checkValidity()) {
+      setFieldError('Email',true);
+      showToast('Enter a valid email address.','error');
+      el.focus();
+      return;
+    }
+
+    /* Local duplicate check (instant — no server call) */
+    if(_store.has('_submittedEmails', email)) {
+      showToast('This email has already been used to submit an application.','error');
+      setFieldError('Email',true);
+      return;
+    }
+
+    /* Already sent OTP this session */
+    if(_store.has('_otpSent', email)) {
+      showToast('OTP already sent — check your inbox.','warn',5000);
+      document.getElementById('modalEmailText').innerText = email;
+      document.getElementById('otpModalOverlay').classList.add('active');
+      return;
+    }
+
+    /* Show spinner immediately — don't wait for server check */
+    btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+    btn.disabled = true;
+
+    /* Send OTP directly — no pre-check to avoid double round-trip */
+    const fd = new FormData();
+    fd.append('action','sendOTP');
+    fd.append('Email', email);
+
+    try {
+      const data = await Promise.race([
+        fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()),
+        new Promise((_,rej) => setTimeout(()=>rej(new Error('timeout')),8000))
+      ]);
+
+      if(data.result === 'success') {
+        /* Mark OTP as sent */
+        _store.add('_otpSent', email);
+        document.getElementById('modalEmailText').innerText = email;
+        document.getElementById('verificationCode').value = '';
+        document.getElementById('otpMessage').textContent = '';
+        document.getElementById('otpModalOverlay').classList.add('active');
+        btn.innerHTML = '<i class="fas fa-check" style="margin-right:4px;"></i>Sent';
+        btn.disabled = false;
+        showToast('OTP sent! Check your inbox.','success');
+      } else if(data.result === 'exists' || (data.error||'').toLowerCase().includes('exist')) {
+        /* Sheet side se duplicate email detect hua */
+        showToast('This email is already registered.','error');
+        setFieldError('Email',true);
+        _store.add('_submittedEmails', email);
+        btn.textContent = 'Send OTP';
+        btn.disabled = false;
+      } else {
+        showToast('Failed to send OTP. Try again.','error');
+        btn.textContent = 'Send OTP';
+        btn.disabled = false;
+      }
+    } catch {
+      showToast('Network error. Check connection.','error');
+      btn.textContent = 'Send OTP';
+      btn.disabled = false;
+    }
+  });
+
+  document.getElementById('closeModalBtn').addEventListener('click',()=>{
+    document.getElementById('otpModalOverlay').classList.remove('active');
+  });
+
+  document.getElementById('verifyCodeBtn').addEventListener('click', async function() {
+    const code = document.getElementById('verificationCode').value.trim();
+    const msg  = document.getElementById('otpMessage');
+    if(code.length < 6) { msg.textContent='Enter all 6 digits.'; msg.style.color='#f87171'; return; }
+
+    this.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+    this.disabled = true;
+
+    const fd = new FormData();
+    fd.append('action','verifyOTP');
+    fd.append('Email', document.getElementById('email').value);
+    fd.append('otp', code);
+
+    try {
+      const data = await Promise.race([
+        fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()),
+        new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),8000))
+      ]);
+      if(data.result === 'success') {
+        isVerified = true;
+        document.getElementById('otpModalOverlay').classList.remove('active');
+        setFieldError('Email',false);
+        const b = document.getElementById('sendCodeBtn');
+        b.className = 'btn btn-success-custom w-100';
+        b.innerHTML = '<i class="fas fa-shield-check"></i>Verified';
+        document.getElementById('email').classList.add('verified-field');
+        document.getElementById('email').readOnly = true;
+        showToast('Email verified!','success');
+      } else {
+        msg.textContent = 'Invalid OTP. Please try again.';
+        msg.style.color = '#f87171';
+        this.innerHTML = '<i class="fas fa-shield-check" style="margin-right:7px;"></i>Verify Now';
+        this.disabled = false;
+      }
+    } catch {
+      this.innerHTML = '<i class="fas fa-shield-check" style="margin-right:7px;"></i>Verify Now';
+      this.disabled = false;
+    }
+  });
+
+  document.getElementById('verificationCode').addEventListener('input',function(){
+    this.value = this.value.replace(/\D/g,'').slice(0,6);
+    document.getElementById('otpMessage').textContent = '';
+  });
+
+  /* ════════════════════════════════════════════
+     SUBMIT — fast path: local checks first, server only for CNIC/Contact
+  ════════════════════════════════════════════ */
+  document.getElementById('form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    clearAllErrors();
+
+    if(!isVerified) {
+      showToast('Please verify your email first.','warn');
+      document.getElementById('sendCodeBtn').classList.add('shake');
+      setTimeout(()=>document.getElementById('sendCodeBtn').classList.remove('shake'),400);
+      document.getElementById('email').scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
+
+    let err = false;
+    [['FirstName'],['LastName'],['CNIC'],['Contact'],['Postal'],['Address'],['GreatFit']].forEach(([n])=>{
+      const el=this[n];if(!el||!el.value.trim()){setFieldError(n,true);err=true;}
+    });
     if((document.getElementById('cnicInput').value||'').replace(/-/g,'').length!==13){setFieldError('CNIC',true);err=true;}
     if(!document.getElementById('dobVal').value){setFieldError('dob',true);err=true;}
     if(!document.getElementById('genderVal').value){setFieldError('gender',true);err=true;}
@@ -822,18 +981,76 @@
     if(!document.getElementById('positionVal').value){setFieldError('position',true);err=true;}
     if(!document.getElementById('investorVal').value){setFieldError('investor',true);err=true;}
     if(!document.getElementById('joiningVal').value){setFieldError('joining',true);err=true;}
-    if(!document.getElementById('declaration').checked){showToast('Please confirm the declaration.','warn');document.querySelector('.liquid-footer').classList.add('shake');setTimeout(()=>document.querySelector('.liquid-footer').classList.remove('shake'),400);err=true;}
+    if(!document.getElementById('declaration').checked){
+      showToast('Please confirm the declaration.','warn');
+      document.querySelector('.liquid-footer').classList.add('shake');
+      setTimeout(()=>document.querySelector('.liquid-footer').classList.remove('shake'),400);
+      err=true;
+    }
     if(err){scrollToFirstError();showToast('Please fill in all required fields.','error');return;}
-    const sb=document.getElementById('submitBtn');
-    sb.innerHTML='<div class="loading-dots" style="margin-right:7px;"><span></span><span></span><span></span></div>Checking...';sb.disabled=true;
-    const dup=await checkDuplicate(this['Email'].value,document.getElementById('cnicInput').value,this['Contact'].value);
-    if(dup.result==='exists'){const fl=dup.field||'record';showToast(`This ${fl} is already registered.`,'error');if(dup.field==='CNIC')setFieldError('CNIC',true);if(dup.field==='Contact')setFieldError('Contact',true);if(dup.field==='Email')setFieldError('Email',true);scrollToFirstError();sb.innerHTML='<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Application';sb.disabled=false;return;}
-    sb.innerHTML='<div class="loading-dots" style="margin-right:7px;"><span></span><span></span><span></span></div>Submitting...';
-    const fd=new FormData(this);fd.append('action','submitForm');
-    fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()).then(d=>{
-      if(d.result==='success'){document.getElementById('thankYouModalOverlay').classList.add('active');}
-      else{showToast('Submission failed. Please retry.','error');sb.innerHTML='<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Application';sb.disabled=false;}
-    }).catch(()=>{showToast('Network error.','error');sb.innerHTML='<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Application';sb.disabled=false;});
+
+    const emailVal   = this['Email'].value.trim();
+    const cnicVal    = document.getElementById('cnicInput').value;
+    const contactVal = this['Contact'].value.trim();
+
+    /* ── LOCAL duplicate check (instant) ── */
+    if(_store.has('_submittedEmails', emailVal)) {
+      showToast('This email is already registered.','error');
+      setFieldError('Email',true);scrollToFirstError();return;
+    }
+    if(_store.has('_submittedCNICs', cnicVal)) {
+      showToast('This CNIC is already registered.','error');
+      setFieldError('CNIC',true);scrollToFirstError();return;
+    }
+    if(_store.has('_submittedContacts', contactVal)) {
+      showToast('This contact number is already registered.','error');
+      setFieldError('Contact',true);scrollToFirstError();return;
+    }
+
+    const sb = document.getElementById('submitBtn');
+    sb.innerHTML = '<div class="loading-dots" style="margin-right:7px;"><span></span><span></span><span></span></div>Submitting...';
+    sb.disabled = true;
+
+    /* ── SERVER duplicate check (fast timeout: 4s, then proceed) ── */
+    const dup = await checkDuplicateServer(emailVal, cnicVal, contactVal);
+    if(dup.result === 'exists') {
+      const fl = dup.field || 'record';
+      showToast(`This ${fl} is already registered.`,'error');
+      if(dup.field==='CNIC')    setFieldError('CNIC',true);
+      if(dup.field==='Contact') setFieldError('Contact',true);
+      if(dup.field==='Email')   setFieldError('Email',true);
+      scrollToFirstError();
+      sb.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Application';
+      sb.disabled = false;
+      return;
+    }
+
+    /* ── SUBMIT ── */
+    const fd = new FormData(this);
+    fd.append('action','submitForm');
+
+    try {
+      const data = await Promise.race([
+        fetch(scriptURL,{method:'POST',body:fd}).then(r=>r.json()),
+        new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),12000))
+      ]);
+
+      if(data.result === 'success') {
+        /* Mark locally so immediate re-submit won't work */
+        _store.add('_submittedEmails',   emailVal);
+        _store.add('_submittedCNICs',    cnicVal);
+        _store.add('_submittedContacts', contactVal);
+        document.getElementById('thankYouModalOverlay').classList.add('active');
+      } else {
+        showToast('Submission failed. Please retry.','error');
+        sb.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Application';
+        sb.disabled = false;
+      }
+    } catch {
+      showToast('Network error. Check your connection and retry.','error');
+      sb.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Application';
+      sb.disabled = false;
+    }
   });
   </script>
 </body>
